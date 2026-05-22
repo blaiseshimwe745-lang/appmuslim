@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "Barakah",
+    "slug": "barakah-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "barakah",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0d5a5a"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.barakah.digitaldetox",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Barakah nutzt Face ID für schnellen Login."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0d5a5a"
+      },
+      "package": "com.barakah.digitaldetox",
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "SCHEDULE_EXACT_ALARM",
+        "VIBRATE"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-notifications",
+      "expo-background-fetch",
+      "expo-localization",
+      "expo-haptics",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0d5a5a",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}

@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Barakah – Digital Detox für Muslime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green-deep: #0d5a5a;
+      --green-dark: #0a4747;
+      --green-darker: #073a3a;
+      --green-medium: #148080;
+      --green-light: #2ab5b5;
+      --green-pastel: #e0f7f7;
+      --green-pastel-2: #d0f0f0;
+      --gold: #d4a843;
+      --gold-dark: #b8922e;
+      --gold-light: #f5e6b8;
+      --gold-pale: #fdf6e3;
+      --gold-gradient: linear-gradient(135deg, #d4a843, #ecc96a, #f0d48a);
+      --cream: #faf8f0;
+      --cream-dark: #f0ece0;
+      --cream-darker: #e8e0cc;
+      --sand: #d8d0bc;
+      --text-dark: #1a2a2a;
+      --text-medium: #4a5a5a;
+      --text-light: #8a9a9a;
+      --text-muted: #b0baba;
+      --white: #ffffff;
+      --shadow-sm: 0 2px 8px rgba(13, 90, 90, 0.06);
+      --shadow-md: 0 8px 32px rgba(13, 90, 90, 0.10);
+      --shadow-lg: 0 20px 60px rgba(13, 90, 90, 0.14);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-xl: 36px;
+      --font-arabic: 'Amiri', 'Noto Naskh Arabic', serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .phone-wrapper {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #e8e0cc 0%, #d4cbb5 100%);
+      padding: 20px;
+    }
+
+    .phone {
+      width: 393px; height: 852px;
+      background: var(--cream);
+      border-radius: 48px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 2px #b8ad97, 0 0 0 6px #1a1a1a, 0 0 0 8px #3a3a3a, 0 30px 80px rgba(0,0,0,0.4);
+    }
+
+    .dynamic-island {
+      position: absolute;
+      top: 12px; left: 50%;
+      transform: translateX(-50%);
+      width: 110px; height: 32px;
+      background: #1a1a1a;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .dynamic-island .camera {
+      width: 8px; height: 8px;
+      background: #2a2a3a;
+      border-radius: 50%;
+      border: 1px solid #3a3a4a;
+    }
+
+    .dynamic-island .sensor {
+      width: 40px; height: 4px;
+      background: #2a2a3a;
+      border-radius: 4px;
+    }
+
+    .screen {
+      width: 100%; height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 48px 28px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      position: relative;
+      z-index: 50;
+    }
+    .status-bar .time { font-weight: 600; }
+
+    .screen-section {
+      min-height: 100%;
+      width: 100%;
+      padding: 0 24px;
+      display: none;
+      flex-direction: column;
+    }
+    .screen-section.active {
+      display: flex;
+      animation: fadeSlideIn 0.45s var(--ease-out);
+    }
+    @keyframes fadeSlideIn {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==============================
+       ONBOARDING
+    ============================== */
+    .onboarding-slide {
+      min-height: 100%;
+      display: none;
+      flex-direction: column;
+      padding: 120px 24px 40px;
+      position: relative;
+    }
+    .onboarding-slide.active { display: flex; }
+
+    .onboarding-slide.active .illustration-inner { animation: floatIn 0.7s var(--ease-out) both; }
+    .onboarding-slide.active .arabic { animation: fadeUp 0.5s 0.15s var(--ease-out) both; }
+    .onboarding-slide.active h1 { animation: fadeUp 0.5s 0.25s var(--ease-out) both; }
+    .onboarding-slide.active .subtitle { animation: fadeUp 0.5s 0.35s var(--ease-out) both; }
+    .onboarding-slide.active .feature-list .feature-item { animation: fadeUp 0.4s var(--ease-out) both; }
+    .onboarding-slide.active .feature-list .feature-item:nth-child(1) { animation-delay: 0.4s; }
+    .onboarding-slide.active .feature-list .feature-item:nth-child(2) { animation-delay: 0.5s; }
+    .onboarding-slide.active .feature-list .feature-item:nth-child(3) { animation-delay: 0.6s; }
+    .onboarding-slide.active .onboarding-footer { animation: fadeUp 0.5s 0.5s var(--ease-out) both; }
+
+    @keyframes floatIn {
+      0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(16px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .onboarding-slide .illustration {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .onboarding-slide .illustration-inner {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: var(--green-pastel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mosque-icon { position: relative; width: 120px; height: 90px; }
+    .mosque-icon .dome {
+      width: 80px; height: 50px;
+      background: var(--green-deep);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      margin: 0 auto;
+      position: relative;
+    }
+    .mosque-icon .dome::after {
+      content: '☪';
+      position: absolute;
+      top: -18px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: var(--gold);
+      animation: starSpin 6s linear infinite;
+    }
+    @keyframes starSpin {
+      0% { transform: translateX(-50%) rotate(0deg); }
+      100% { transform: translateX(-50%) rotate(360deg); }
+    }
+    .mosque-icon .base { width: 120px; height: 4px; background: var(--green-deep); border-radius: 2px; margin-top: 8px; }
+    .mosque-icon .minaret-l, .mosque-icon .minaret-r {
+      position: absolute; bottom: 4px;
+      width: 6px; height: 40px;
+      background: var(--green-deep);
+      border-radius: 3px 3px 0 0;
+    }
+    .mosque-icon .minaret-l { left: 10px; }
+    .mosque-icon .minaret-r { right: 10px; }
+
+    .onboarding-slide h1 {
+      font-size: 30px;
+      font-weight: 650;
+      color: var(--green-deep);
+      text-align: center;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+    .onboarding-slide h1 .gold {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .onboarding-slide .arabic {
+      font-family: var(--font-arabic);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--gold-dark);
+      text-align: center;
+      margin-bottom: 8px;
+      direction: rtl;
+      opacity: 0.8;
+    }
+
+    .onboarding-slide .subtitle {
+      font-size: 15px;
+      color: var(--text-medium);
+      text-align: center;
+      line-height: 1.7;
+      font-weight: 400;
+      max-width: 310px;
+      margin: 0 auto 8px;
+    }
+
+    .onboarding-slide .feature-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .onboarding-slide .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+    }
+    .onboarding-slide .feature-item .icon-box {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--green-pastel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .onboarding-slide .feature-item .text h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .onboarding-slide .feature-item .text p {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .onboarding-footer { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .onboarding-dots { display: flex; gap: 8px; }
+    .onboarding-dots .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--sand);
+      transition: all 0.4s var(--ease-out);
+      cursor: pointer;
+    }
+    .onboarding-dots .dot.active {
+      width: 26px;
+      border-radius: 6px;
+      background: var(--green-deep);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--green-deep), var(--green-medium));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-out);
+      box-shadow: 0 4px 20px rgba(13, 90, 90, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(13, 90, 90, 0.35); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-skip {
+      background: none; border: none;
+      color: var(--text-light);
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+      padding: 8px;
+      transition: color 0.25s var(--ease-out);
+    }
+    .btn-skip:hover { color: var(--text-medium); }
+
+    /* ==============================
+       DASHBOARD
+    ============================== */
+    .dashboard { padding: 0; }
+
+    .dash-header {
+      padding: 56px 24px 24px;
+      background: linear-gradient(165deg, var(--green-deep) 0%, var(--green-darker) 100%);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dash-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 2;
+    }
+    .dash-greeting h2 {
+      font-size: 21px;
+      font-weight: 650;
+      color: white;
+      letter-spacing: -0.2px;
+    }
+    .dash-greeting p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    .dash-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.35);
+      cursor: pointer;
+      transition: transform 0.25s var(--ease-out);
+    }
+    .dash-avatar:hover { transform: scale(1.08); }
+
+    /* Streak Badge */
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(12px);
+      padding: 10px 18px 10px 16px;
+      border-radius: 40px;
+      margin-top: 16px;
+      position: relative;
+      z-index: 2;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: background 0.25s var(--ease-out);
+      user-select: none;
+    }
+    .streak-badge:hover { background: rgba(255,255,255,0.16); }
+    .streak-badge:active { transform: scale(0.98); }
+
+    .streak-badge .fire { font-size: 22px; display: inline-block; }
+    .streak-badge .streak-number {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1.2;
+    }
+    .streak-badge .streak-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
+
+    /* Progress */
+    .today-progress { margin-top: 16px; position: relative; z-index: 2; }
+    .today-progress .label {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255,255,255,0.65);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .today-progress .bar-bg {
+      margin-top: 8px;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .today-progress .bar-fill {
+      height: 100%;
+      background: var(--gold-gradient);
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.6s var(--ease-out);
+    }
+
+    /* Next Prayer */
+    .next-prayer-card {
+      margin: 16px 24px 12px;
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: box-shadow 0.25s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .next-prayer-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--gold-gradient);
+      border-radius: 0 3px 3px 0;
+    }
+    .next-prayer-card:hover { box-shadow: var(--shadow-md); }
+
+    .next-prayer-card .prayer-info { display: flex; align-items: center; gap: 12px; }
+    .next-prayer-card .prayer-icon {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: var(--green-pastel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .next-prayer-card .prayer-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+    .next-prayer-card .prayer-time { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .next-prayer-card .prayer-countdown {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--green-medium);
+      background: var(--green-pastel);
+      padding: 6px 14px;
+      border-radius: 40px;
+    }
+
+    /* Section Titles */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    .section-title h3 {
+      font-size: 16px;
+      font-weight: 650;
+      color: var(--text-dark);
+      letter-spacing: -0.2px;
+    }
+    .section-title .see-all {
+      font-size: 13px;
+      color: var(--green-medium);
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.25s var(--ease-out);
+    }
+    .section-title .see-all:hover { color: var(--green-deep); }
+
+    /* Task List */
+    .task-list { padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: white;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s var(--ease-out);
+      cursor: pointer;
+      user-select: none;
+    }
+    .task-item:hover { box-shadow: var(--shadow-md); }
+    .task-item:active { transform: scale(0.98); }
+
+    .task-item .checkbox {
+      width: 22px; height: 22px;
+      border-radius: 7px;
+      border: 2px solid var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s var(--ease-out);
+      font-size: 12px;
+      color: white;
+      font-weight: 600;
+    }
+    .task-item .checkbox.checked {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+    }
+    .task-item .task-text { flex: 1; }
+    .task-item .task-text h4 { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+    .task-item .task-text p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .task-item .task-emoji { font-size: 18px; flex-shrink: 0; }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 24px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(208, 208, 200, 0.3);
+      position: sticky;
+      bottom: 0;
+      z-index: 50;
+      margin-top: 20px;
+    }
+    .bottom-nav .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 8px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      background: transparent;
+      border: none;
+      font-family: var(--font-sans);
+    }
+    .bottom-nav .nav-item svg { width: 22px; height: 22px; color: var(--text-light); transition: color 0.2s var(--ease-out); }
+    .bottom-nav .nav-item span { font-size: 10px; color: var(--text-light); font-weight: 500; transition: color 0.2s var(--ease-out); }
+    .bottom-nav .nav-item:active { transform: scale(0.92); }
+    .bottom-nav .nav-item.active svg { color: var(--green-deep); }
+    .bottom-nav .nav-item.active span { color: var(--green-deep); font-weight: 600; }
+
+    .bottom-nav .nav-item.center {
+      background: var(--green-deep);
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      margin-top: -24px;
+      box-shadow: 0 4px 20px rgba(13, 90, 90, 0.3);
+      transition: transform 0.2s var(--ease-out);
+    }
+    .bottom-nav .nav-item.center:hover { transform: translateY(-2px) scale(1.03); }
+    .bottom-nav .nav-item.center:active { transform: scale(0.92); }
+    .bottom-nav .nav-item.center svg { color: white; width: 24px; height: 24px; }
+
+    /* ==============================
+       STREAK VIEW
+    ============================== */
+    .streak-view { padding: 56px 24px 0; min-height: 100%; }
+
+    .streak-view .back-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .streak-view .back-header button {
+      background: none; border: none;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 12px;
+      transition: background 0.2s var(--ease-out);
+      color: var(--text-dark);
+    }
+    .streak-view .back-header button:hover { background: var(--cream-dark); }
+    .streak-view .back-header h2 { font-size: 20px; font-weight: 650; letter-spacing: -0.2px; }
+
+    .streak-mega { text-align: center; padding: 20px 0 16px; }
+    .streak-mega .fire-big { font-size: 52px; display: block; margin-bottom: 4px; line-height: 1.2; }
+    .streak-mega .streak-big-number {
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--green-deep);
+      line-height: 1.2;
+      letter-spacing: -2px;
+    }
+    .streak-mega .streak-big-label {
+      font-size: 15px;
+      color: var(--text-medium);
+      font-weight: 450;
+      margin-top: 4px;
+    }
+    .streak-mega .streak-message {
+      background: var(--green-pastel);
+      color: var(--green-deep);
+      padding: 8px 20px;
+      border-radius: 40px;
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 12px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 14px;
+    }
+    .calendar-grid .day-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      padding: 6px 0;
+      text-transform: uppercase;
+    }
+    .calendar-grid .day-cell {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--cream-dark);
+      color: var(--text-medium);
+      position: relative;
+      transition: transform 0.2s var(--ease-out);
+    }
+    .calendar-grid .day-cell:not(.empty):hover { transform: scale(1.06); }
+    .calendar-grid .day-cell.done { background: var(--green-deep); color: white; font-weight: 600; }
+    .calendar-grid .day-cell.streak { background: linear-gradient(145deg, var(--green-deep), var(--green-light)); color: white; font-weight: 600; box-shadow: 0 2px 10px rgba(13, 90, 90, 0.15); }
+    .calendar-grid .day-cell.streak::after {
+      content: '🔥';
+      font-size: 8px;
+      position: absolute;
+      top: -2px; right: -2px;
+    }
+    .calendar-grid .day-cell.today {
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.1);
+    }
+    .calendar-grid .day-cell.missed { background: #fde8e8; color: #d44; }
+    .calendar-grid .day-cell.empty { background: transparent; }
+
+    /* Stats */
+    .streak-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .streak-stats .stat-card {
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 16px 12px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .streak-stats .stat-card .stat-number {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--green-deep);
+      letter-spacing: -0.3px;
+    }
+    .streak-stats .stat-card .stat-label {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .streak-milestones { margin-bottom: 100px; }
+
+    /* ==============================
+       LOCK SCREEN
+    ============================== */
+    .lock-screen {
+      min-height: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .lock-screen.active { display: flex; }
+
+    .lock-screen .lock-icon {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fde8e8, #f8d7d7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+    .lock-screen h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+    .lock-screen > p {
+      font-size: 14px;
+      color: var(--text-medium);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .lock-screen .locked-apps { display: flex; gap: 16px; margin: 24px 0; }
+    .lock-screen .locked-app {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: var(--cream-dark);
+      position: relative;
+    }
+    .lock-screen .locked-app::after {
+      content: '🔒';
+      font-size: 12px;
+      position: absolute;
+      top: -4px; right: -4px;
+    }
+  </style>
+</head>
+<body>
+<div class="phone-wrapper">
+  <div class="phone">
+    <div class="dynamic-island">
+      <div class="camera"></div>
+      <div class="sensor"></div>
+    </div>
+
+    <div class="screen" id="mainScreen">
+
+      <!-- Status Bar -->
+      <div class="status-bar" style="position: absolute; top: 0; left: 0; right: 0;">
+        <span class="time">9:41</span>
+        <div class="status-icons">
+          <svg viewBox="0 0 24 24" fill="currentColor" opacity="0.7"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" opacity="0.7"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+        </div>
+      </div>
+
+      <!-- ONBOARDING 0 -->
+      <div class="onboarding-slide active" id="onboard0">
+        <div class="illustration">
+          <div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);">
+            <div class="mosque-icon"><div class="dome"></div><div class="base"></div><div class="minaret-l"></div><div class="minaret-r"></div></div>
+          </div>
+        </div>
+        <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <h1>Willkommen bei<br><span class="gold">Barakah</span></h1>
+        <p class="subtitle">Dein digitaler Begleiter für eine gesegnete Bildschirmzeit. Gewinne die Kontrolle zurück – eine gute Tat nach der anderen.</p>
+        <div class="onboarding-footer">
+          <div class="onboarding-dots">
+            <div class="dot active" data-slide="0"></div>
+            <div class="dot" data-slide="1"></div>
+            <div class="dot" data-slide="2"></div>
+          </div>
+          <button class="btn-primary" onclick="goOnboard(1)">Los geht's →</button>
+          <button class="btn-skip" onclick="goToDashboard()">Überspringen</button>
+        </div>
+      </div>
+
+      <!-- ONBOARDING 1 -->
+      <div class="onboarding-slide" id="onboard1">
+        <div class="illustration">
+          <div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #d4e8f7, #e4f0f7);">
+            <span style="font-size: 72px;">🕌</span>
+          </div>
+        </div>
+        <h1>Gebet &amp; Qur'an<br><span class="gold">zuerst</span></h1>
+        <p class="subtitle">Social Media ist erst frei, wenn du deine täglichen Ibadaat erledigt hast. Dein Iman dankt es dir.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="icon-box">🕋</div>
+            <div class="text"><h4>Gebets-Tracker</h4><p>Fajr, Dhuhr, Asr, Maghrib &amp; Isha – alles im Blick</p></div>
+          </div>
+          <div class="feature-item">
+            <div class="icon-box">📖</div>
+            <div class="text"><h4>Qur'an lesen</h4><p>Mindestens 5 Minuten Rezitation vor der Freischaltung</p></div>
+          </div>
+          <div class="feature-item">
+            <div class="icon-box">📿</div>
+            <div class="text"><h4>Dhikr</h4><p>33× Subhanallah · 33× Alhamdulillah · 34× Allahu Akbar</p></div>
+          </div>
+        </div>
+        <div class="onboarding-footer">
+          <div class="onboarding-dots">
+            <div class="dot" data-slide="0" onclick="goOnboard(0)"></div>
+            <div class="dot active" data-slide="1"></div>
+            <div class="dot" data-slide="2"></div>
+          </div>
+          <button class="btn-primary" onclick="goOnboard(2)">Weiter →</button>
+          <button class="btn-skip" onclick="goToDashboard()">Überspringen</button>
+        </div>
+      </div>
+
+      <!-- ONBOARDING 2 -->
+      <div class="onboarding-slide" id="onboard2">
+        <div class="illustration">
+          <div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);">
+            <span style="font-size: 72px;">🔥</span>
+          </div>
+        </div>
+        <h1>Dein <span class="gold">Streak</span> zählt</h1>
+        <p class="subtitle">Jeder Tag, an dem du deine Aufgaben erledigst, verlängert deine Serie. Unterbrich den Teufelskreis – werde stärker!</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="icon-box">🔥</div>
+            <div class="text"><h4>Täglicher Streak</h4><p>Bleib dran – je länger die Serie, desto mehr Barakah</p></div>
+          </div>
+          <div class="feature-item">
+            <div class="icon-box">🏆</div>
+            <div class="text"><h4>Meilensteine</h4><p>7, 30, 100 Tage – jede Serie wird belohnt</p></div>
+          </div>
+          <div class="feature-item">
+            <div class="icon-box">📊</div>
+            <div class="text"><h4>Statistiken</h4><p>Sieh deinen Fortschritt und wie viel Zeit du zurückgewonnen hast</p></div>
+          </div>
+        </div>
+        <div class="onboarding-footer">
+          <div class="onboarding-dots">
+            <div class="dot" data-slide="0" onclick="goOnboard(0)"></div>
+            <div class="dot" data-slide="1" onclick="goOnboard(1)"></div>
+            <div class="dot active" data-slide="2"></div>
+          </div>
+          <button class="btn-primary" onclick="goToDashboard()">App starten 🚀</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="screen-section dashboard" id="dashboardView">
+        <div class="dash-header">
+          <div class="dash-top-row">
+            <div class="dash-greeting">
+              <h2>Assalamu Alaikum,</h2>
+              <p>Heute ist ein gesegneter Tag ☀️</p>
+            </div>
+            <div class="dash-avatar">A</div>
+          </div>
+          <div class="streak-badge" onclick="showStreakView()">
+            <span class="fire">🔥</span>
+            <span class="streak-number" id="streakNumber">12</span>
+            <span class="streak-label">Tage Streak</span>
+          </div>
+          <div class="today-progress">
+            <div class="label">
+              <span>Heutiger Fortschritt</span>
+              <span id="progressPercent">40%</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" id="progressBar" style="width: 40%;"></div></div>
+          </div>
+        </div>
+
+        <div class="next-prayer-card">
+          <div class="prayer-info">
+            <div class="prayer-icon">🕌</div>
+            <div>
+              <div class="prayer-name">Nächstes Gebet: Asr</div>
+              <div class="prayer-time">16:42 Uhr · 23 Min verbleibend</div>
+            </div>
+          </div>
+          <div class="prayer-countdown">16:42</div>
+        </div>
+
+        <div class="section-title">
+          <h3>Heutige Aufgaben</h3>
+          <span class="see-all" onclick="showStreakView()">Alle anzeigen</span>
+        </div>
+
+        <div class="task-list">
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox checked">✓</div>
+            <span class="task-emoji">🕋</span>
+            <div class="task-text"><h4>Fajr &amp; Dhuhr gebetet</h4><p>Erledigt ✅</p></div>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <span class="task-emoji">🕋</span>
+            <div class="task-text"><h4>Asr gebetet</h4><p>Noch offen ⏳</p></div>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <span class="task-emoji">📖</span>
+            <div class="task-text"><h4>Qur'an lesen (5 Min)</h4><p>Surah Al-Kahf · Noch offen</p></div>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <span class="task-emoji">📿</span>
+            <div class="task-text"><h4>Dhikr (33+33+34)</h4><p>Subhanallah · Alhamdulillah · Allahu Akbar</p></div>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <span class="task-emoji">💧</span>
+            <div class="task-text"><h4>Wudu &amp; Abendgebet</h4><p>Maghrib steht bald an</p></div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 20px;">
+          <h3>🔒 Blockierte Apps</h3>
+          <span class="see-all">Verwalten</span>
+        </div>
+
+        <div class="task-list">
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 24px;">📸</span>
+            <div class="task-text"><h4>Instagram</h4><p>Noch 3 Aufgaben übrig 🔒</p></div>
+            <span style="font-size: 14px;">🔒</span>
+          </div>
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 24px;">🎵</span>
+            <div class="task-text"><h4>TikTok</h4><p>Noch 3 Aufgaben übrig 🔒</p></div>
+            <span style="font-size: 14px;">🔒</span>
+          </div>
+          <div class="task-item" style="cursor: default; background: var(--green-pastel);">
+            <span style="font-size: 24px;">💬</span>
+            <div class="task-text"><h4>WhatsApp</h4><p>Bereits freigeschaltet ✅</p></div>
+            <span style="font-size: 14px;">✅</span>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <button class="nav-item active" onclick="goToDashboard()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+          </button>
+          <button class="nav-item" onclick="showStreakView()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Streak</span>
+          </button>
+          <button class="nav-item center" onclick="showLockScreen()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span style="color: white;">Lock</span>
+          </button>
+          <button class="nav-item" onclick="showStreakView()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Profil</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Einst.</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STREAK VIEW -->
+      <div class="screen-section streak-view" id="streakView">
+        <div class="back-header">
+          <button onclick="goToDashboard()">←</button>
+          <h2>Mein Streak</h2>
+        </div>
+
+        <div class="streak-mega">
+          <span class="fire-big">🔥</span>
+          <div class="streak-big-number" id="bigStreakNumber">12</div>
+          <div class="streak-big-label">Tage am Stück</div>
+          <div class="streak-message">🎉 Masha'Allah! 12 Tage Barakah!</div>
+        </div>
+
+        <div class="streak-stats">
+          <div class="stat-card"><div class="stat-number">45</div><div class="stat-label">Stunden gespart</div></div>
+          <div class="stat-card"><div class="stat-number">85%</div><div class="stat-label">Erfolgsquote</div></div>
+          <div class="stat-card"><div class="stat-number">#7</div><div class="stat-label">Rang weltweit</div></div>
+        </div>
+
+        <div class="section-title" style="padding: 0; margin-top: 20px;">
+          <h3>Mai 2025</h3>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <div class="section-title" style="padding: 0; margin-top: 24px;">
+          <h3>Meilensteine 🏆</h3>
+        </div>
+
+        <div class="task-list streak-milestones">
+          <div class="task-item" style="cursor: default; background: #f5f0e0;">
+            <span style="font-size: 22px;">🥉</span>
+            <div class="task-text"><h4>7 Tage Streak</h4><p>Geschafft! Alhamdulillah ✅</p></div>
+            <span style="background: var(--green-pastel); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--green-deep);">Erreicht</span>
+          </div>
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 22px;">🥈</span>
+            <div class="task-text"><h4>30 Tage Streak</h4><p>Noch 18 Tage – du schaffst das!</p></div>
+            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">40%</span>
+          </div>
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 22px;">🥇</span>
+            <div class="task-text"><h4>100 Tage Streak</h4><p>Noch 88 Tage – bleib dran 💪</p></div>
+            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">12%</span>
+          </div>
+          <div class="task-item" style="cursor: default; background: var(--gold-pale);">
+            <span style="font-size: 22px;">👑</span>
+            <div class="task-text"><h4>1 Jahr Barakah</h4><p>365 Tage Iman – das ultimative Ziel</p></div>
+            <span style="background: var(--gold-light); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--gold-dark);">⭐</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOCK SCREEN -->
+      <div class="lock-screen" id="lockScreen">
+        <div class="lock-icon">🔒</div>
+        <h2>App gesperrt</h2>
+        <p>Erledige erst deine Ibadaat,<br>dann schalten wir Social Media frei.</p>
+
+        <div class="locked-apps">
+          <div class="locked-app">📸</div>
+          <div class="locked-app">🎵</div>
+          <div class="locked-app">▶️</div>
+          <div class="locked-app">💬</div>
+        </div>
+
+        <div style="width: 100%; margin-top: 8px;">
+          <div class="task-list" style="padding: 0;">
+            <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
+              <div class="checkbox checked">✓</div>
+              <span class="task-emoji">🕋</span>
+              <div class="task-text"><h4>Fajr &amp; Dhuhr ✅</h4><p>Erledigt – BarakAllahu feek</p></div>
+            </div>
+            <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
+              <div class="checkbox"></div>
+              <span class="task-emoji">🕋</span>
+              <div class="task-text"><h4>Asr beten</h4><p>Noch offen – erst dann geht's weiter!</p></div>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: 20px; font-size: 13px; color: var(--text-light);">
+          ⏱️ Noch <strong style="color: var(--green-deep);">3 Aufgaben</strong> übrig
+        </p>
+
+        <button class="btn-primary" style="background: linear-gradient(135deg, #c44, #a33); box-shadow: 0 4px 20px rgba(200,68,68,0.25);" onclick="goToDashboard()">
+          Zum Dashboard zurück
+        </button>
+      </div>
+
+    </div><!-- /screen -->
+  </div><!-- /phone -->
+</div><!-- /phone-wrapper -->
+
+<script>
+  let currentOnboard = 0;
+
+  function goOnboard(index) {
+    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.getElementById('onboard' + index).classList.add('active');
+    document.querySelectorAll('.onboarding-dots .dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+    currentOnboard = index;
+  }
+
+  function goToDashboard() {
+    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('dashboardView').classList.add('active');
+    document.getElementById('lockScreen').classList.remove('active');
+    document.getElementById('mainScreen').scrollTop = 0;
+  }
+
+  function showStreakView() {
+    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('streakView').classList.add('active');
+    document.getElementById('lockScreen').classList.remove('active');
+    document.getElementById('mainScreen').scrollTop = 0;
+  }
+
+  function showLockScreen() {
+    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('lockScreen').classList.add('active');
+    document.getElementById('mainScreen').scrollTop = 0;
+  }
+
+  function toggleTask(el) {
+    const cb = el.querySelector('.checkbox');
+    const isChecked = cb.classList.contains('checked');
+    if (isChecked) {
+      cb.classList.remove('checked');
+      cb.textContent = '';
+    } else {
+      cb.classList.add('checked');
+      cb.textContent = '✓';
+    }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const tasks = document.querySelectorAll('.task-item .checkbox');
+    let done = 0, total = 0;
+    tasks.forEach(t => {
+      if (t.closest('.dashboard') || t.closest('.lock-screen')) {
+        total++;
+        if (t.classList.contains('checked')) done++;
+      }
+    });
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progressPercent').textContent = pct + '%';
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function buildCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    let html = '';
+    days.forEach(d => { html += '<div class="day-label">' + d + '</div>'; });
+    const startDay = 3;
+    const daysInMonth = 31;
+    const completed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+    const today = 19;
+    for (let i = 0; i < startDay; i++) { html += '<div class="day-cell empty"></div>'; }
+    for (let d = 1; d <= daysInMonth; d++) {
+      let cls = 'day-cell';
+      if (d < today && completed.includes(d)) cls += ' done';
+      if (completed.includes(d) && d >= today - 11) cls += ' streak';
+      if (d === today) cls += ' today';
+      if (d < today && !completed.includes(d)) cls += ' missed';
+      html += '<div class="' + cls + '">' + d + '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  buildCalendar();
+
+  document.querySelectorAll('.onboarding-dots .dot').forEach(dot => {
+    dot.addEventListener('click', function() { goOnboard(parseInt(this.dataset.slide)); });
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
