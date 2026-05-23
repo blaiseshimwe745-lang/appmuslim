@@ -592,23 +592,53 @@
     ============================== */
     .streak-view { padding: 56px 24px 0; min-height: 100%; }
 
-    .streak-view .back-header {
+    /* Profile & Settings */
+    .profile-view .streak-stats,
+    .settings-view .task-list { margin-left: 0; margin-right: 0; }
+
+    .settings-toggle {
+      position: relative; width: 44px; height: 24px; flex-shrink: 0;
+    }
+    .settings-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .settings-toggle .slider {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--cream-darker); border-radius: 24px;
+      transition: background 0.3s; cursor: pointer;
+    }
+    .settings-toggle .slider::before {
+      content: ''; position: absolute; width: 18px; height: 18px;
+      left: 3px; bottom: 3px; background: white;
+      border-radius: 50%; transition: transform 0.3s;
+    }
+    .settings-toggle input:checked + .slider {
+      background: var(--green-medium);
+    }
+    .settings-toggle input:checked + .slider::before {
+      transform: translateX(20px);
+    }
+
+    .back-header {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 10;
     }
-    .streak-view .back-header button {
+    .back-header button {
       background: none; border: none;
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 6px 12px;
       border-radius: 12px;
       transition: background 0.2s var(--ease-out);
       color: var(--text-dark);
+      line-height: 1;
+      -webkit-tap-highlight-color: transparent;
     }
-    .streak-view .back-header button:hover { background: var(--cream-dark); }
-    .streak-view .back-header h2 { font-size: 20px; font-weight: 650; letter-spacing: -0.2px; }
+    .back-header button:hover { background: var(--cream-dark); }
+    .back-header button:active { background: var(--cream-darker); }
+    .back-header h2 { font-size: 20px; font-weight: 650; letter-spacing: -0.2px; }
 
     .streak-mega { text-align: center; padding: 20px 0 16px; }
     .streak-mega .fire-big { font-size: 52px; display: block; margin-bottom: 4px; line-height: 1.2; }
@@ -883,15 +913,15 @@
           </div>
           <div class="streak-badge" onclick="showStreakView()">
             <span class="fire">🔥</span>
-            <span class="streak-number" id="streakNumber">12</span>
+            <span class="streak-number" id="streakNumber">0</span>
             <span class="streak-label">Tage Streak</span>
           </div>
           <div class="today-progress">
             <div class="label">
               <span>Heutiger Fortschritt</span>
-              <span id="progressPercent">40%</span>
+              <span id="progressPercent">0%</span>
             </div>
-            <div class="bar-bg"><div class="bar-fill" id="progressBar" style="width: 40%;"></div></div>
+            <div class="bar-bg"><div class="bar-fill" id="progressBar" style="width: 0%;"></div></div>
           </div>
         </div>
 
@@ -913,9 +943,14 @@
 
         <div class="task-list">
           <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox checked">✓</div>
+            <div class="checkbox"></div>
             <span class="task-emoji">🕋</span>
-            <div class="task-text"><h4>Fajr &amp; Dhuhr gebetet</h4><p>Erledigt ✅</p></div>
+            <div class="task-text"><h4>Fajr gebetet</h4><p>Noch offen ⏳</p></div>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <span class="task-emoji">🕋</span>
+            <div class="task-text"><h4>Dhuhr gebetet</h4><p>Noch offen ⏳</p></div>
           </div>
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
@@ -975,11 +1010,11 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             <span style="color: white;">Lock</span>
           </button>
-          <button class="nav-item" onclick="showStreakView()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <button class="nav-item" onclick="showProfileView()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Profil</span>
           </button>
-          <button class="nav-item">
+          <button class="nav-item" onclick="showSettingsView()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Einst.</span>
           </button>
@@ -995,15 +1030,15 @@
 
         <div class="streak-mega">
           <span class="fire-big">🔥</span>
-          <div class="streak-big-number" id="bigStreakNumber">12</div>
+          <div class="streak-big-number" id="bigStreakNumber">0</div>
           <div class="streak-big-label">Tage am Stück</div>
-          <div class="streak-message">🎉 Masha'Allah! 12 Tage Barakah!</div>
+          <div class="streak-message" id="streakMessage">Starte deine Reise – Tag 0! 🌟</div>
         </div>
 
         <div class="streak-stats">
-          <div class="stat-card"><div class="stat-number">45</div><div class="stat-label">Stunden gespart</div></div>
-          <div class="stat-card"><div class="stat-number">85%</div><div class="stat-label">Erfolgsquote</div></div>
-          <div class="stat-card"><div class="stat-number">#7</div><div class="stat-label">Rang weltweit</div></div>
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Stunden gespart</div></div>
+          <div class="stat-card"><div class="stat-number">0%</div><div class="stat-label">Erfolgsquote</div></div>
+          <div class="stat-card"><div class="stat-number">–</div><div class="stat-label">Rang weltweit</div></div>
         </div>
 
         <div class="section-title" style="padding: 0; margin-top: 20px;">
@@ -1016,27 +1051,142 @@
         </div>
 
         <div class="task-list streak-milestones">
-          <div class="task-item" style="cursor: default; background: #f5f0e0;">
+          <div class="task-item" style="cursor: default;">
             <span style="font-size: 22px;">🥉</span>
-            <div class="task-text"><h4>7 Tage Streak</h4><p>Geschafft! Alhamdulillah ✅</p></div>
-            <span style="background: var(--green-pastel); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--green-deep);">Erreicht</span>
+            <div class="task-text"><h4>7 Tage Streak</h4><p>Noch 7 Tage – fang heute an!</p></div>
+            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">0%</span>
           </div>
           <div class="task-item" style="cursor: default;">
             <span style="font-size: 22px;">🥈</span>
-            <div class="task-text"><h4>30 Tage Streak</h4><p>Noch 18 Tage – du schaffst das!</p></div>
-            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">40%</span>
+            <div class="task-text"><h4>30 Tage Streak</h4><p>Noch 30 Tage – du schaffst das!</p></div>
+            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">0%</span>
           </div>
           <div class="task-item" style="cursor: default;">
             <span style="font-size: 22px;">🥇</span>
-            <div class="task-text"><h4>100 Tage Streak</h4><p>Noch 88 Tage – bleib dran 💪</p></div>
-            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">12%</span>
+            <div class="task-text"><h4>100 Tage Streak</h4><p>Noch 100 Tage – bleib dran 💪</p></div>
+            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">0%</span>
           </div>
           <div class="task-item" style="cursor: default; background: var(--gold-pale);">
             <span style="font-size: 22px;">👑</span>
             <div class="task-text"><h4>1 Jahr Barakah</h4><p>365 Tage Iman – das ultimative Ziel</p></div>
-            <span style="background: var(--gold-light); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--gold-dark);">⭐</span>
+            <span style="background: var(--gold-light); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--gold-dark);">0%</span>
           </div>
         </div>
+      </div>
+
+      <!-- PROFILE VIEW -->
+      <div class="screen-section profile-view" id="profileView">
+        <div class="back-header">
+          <button onclick="goToDashboard()">←</button>
+          <h2>Mein Profil</h2>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; padding: 24px 0 16px;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 700; box-shadow: var(--shadow-md);">A</div>
+          <h3 style="margin-top: 12px; color: var(--text-dark); font-size: 20px;">Abdullah</h3>
+          <p style="color: var(--text-light); font-size: 13px; margin-top: 2px;">Seit heute dabei</p>
+          <div style="margin-top: 8px; background: var(--green-pastel); padding: 4px 16px; border-radius: 40px; font-size: 12px; color: var(--green-deep); font-weight: 500;">Berlin, Deutschland</div>
+        </div>
+
+        <div class="streak-stats" style="margin-top: 8px;">
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Tage Streak</div></div>
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Aufgaben erledigt</div></div>
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Gebete gebetet</div></div>
+        </div>
+
+        <div class="streak-stats" style="margin-top: 8px;">
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Qur'an Min.</div></div>
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Dhikr Sitzungen</div></div>
+          <div class="stat-card"><div class="stat-number">0h</div><div class="stat-label">Screen-Zeit gespart</div></div>
+        </div>
+
+        <div class="task-list" style="margin-top: 16px;">
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 20px;">🕌</span>
+            <div class="task-text"><h4>Gebetsmethode</h4><p>Muslim World League</p></div>
+          </div>
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 20px;">📖</span>
+            <div class="task-text"><h4>Qur'an Ziel</h4><p>5 Minuten pro Tag</p></div>
+          </div>
+          <div class="task-item" style="cursor: default;">
+            <span style="font-size: 20px;">📿</span>
+            <div class="task-text"><h4>Dhikr Ziel</h4><p>33 + 33 + 34 pro Tag</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS VIEW -->
+      <div class="screen-section settings-view" id="settingsView">
+        <div class="back-header">
+          <button onclick="goToDashboard()">←</button>
+          <h2>Einstellungen</h2>
+        </div>
+
+        <div class="task-list" style="margin-top: 8px;">
+          <div class="task-item" style="cursor: default; flex-direction: column; align-items: stretch;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <span style="font-size: 20px;">📍</span>
+              <h4 style="font-weight: 600; color: var(--text-dark);">Stadt</h4>
+            </div>
+            <input type="text" placeholder="z.B. Berlin" value="Berlin" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--cream-darker); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none;" onfocus="this.style.borderColor='var(--green-medium)'" onblur="this.style.borderColor='var(--cream-darker)'" />
+          </div>
+
+          <div class="task-item" style="cursor: default; flex-direction: column; align-items: stretch;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <span style="font-size: 20px;">🌍</span>
+              <h4 style="font-weight: 600; color: var(--text-dark);">Land</h4>
+            </div>
+            <input type="text" placeholder="z.B. Deutschland" value="Deutschland" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--cream-darker); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none;" onfocus="this.style.borderColor='var(--green-medium)'" onblur="this.style.borderColor='var(--cream-darker)'" />
+          </div>
+
+          <div class="task-item" style="cursor: default; flex-direction: column; align-items: stretch;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <span style="font-size: 20px;">📖</span>
+              <h4 style="font-weight: 600; color: var(--text-dark);">Qur'an Ziel (Minuten/Tag)</h4>
+            </div>
+            <input type="number" value="5" min="1" max="120" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--cream-darker); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none;" onfocus="this.style.borderColor='var(--green-medium)'" onblur="this.style.borderColor='var(--cream-darker)'" />
+          </div>
+        </div>
+
+        <div class="task-list" style="margin-top: 16px;">
+          <div class="task-item" style="cursor: pointer; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">🔔</span>
+              <div class="task-text"><h4>Gebets-Erinnerungen</h4><p>Push-Benachrichtigungen</p></div>
+            </div>
+            <label class="settings-toggle">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="task-item" style="cursor: pointer; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">🔥</span>
+              <div class="task-text"><h4>Streak-Erinnerung</h4><p>Abends vor Mitternacht</p></div>
+            </div>
+            <label class="settings-toggle">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="task-item" style="cursor: pointer; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">✈️</span>
+              <div class="task-text"><h4>Reise-/Krankheitsmodus</h4><p>Reduzierte Aufgaben</p></div>
+            </div>
+            <label class="settings-toggle">
+              <input type="checkbox" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-primary" style="margin: 20px auto; display: block; width: calc(100% - 32px);" onclick="goToDashboard()">
+          Speichern
+        </button>
       </div>
 
       <!-- LOCK SCREEN -->
@@ -1055,9 +1205,14 @@
         <div style="width: 100%; margin-top: 8px;">
           <div class="task-list" style="padding: 0;">
             <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
-              <div class="checkbox checked">✓</div>
+              <div class="checkbox"></div>
               <span class="task-emoji">🕋</span>
-              <div class="task-text"><h4>Fajr &amp; Dhuhr ✅</h4><p>Erledigt – BarakAllahu feek</p></div>
+              <div class="task-text"><h4>Fajr beten</h4><p>Noch offen – erst beten!</p></div>
+            </div>
+            <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
+              <div class="checkbox"></div>
+              <span class="task-emoji">🕋</span>
+              <div class="task-text"><h4>Dhuhr beten</h4><p>Noch offen</p></div>
             </div>
             <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
               <div class="checkbox"></div>
@@ -1068,7 +1223,7 @@
         </div>
 
         <p style="margin-top: 20px; font-size: 13px; color: var(--text-light);">
-          ⏱️ Noch <strong style="color: var(--green-deep);">3 Aufgaben</strong> übrig
+          ⏱️ Noch <strong style="color: var(--green-deep);"><span id="lockRemaining">6</span> Aufgaben</strong> übrig
         </p>
 
         <button class="btn-primary" style="background: linear-gradient(135deg, #c44, #a33); box-shadow: 0 4px 20px rgba(200,68,68,0.25);" onclick="goToDashboard()">
@@ -1098,6 +1253,7 @@
     document.getElementById('dashboardView').classList.add('active');
     document.getElementById('lockScreen').classList.remove('active');
     document.getElementById('mainScreen').scrollTop = 0;
+    updateNavActive('home');
   }
 
   function showStreakView() {
@@ -1106,6 +1262,35 @@
     document.getElementById('streakView').classList.add('active');
     document.getElementById('lockScreen').classList.remove('active');
     document.getElementById('mainScreen').scrollTop = 0;
+    updateNavActive('streak');
+  }
+
+  function showProfileView() {
+    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('profileView').classList.add('active');
+    document.getElementById('lockScreen').classList.remove('active');
+    document.getElementById('mainScreen').scrollTop = 0;
+    updateNavActive('profil');
+  }
+
+  function showSettingsView() {
+    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('settingsView').classList.add('active');
+    document.getElementById('lockScreen').classList.remove('active');
+    document.getElementById('mainScreen').scrollTop = 0;
+    updateNavActive('einst');
+  }
+
+  function updateNavActive(name) {
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.classList.remove('active');
+      const label = btn.querySelector('span');
+      if (label && label.textContent.toLowerCase().replace('.', '') === name) {
+        btn.classList.add('active');
+      }
+    });
   }
 
   function showLockScreen() {
@@ -1129,17 +1314,34 @@
   }
 
   function updateProgress() {
-    const tasks = document.querySelectorAll('.task-item .checkbox');
+    const dashTasks = document.querySelectorAll('#dashboardView .task-list .task-item .checkbox');
     let done = 0, total = 0;
-    tasks.forEach(t => {
-      if (t.closest('.dashboard') || t.closest('.lock-screen')) {
-        total++;
-        if (t.classList.contains('checked')) done++;
-      }
+    dashTasks.forEach(t => {
+      total++;
+      if (t.classList.contains('checked')) done++;
     });
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
     document.getElementById('progressPercent').textContent = pct + '%';
     document.getElementById('progressBar').style.width = pct + '%';
+
+    // Update lock screen remaining count
+    const remaining = total - done;
+    const lockRemaining = document.getElementById('lockRemaining');
+    if (lockRemaining) lockRemaining.textContent = remaining;
+
+    // If all done, change lock button to green
+    const lockBtn = document.querySelector('.lock-screen .btn-primary');
+    if (lockBtn) {
+      if (pct === 100) {
+        lockBtn.style.background = 'linear-gradient(135deg, var(--green-deep), var(--green-medium))';
+        lockBtn.style.boxShadow = '0 4px 20px rgba(13,90,90,0.25)';
+        lockBtn.innerHTML = 'Apps freigeschaltet! 🎉';
+      } else {
+        lockBtn.style.background = 'linear-gradient(135deg, #c44, #a33)';
+        lockBtn.style.boxShadow = '0 4px 20px rgba(200,68,68,0.25)';
+        lockBtn.innerHTML = 'Zum Dashboard zurück';
+      }
+    }
   }
 
   function buildCalendar() {
@@ -1149,8 +1351,8 @@
     days.forEach(d => { html += '<div class="day-label">' + d + '</div>'; });
     const startDay = 3;
     const daysInMonth = 31;
-    const completed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
-    const today = 19;
+    const completed = [];
+    const today = 1;
     for (let i = 0; i < startDay; i++) { html += '<div class="day-cell empty"></div>'; }
     for (let d = 1; d <= daysInMonth; d++) {
       let cls = 'day-cell';
