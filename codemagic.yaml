@@ -1,0 +1,65 @@
+workflows:
+  react-native-ios:
+    name: Barakah iOS Build
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    environment:
+      groups:
+        - firebase_credentials
+      node: 18
+      xcode: 15.2
+      cocoapods: default
+      vars:
+        BUNDLE_ID: "com.barakah.digitaldetox"
+        APP_STORE_APP_ID: "YOUR_APP_STORE_ID"
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
+
+      - name: Set up provisioning profiles
+        script: |
+          xcode-project use-profiles
+
+      - name: Build iOS app
+        script: |
+          npx expo prebuild --platform ios --clean
+          cd ios
+          xcodebuild -workspace BarakahApp.xcworkspace \
+            -scheme BarakahApp \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath $CM_BUILD_DIR/build/BarakahApp.xcarchive \
+            archive
+
+      - name: Export IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/BarakahApp.xcworkspace \
+            --scheme BarakahApp \
+            --archive-path $CM_BUILD_DIR/build/BarakahApp.xcarchive
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        expire_build_submitted_for_review: true
