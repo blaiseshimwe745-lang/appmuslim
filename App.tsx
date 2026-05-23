@@ -10,7 +10,7 @@ import { NotificationConsentScreen } from './src/screens/NotificationConsentScre
 import { PaywallScreen } from './src/screens/PaywallScreen';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import {
-  startFreeTrial,
+  initializePurchases,
   getSubscriptionStatus,
   SubscriptionStatus,
 } from './src/services/subscriptionService';
@@ -36,6 +36,9 @@ export default function App() {
         await Font.loadAsync({
           Inter: require('./assets/fonts/Inter.ttf'),
         }).catch(() => {});
+
+        // Initialize RevenueCat
+        await initializePurchases().catch(() => {});
 
         // Check what screen to show
         const hasSeenOnboarding = await AsyncStorage.getItem(ONBOARDING_KEY);
@@ -81,8 +84,6 @@ export default function App() {
   // Handle notification consent complete
   const handleNotificationConsentComplete = async () => {
     await AsyncStorage.setItem(NOTIFICATION_CONSENT_KEY, 'true');
-    // Start free trial
-    await startFreeTrial();
     const subStatus = await getSubscriptionStatus();
     setSubscriptionStatus(subStatus);
 
@@ -125,7 +126,6 @@ export default function App() {
 
       {currentScreen === 'paywall' && (
         <PaywallScreen
-          trialDaysLeft={subscriptionStatus?.trialDaysLeft ?? 0}
           onSubscribed={handleSubscribed}
           onClose={
             subscriptionStatus?.isTrial

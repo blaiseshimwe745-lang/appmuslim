@@ -1,126 +1,142 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Purchases, {
+  PurchasesPackage,
+  CustomerInfo,
+  LOG_LEVEL,
+} from 'react-native-purchases';
+import { Platform } from 'react-native';
 
-const TRIAL_START_KEY = 'trial_start_date';
-const SUBSCRIPTION_KEY = 'subscription_status';
-const TRIAL_DAYS = 3;
+// ============================================================
+// RevenueCat Configuration
+// ============================================================
+// 1. Create account at https://app.revenuecat.com
+// 2. Add your app (iOS) and paste the API key below
+// 3. In App Store Connect: create auto-renewable subscription
+//    - Product ID: barakah_monthly (4.99€/month, 3-day trial)
+//    - Product ID: barakah_yearly (19.90€/year, 3-day trial)
+// 4. In RevenueCat: create Entitlement "premium"
+//    - Attach both products to it
+//    - Create Offering "default" with both packages
+// ============================================================
+
+const REVENUECAT_API_KEY_IOS = 'YOUR_REVENUECAT_IOS_API_KEY';
+const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';
+
+const ENTITLEMENT_ID = 'premium';
 
 export interface SubscriptionStatus {
   isActive: boolean;
   isTrial: boolean;
-  trialDaysLeft: number;
-  plan: 'none' | 'trial' | 'monthly' | 'yearly';
+  willRenew: boolean;
   expiresAt: string | null;
+  productId: string | null;
 }
 
 /**
- * Start free trial (called after onboarding)
+ * Initialize RevenueCat SDK - call once at app startup
  */
-export async function startFreeTrial(): Promise<void> {
-  const existing = await AsyncStorage.getItem(TRIAL_START_KEY);
-  if (!existing) {
-    await AsyncStorage.setItem(TRIAL_START_KEY, new Date().toISOString());
-    await AsyncStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify({ plan: 'trial' }));
-  }
+export async function initializePurchases(userId?: string): Promise<void> {
+  const apiKey = Platform.OS === 'ios'
+    ? REVENUECAT_API_KEY_IOS
+    : REVENUECAT_API_KEY_ANDROID;
+
+  Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+  await Purchases.configure({ apiKey, appUserID: userId });
 }
 
 /**
- * Check current subscription status
+ * Check if user has active premium subscription or trial
  */
 export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
-  const subData = await AsyncStorage.getItem(SUBSCRIPTION_KEY);
+  try {
+    const customerInfo = await Purchases.getCustomerInfo();
+    const entitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
 
-  if (subData) {
-    const parsed = JSON.parse(subData);
-
-    // Paid subscription
-    if (parsed.plan === 'monthly' || parsed.plan === 'yearly') {
+    if (entitlement) {
       return {
         isActive: true,
-        isTrial: false,
-        trialDaysLeft: 0,
-        plan: parsed.plan,
-        expiresAt: parsed.expiresAt || null,
+        isTrial: entitlement.periodType === 'TRIAL',
+        willRenew: entitlement.willRenew,
+        expiresAt: entitlement.expirationDate,
+        productId: entitlement.productIdentifier,
       };
     }
-  }
 
-  // Check trial
-  const trialStart = await AsyncStorage.getItem(TRIAL_START_KEY);
-  if (!trialStart) {
     return {
       isActive: false,
       isTrial: false,
-      trialDaysLeft: 0,
-      plan: 'none',
+      willRenew: false,
       expiresAt: null,
+      productId: null,
     };
-  }
-
-  const start = new Date(trialStart);
-  const now = new Date();
-  const diffMs = now.getTime() - start.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  const daysLeft = Math.max(0, TRIAL_DAYS - diffDays);
-
-  if (daysLeft > 0) {
+  } catch (error) {
+    console.error('Error checking subscription:', error);
     return {
-      isActive: true,
-      isTrial: true,
-      trialDaysLeft: daysLeft,
-      plan: 'trial',
-      expiresAt: new Date(start.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000).toISOString(),
+      isActive: false,
+      isTrial: false,
+      willRenew: false,
+      expiresAt: null,
+      productId: null,
     };
   }
-
-  // Trial expired
-  return {
-    isActive: false,
-    isTrial: false,
-    trialDaysLeft: 0,
-    plan: 'none',
-    expiresAt: null,
-  };
 }
 
 /**
- * Activate paid subscription
- * In production: verify with Apple/Google receipt
+ * Get available subscription packages from RevenueCat
  */
-export async function activateSubscription(
-  plan: 'monthly' | 'yearly',
-  receiptData?: string
-): Promise<void> {
-  // TODO: In production, verify receipt with Apple App Store / Google Play
-  // For now, store locally. In real app, use RevenueCat or Expo IAP.
+export async function getOfferings(): Promise<{
+  monthly: PurchasesPackage | null;
+  yearly: PurchasesPackage | null;
+}> {
+  try {
+    const offerings = await Purchases.getOfferings();
+    const current = offerings.current;
 
-  const expiresAt = new Date();
-  if (plan === 'monthly') {
-    expiresAt.setMonth(expiresAt.getMonth() + 1);
-  } else {
-    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    if (!current) {
+      return { monthly: null, yearly: null };
+    }
+
+    return {
+      monthly: current.monthly,
+      yearly: current.annual,
+    };
+  } catch (error) {
+    console.error('Error getting offerings:', error);
+    return { monthly: null, yearly: null };
   }
-
-  await AsyncStorage.setItem(
-    SUBSCRIPTION_KEY,
-    JSON.stringify({
-      plan,
-      activatedAt: new Date().toISOString(),
-      expiresAt: expiresAt.toISOString(),
-      receiptData: receiptData || null,
-    })
-  );
 }
 
 /**
- * Restore purchases (for App Store compliance)
+ * Purchase a subscription package
+ * Apple handles the 3-day free trial automatically
+ * After trial: auto-charges 4.99€/month or 19.90€/year
+ */
+export async function purchasePackage(
+  pkg: PurchasesPackage
+): Promise<{ success: boolean; customerInfo?: CustomerInfo }> {
+  try {
+    const { customerInfo } = await Purchases.purchasePackage(pkg);
+    const isActive = !!customerInfo.entitlements.active[ENTITLEMENT_ID];
+
+    return { success: isActive, customerInfo };
+  } catch (error: any) {
+    if (error.userCancelled) {
+      // User cancelled - not an error
+      return { success: false };
+    }
+    console.error('Purchase error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Restore previous purchases (Apple requires this button)
  */
 export async function restorePurchases(): Promise<boolean> {
-  // TODO: In production, query Apple/Google for existing purchases
-  // For now, check local storage
-  const subData = await AsyncStorage.getItem(SUBSCRIPTION_KEY);
-  if (subData) {
-    const parsed = JSON.parse(subData);
-    return parsed.plan === 'monthly' || parsed.plan === 'yearly';
+  try {
+    const customerInfo = await Purchases.restorePurchases();
+    return !!customerInfo.entitlements.active[ENTITLEMENT_ID];
+  } catch (error) {
+    console.error('Restore error:', error);
+    return false;
   }
-  return false;
 }

@@ -161,7 +161,7 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
 
     const newPrayers = { ...dailyLog.prayers, [prayer]: !dailyLog.prayers[prayer] };
     const prayersDone = newPrayers.fajr && newPrayers.dhuhr && newPrayers.asr && newPrayers.maghrib && newPrayers.isha;
-    const allTasksDone = prayersDone && dailyLog.quranCompleted && dailyLog.dhikrCompleted && dailyLog.wuduComplete;
+    const allTasksDone = prayersDone && dailyLog.quranCompleted && dailyLog.dhikrCompleted;
 
     const updated: Partial<DailyLog> = { prayers: newPrayers, allTasksDone };
     set({
@@ -180,7 +180,7 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
 
     const quranCompleted = minutes >= user.dailyGoalQuranMinutes;
     const prayersDone = dailyLog.prayers.fajr && dailyLog.prayers.dhuhr && dailyLog.prayers.asr && dailyLog.prayers.maghrib && dailyLog.prayers.isha;
-    const allTasksDone = prayersDone && quranCompleted && dailyLog.dhikrCompleted && dailyLog.wuduComplete;
+    const allTasksDone = prayersDone && quranCompleted && dailyLog.dhikrCompleted;
 
     const updated: Partial<DailyLog> = { quranMinutes: minutes, quranCompleted, allTasksDone };
     set({
@@ -205,7 +205,7 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
       newDhikr.allahuakbar >= user.dailyGoalDhikrAllahuakbar;
 
     const prayersDone = dailyLog.prayers.fajr && dailyLog.prayers.dhuhr && dailyLog.prayers.asr && dailyLog.prayers.maghrib && dailyLog.prayers.isha;
-    const allTasksDone = prayersDone && dailyLog.quranCompleted && dhikrCompleted && dailyLog.wuduComplete;
+    const allTasksDone = prayersDone && dailyLog.quranCompleted && dhikrCompleted;
 
     const updated: Partial<DailyLog> = { dhikr: newDhikr, dhikrCompleted, allTasksDone };
     set({
@@ -224,17 +224,10 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     const wuduComplete = !dailyLog.wuduComplete;
-    const prayersDone = dailyLog.prayers.fajr && dailyLog.prayers.dhuhr && dailyLog.prayers.asr && dailyLog.prayers.maghrib && dailyLog.prayers.isha;
-    const allTasksDone = prayersDone && dailyLog.quranCompleted && dailyLog.dhikrCompleted && wuduComplete;
-
-    const updated: Partial<DailyLog> = { wuduComplete, allTasksDone };
-    set({
-      dailyLog: { ...dailyLog, ...updated },
-      isLocked: !allTasksDone,
-    });
+    const updated: Partial<DailyLog> = { wuduComplete };
+    set({ dailyLog: { ...dailyLog, ...updated } });
 
     await updateDailyLog(user.userId, todayDate, updated);
-    if (allTasksDone) get().unlockApps();
   },
 
   unlockApps: async () => {
