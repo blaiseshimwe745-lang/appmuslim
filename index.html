@@ -621,23 +621,25 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      padding-top: 60px;
       position: relative;
-      z-index: 10;
+      z-index: 60;
     }
     .back-header button {
-      background: none; border: none;
+      background: var(--cream-dark); border: none;
       font-size: 22px;
       cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 12px;
+      padding: 8px 14px;
+      border-radius: 14px;
       transition: background 0.2s var(--ease-out);
       color: var(--text-dark);
       line-height: 1;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
-    .back-header button:hover { background: var(--cream-dark); }
-    .back-header button:active { background: var(--cream-darker); }
+    .back-header button:hover { background: var(--cream-darker); }
+    .back-header button:active { background: var(--sand); transform: scale(0.95); }
     .back-header h2 { font-size: 20px; font-weight: 650; letter-spacing: -0.2px; }
 
     .streak-mega { text-align: center; padding: 20px 0 16px; }
