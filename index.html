@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Barakah – Digital Detox für Muslime</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -16,7 +16,6 @@
       --green-medium: #148080;
       --green-light: #2ab5b5;
       --green-pastel: #e0f7f7;
-      --green-pastel-2: #d0f0f0;
       --gold: #d4a843;
       --gold-dark: #b8922e;
       --gold-light: #f5e6b8;
@@ -29,17 +28,16 @@
       --text-dark: #1a2a2a;
       --text-medium: #4a5a5a;
       --text-light: #8a9a9a;
-      --text-muted: #b0baba;
       --white: #ffffff;
+      --red: #d44;
+      --red-bg: #fde8e8;
       --shadow-sm: 0 2px 8px rgba(13, 90, 90, 0.06);
       --shadow-md: 0 8px 32px rgba(13, 90, 90, 0.10);
-      --shadow-lg: 0 20px 60px rgba(13, 90, 90, 0.14);
       --radius-sm: 12px;
       --radius-md: 20px;
       --radius-lg: 28px;
-      --radius-xl: 36px;
-      --font-arabic: 'Amiri', 'Noto Naskh Arabic', serif;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-arabic: 'Amiri', serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -53,15 +51,13 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Phone Frame */
     .phone-wrapper {
       width: 100%; height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(145deg, #e8e0cc 0%, #d4cbb5 100%);
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(145deg, #e8e0cc, #d4cbb5);
       padding: 20px;
     }
-
     .phone {
       width: 393px; height: 852px;
       background: var(--cream);
@@ -70,730 +66,379 @@
       position: relative;
       box-shadow: 0 0 0 2px #b8ad97, 0 0 0 6px #1a1a1a, 0 0 0 8px #3a3a3a, 0 30px 80px rgba(0,0,0,0.4);
     }
-
     .dynamic-island {
-      position: absolute;
-      top: 12px; left: 50%;
+      position: absolute; top: 12px; left: 50%;
       transform: translateX(-50%);
       width: 110px; height: 32px;
-      background: #1a1a1a;
-      border-radius: 20px;
+      background: #1a1a1a; border-radius: 20px;
       z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
-
-    .dynamic-island .camera {
-      width: 8px; height: 8px;
-      background: #2a2a3a;
-      border-radius: 50%;
-      border: 1px solid #3a3a4a;
-    }
-
-    .dynamic-island .sensor {
-      width: 40px; height: 4px;
-      background: #2a2a3a;
-      border-radius: 4px;
-    }
+    .dynamic-island .camera { width: 8px; height: 8px; background: #2a2a3a; border-radius: 50%; border: 1px solid #3a3a4a; }
+    .dynamic-island .sensor { width: 40px; height: 4px; background: #2a2a3a; border-radius: 4px; }
 
     .screen {
       width: 100%; height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow-y: auto; overflow-x: hidden;
       position: relative;
-      scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
     .screen::-webkit-scrollbar { display: none; }
 
     /* Status Bar */
     .status-bar {
-      display: flex;
-      justify-content: space-between;
+      display: flex; justify-content: space-between;
       padding: 48px 28px 8px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 13px; font-weight: 600;
       color: var(--text-dark);
-      position: relative;
+      position: absolute; top: 0; left: 0; right: 0;
       z-index: 50;
     }
-    .status-bar .time { font-weight: 600; }
+    .status-bar svg { width: 16px; height: 16px; }
+    .status-icons { display: flex; gap: 4px; align-items: center; }
 
-    .screen-section {
-      min-height: 100%;
-      width: 100%;
-      padding: 0 24px;
-      display: none;
-      flex-direction: column;
+    /* Tabs */
+    .tab-view {
+      min-height: 100%; width: 100%;
+      display: none; flex-direction: column;
     }
-    .screen-section.active {
+    .tab-view.active {
       display: flex;
-      animation: fadeSlideIn 0.45s var(--ease-out);
+      animation: fadeIn 0.3s var(--ease-out);
     }
-    @keyframes fadeSlideIn {
-      0% { opacity: 0; transform: translateY(12px); }
-      100% { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ==============================
-       ONBOARDING
-    ============================== */
+    /* Onboarding */
     .onboarding-slide {
-      min-height: 100%;
-      display: none;
-      flex-direction: column;
-      padding: 120px 24px 40px;
-      position: relative;
+      min-height: 100%; display: none; flex-direction: column;
+      padding: 120px 24px 40px; position: relative;
     }
     .onboarding-slide.active { display: flex; }
-
     .onboarding-slide.active .illustration-inner { animation: floatIn 0.7s var(--ease-out) both; }
-    .onboarding-slide.active .arabic { animation: fadeUp 0.5s 0.15s var(--ease-out) both; }
-    .onboarding-slide.active h1 { animation: fadeUp 0.5s 0.25s var(--ease-out) both; }
-    .onboarding-slide.active .subtitle { animation: fadeUp 0.5s 0.35s var(--ease-out) both; }
+    .onboarding-slide.active h1 { animation: fadeUp 0.5s 0.2s var(--ease-out) both; }
+    .onboarding-slide.active .subtitle { animation: fadeUp 0.5s 0.3s var(--ease-out) both; }
     .onboarding-slide.active .feature-list .feature-item { animation: fadeUp 0.4s var(--ease-out) both; }
     .onboarding-slide.active .feature-list .feature-item:nth-child(1) { animation-delay: 0.4s; }
     .onboarding-slide.active .feature-list .feature-item:nth-child(2) { animation-delay: 0.5s; }
     .onboarding-slide.active .feature-list .feature-item:nth-child(3) { animation-delay: 0.6s; }
     .onboarding-slide.active .onboarding-footer { animation: fadeUp 0.5s 0.5s var(--ease-out) both; }
 
-    @keyframes floatIn {
-      0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(16px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes floatIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-    .onboarding-slide .illustration {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .onboarding-slide .illustration { flex: 1; display: flex; align-items: center; justify-content: center; }
     .onboarding-slide .illustration-inner {
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: var(--green-pastel);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 200px; height: 200px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
     }
 
     .mosque-icon { position: relative; width: 120px; height: 90px; }
     .mosque-icon .dome {
-      width: 80px; height: 50px;
-      background: var(--green-deep);
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      margin: 0 auto;
-      position: relative;
+      width: 80px; height: 50px; background: var(--green-deep);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin: 0 auto; position: relative;
     }
     .mosque-icon .dome::after {
-      content: '☪';
-      position: absolute;
-      top: -18px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 20px;
-      color: var(--gold);
-      animation: starSpin 6s linear infinite;
-    }
-    @keyframes starSpin {
-      0% { transform: translateX(-50%) rotate(0deg); }
-      100% { transform: translateX(-50%) rotate(360deg); }
+      content: '☪'; position: absolute; top: -18px; left: 50%;
+      transform: translateX(-50%); font-size: 20px; color: var(--gold);
     }
     .mosque-icon .base { width: 120px; height: 4px; background: var(--green-deep); border-radius: 2px; margin-top: 8px; }
     .mosque-icon .minaret-l, .mosque-icon .minaret-r {
-      position: absolute; bottom: 4px;
-      width: 6px; height: 40px;
-      background: var(--green-deep);
-      border-radius: 3px 3px 0 0;
+      position: absolute; bottom: 4px; width: 6px; height: 40px;
+      background: var(--green-deep); border-radius: 3px 3px 0 0;
     }
     .mosque-icon .minaret-l { left: 10px; }
     .mosque-icon .minaret-r { right: 10px; }
 
-    .onboarding-slide h1 {
-      font-size: 30px;
-      font-weight: 650;
-      color: var(--green-deep);
-      text-align: center;
-      line-height: 1.35;
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
-    }
-    .onboarding-slide h1 .gold {
-      background: var(--gold-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .onboarding-slide .arabic {
-      font-family: var(--font-arabic);
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--gold-dark);
-      text-align: center;
-      margin-bottom: 8px;
-      direction: rtl;
-      opacity: 0.8;
-    }
-
-    .onboarding-slide .subtitle {
-      font-size: 15px;
-      color: var(--text-medium);
-      text-align: center;
-      line-height: 1.7;
-      font-weight: 400;
-      max-width: 310px;
-      margin: 0 auto 8px;
-    }
+    .onboarding-slide h1 { font-size: 30px; font-weight: 650; color: var(--green-deep); text-align: center; line-height: 1.35; margin-bottom: 10px; }
+    .onboarding-slide h1 .gold { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .onboarding-slide .arabic { font-family: var(--font-arabic); font-size: 24px; font-weight: 600; color: var(--gold-dark); text-align: center; margin-bottom: 8px; direction: rtl; opacity: 0.8; }
+    .onboarding-slide .subtitle { font-size: 15px; color: var(--text-medium); text-align: center; line-height: 1.7; max-width: 310px; margin: 0 auto 8px; }
 
     .onboarding-slide .feature-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-    .onboarding-slide .feature-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
-      background: var(--white);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-sm);
-    }
-    .onboarding-slide .feature-item .icon-box {
-      width: 40px; height: 40px;
-      border-radius: 12px;
-      background: var(--green-pastel);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-    .onboarding-slide .feature-item .text h4 {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-    .onboarding-slide .feature-item .text p {
-      font-size: 12px;
-      color: var(--text-light);
-      margin-top: 2px;
-    }
+    .onboarding-slide .feature-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--white); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+    .onboarding-slide .feature-item .icon-box { width: 40px; height: 40px; border-radius: 12px; background: var(--green-pastel); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .onboarding-slide .feature-item .text h4 { font-size: 14px; font-weight: 600; }
+    .onboarding-slide .feature-item .text p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
 
     .onboarding-footer { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .onboarding-dots { display: flex; gap: 8px; }
-    .onboarding-dots .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--sand);
-      transition: all 0.4s var(--ease-out);
-      cursor: pointer;
-    }
-    .onboarding-dots .dot.active {
-      width: 26px;
-      border-radius: 6px;
-      background: var(--green-deep);
-    }
+    .onboarding-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sand); transition: all 0.4s var(--ease-out); cursor: pointer; }
+    .onboarding-dots .dot.active { width: 26px; border-radius: 6px; background: var(--green-deep); }
 
     /* Buttons */
     .btn-primary {
-      width: 100%;
-      padding: 18px;
+      width: 100%; padding: 18px;
       background: linear-gradient(135deg, var(--green-deep), var(--green-medium));
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s var(--ease-out);
+      color: white; border: none; border-radius: var(--radius-md);
+      font-size: 16px; font-weight: 600; cursor: pointer;
       box-shadow: 0 4px 20px rgba(13, 90, 90, 0.25);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.25s var(--ease-out);
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(13, 90, 90, 0.35); }
+    .btn-primary:hover { transform: translateY(-1px); }
     .btn-primary:active { transform: scale(0.98); }
-
-    .btn-skip {
-      background: none; border: none;
-      color: var(--text-light);
-      font-size: 14px;
-      cursor: pointer;
-      font-weight: 500;
-      padding: 8px;
-      transition: color 0.25s var(--ease-out);
-    }
-    .btn-skip:hover { color: var(--text-medium); }
+    .btn-skip { background: none; border: none; color: var(--text-light); font-size: 14px; cursor: pointer; padding: 8px; }
 
     /* ==============================
-       DASHBOARD
+       TAB 1: HEUTE
     ============================== */
-    .dashboard { padding: 0; }
+    #tabHeute { padding: 0; }
 
     .dash-header {
       padding: 56px 24px 24px;
-      background: linear-gradient(165deg, var(--green-deep) 0%, var(--green-darker) 100%);
+      background: linear-gradient(165deg, var(--green-deep), var(--green-darker));
       border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-
-    .dash-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      position: relative;
-      z-index: 2;
-    }
-    .dash-greeting h2 {
-      font-size: 21px;
-      font-weight: 650;
-      color: white;
-      letter-spacing: -0.2px;
-    }
-    .dash-greeting p {
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-      margin-top: 3px;
-      font-weight: 400;
-    }
-
+    .dash-top-row { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
+    .dash-greeting h2 { font-size: 21px; font-weight: 650; color: white; }
+    .dash-greeting p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 3px; }
     .dash-avatar {
-      width: 44px; height: 44px;
-      border-radius: 50%;
+      width: 44px; height: 44px; border-radius: 50%;
       background: var(--gold-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: white;
-      font-weight: 600;
-      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.35);
-      cursor: pointer;
-      transition: transform 0.25s var(--ease-out);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: white; font-weight: 600;
+      box-shadow: 0 4px 16px rgba(212,168,67,0.35);
+      cursor: pointer; transition: transform 0.25s var(--ease-out);
     }
     .dash-avatar:hover { transform: scale(1.08); }
 
-    /* Streak Badge */
     .streak-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,0.10);
-      backdrop-filter: blur(12px);
-      padding: 10px 18px 10px 16px;
-      border-radius: 40px;
-      margin-top: 16px;
-      position: relative;
-      z-index: 2;
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.10); backdrop-filter: blur(12px);
+      padding: 10px 18px 10px 16px; border-radius: 40px;
+      margin-top: 16px; position: relative; z-index: 2;
       border: 1px solid rgba(255,255,255,0.06);
-      cursor: pointer;
+      cursor: pointer; user-select: none;
       transition: background 0.25s var(--ease-out);
-      user-select: none;
     }
     .streak-badge:hover { background: rgba(255,255,255,0.16); }
-    .streak-badge:active { transform: scale(0.98); }
+    .streak-badge .fire { font-size: 22px; }
+    .streak-badge .streak-number { font-size: 26px; font-weight: 700; color: var(--gold-light); line-height: 1.2; }
+    .streak-badge .streak-label { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
 
-    .streak-badge .fire { font-size: 22px; display: inline-block; }
-    .streak-badge .streak-number {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--gold-light);
-      line-height: 1.2;
-    }
-    .streak-badge .streak-label {
-      font-size: 12px;
-      color: rgba(255,255,255,0.7);
-      font-weight: 500;
-    }
-
-    /* Progress */
     .today-progress { margin-top: 16px; position: relative; z-index: 2; }
-    .today-progress .label {
-      display: flex;
-      justify-content: space-between;
-      color: rgba(255,255,255,0.65);
-      font-size: 13px;
-      font-weight: 500;
-    }
-    .today-progress .bar-bg {
-      margin-top: 8px;
-      height: 4px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .today-progress .bar-fill {
-      height: 100%;
-      background: var(--gold-gradient);
-      border-radius: 4px;
-      width: 0%;
-      transition: width 0.6s var(--ease-out);
-    }
+    .today-progress .label { display: flex; justify-content: space-between; color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500; }
+    .today-progress .bar-bg { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden; }
+    .today-progress .bar-fill { height: 100%; background: var(--gold-gradient); border-radius: 4px; width: 0%; transition: width 0.6s var(--ease-out); }
 
-    /* Next Prayer */
+    /* Prayer Card */
     .next-prayer-card {
-      margin: 16px 24px 12px;
-      background: white;
-      border-radius: var(--radius-md);
-      padding: 18px 20px;
+      margin: 16px 24px 12px; background: white;
+      border-radius: var(--radius-md); padding: 18px 20px;
       box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: box-shadow 0.25s var(--ease-out);
-      position: relative;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
     }
-    .next-prayer-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--gold-gradient);
-      border-radius: 0 3px 3px 0;
-    }
-    .next-prayer-card:hover { box-shadow: var(--shadow-md); }
-
-    .next-prayer-card .prayer-info { display: flex; align-items: center; gap: 12px; }
-    .next-prayer-card .prayer-icon {
-      width: 44px; height: 44px;
-      border-radius: 14px;
-      background: var(--green-pastel);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-    .next-prayer-card .prayer-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
-    .next-prayer-card .prayer-time { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-    .next-prayer-card .prayer-countdown {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--green-medium);
-      background: var(--green-pastel);
-      padding: 6px 14px;
-      border-radius: 40px;
-    }
+    .next-prayer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold-gradient); }
+    .prayer-info { display: flex; align-items: center; gap: 12px; }
+    .prayer-icon { width: 44px; height: 44px; border-radius: 14px; background: var(--green-pastel); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .prayer-name { font-size: 14px; font-weight: 600; }
+    .prayer-time { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .prayer-countdown { font-size: 14px; font-weight: 600; color: var(--green-medium); background: var(--green-pastel); padding: 6px 14px; border-radius: 40px; }
 
     /* Section Titles */
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 24px;
-      margin-top: 24px;
-      margin-bottom: 12px;
-    }
-    .section-title h3 {
-      font-size: 16px;
-      font-weight: 650;
-      color: var(--text-dark);
-      letter-spacing: -0.2px;
-    }
-    .section-title .see-all {
-      font-size: 13px;
-      color: var(--green-medium);
-      font-weight: 500;
-      cursor: pointer;
-      transition: color 0.25s var(--ease-out);
-    }
-    .section-title .see-all:hover { color: var(--green-deep); }
+    .section-title { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; margin-top: 24px; margin-bottom: 12px; }
+    .section-title h3 { font-size: 16px; font-weight: 650; letter-spacing: -0.2px; }
 
-    /* Task List */
+    /* Task Items */
     .task-list { padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
     .task-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      background: white;
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px; background: white;
+      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
       transition: all 0.2s var(--ease-out);
-      cursor: pointer;
-      user-select: none;
+      cursor: pointer; user-select: none;
     }
-    .task-item:hover { box-shadow: var(--shadow-md); }
     .task-item:active { transform: scale(0.98); }
-
     .task-item .checkbox {
-      width: 22px; height: 22px;
-      border-radius: 7px;
+      width: 24px; height: 24px; border-radius: 8px;
       border: 2px solid var(--sand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s var(--ease-out);
-      font-size: 12px;
-      color: white;
-      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.25s var(--ease-spring);
+      font-size: 13px; color: white; font-weight: 600;
     }
-    .task-item .checkbox.checked {
-      background: var(--green-deep);
-      border-color: var(--green-deep);
-    }
+    .task-item .checkbox.checked { background: var(--green-deep); border-color: var(--green-deep); transform: scale(1.1); }
     .task-item .task-text { flex: 1; }
-    .task-item .task-text h4 { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+    .task-item .task-text h4 { font-size: 14px; font-weight: 600; }
     .task-item .task-text p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-    .task-item .task-emoji { font-size: 18px; flex-shrink: 0; }
-
-    /* Bottom Nav */
-    .bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 8px 12px 24px;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(208, 208, 200, 0.3);
-      position: sticky;
-      bottom: 0;
-      z-index: 50;
-      margin-top: 20px;
-    }
-    .bottom-nav .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      padding: 8px 14px;
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.2s var(--ease-out);
-      background: transparent;
-      border: none;
-      font-family: var(--font-sans);
-    }
-    .bottom-nav .nav-item svg { width: 22px; height: 22px; color: var(--text-light); transition: color 0.2s var(--ease-out); }
-    .bottom-nav .nav-item span { font-size: 10px; color: var(--text-light); font-weight: 500; transition: color 0.2s var(--ease-out); }
-    .bottom-nav .nav-item:active { transform: scale(0.92); }
-    .bottom-nav .nav-item.active svg { color: var(--green-deep); }
-    .bottom-nav .nav-item.active span { color: var(--green-deep); font-weight: 600; }
-
-    .bottom-nav .nav-item.center {
-      background: var(--green-deep);
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      margin-top: -24px;
-      box-shadow: 0 4px 20px rgba(13, 90, 90, 0.3);
-      transition: transform 0.2s var(--ease-out);
-    }
-    .bottom-nav .nav-item.center:hover { transform: translateY(-2px) scale(1.03); }
-    .bottom-nav .nav-item.center:active { transform: scale(0.92); }
-    .bottom-nav .nav-item.center svg { color: white; width: 24px; height: 24px; }
+    .task-item .task-emoji { font-size: 20px; flex-shrink: 0; }
+    .task-item.done { opacity: 0.5; }
+    .task-item.done .task-text h4 { text-decoration: line-through; }
 
     /* ==============================
-       STREAK VIEW
+       TAB 2: APPS
     ============================== */
-    .streak-view { padding: 56px 24px 0; min-height: 100%; }
+    #tabApps { padding: 0; }
 
-    /* Profile & Settings */
-    .profile-view .streak-stats,
-    .settings-view .task-list { margin-left: 0; margin-right: 0; }
-
-    .settings-toggle {
-      position: relative; width: 44px; height: 24px; flex-shrink: 0;
+    .apps-header {
+      padding: 60px 24px 28px;
+      background: linear-gradient(165deg, #3a1a1a, #5a2a2a);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      text-align: center; position: relative; z-index: 2;
     }
-    .settings-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-    .settings-toggle .slider {
+    .apps-header .lock-big { font-size: 48px; margin-bottom: 8px; }
+    .apps-header h2 { font-size: 22px; font-weight: 700; color: white; }
+    .apps-header p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .apps-header .apps-progress {
+      margin-top: 16px; background: rgba(255,255,255,0.1);
+      border-radius: 40px; padding: 10px 20px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; color: white; font-weight: 500;
+    }
+    .apps-header .apps-progress .count { font-weight: 700; color: #ff8a8a; }
+    .apps-header.unlocked { background: linear-gradient(165deg, var(--green-deep), var(--green-darker)); }
+    .apps-header.unlocked .apps-progress .count { color: #8fefb0; }
+
+    .app-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px; background: white;
+      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
+      transition: all 0.2s var(--ease-out);
+    }
+    .app-card .app-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
+    }
+    .app-card .app-icon.locked { background: var(--red-bg); }
+    .app-card .app-icon.free { background: var(--green-pastel); }
+    .app-card .app-info { flex: 1; }
+    .app-card .app-info h4 { font-size: 15px; font-weight: 600; }
+    .app-card .app-info p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .app-card .app-status { font-size: 20px; }
+
+    /* ==============================
+       TAB 3: ICH
+    ============================== */
+    #tabIch { padding: 60px 24px 120px; }
+
+    .profile-card {
+      text-align: center; padding: 24px 0 16px;
+    }
+    .profile-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-deep), var(--green-medium));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; color: white; font-weight: 700;
+      margin: 0 auto; box-shadow: var(--shadow-md);
+    }
+    .profile-card h3 { margin-top: 12px; font-size: 20px; font-weight: 700; }
+    .profile-card .location { margin-top: 6px; background: var(--green-pastel); padding: 4px 16px; border-radius: 40px; font-size: 12px; color: var(--green-deep); font-weight: 500; display: inline-block; }
+
+    .streak-mega { text-align: center; padding: 20px 0 8px; }
+    .streak-mega .fire-big { font-size: 48px; display: block; margin-bottom: 4px; }
+    .streak-mega .streak-big-number { font-size: 48px; font-weight: 700; color: var(--green-deep); line-height: 1.2; }
+    .streak-mega .streak-big-label { font-size: 14px; color: var(--text-medium); margin-top: 4px; }
+    .streak-mega .streak-msg {
+      background: var(--green-pastel); color: var(--green-deep);
+      padding: 6px 16px; border-radius: 40px;
+      display: inline-block; font-size: 12px; font-weight: 500; margin-top: 10px;
+    }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
+    .stat-card { background: white; border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; box-shadow: var(--shadow-sm); }
+    .stat-card .stat-number { font-size: 20px; font-weight: 700; color: var(--green-deep); }
+    .stat-card .stat-label { font-size: 11px; color: var(--text-light); margin-top: 3px; font-weight: 500; }
+
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 14px; }
+    .calendar-grid .day-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--text-light); padding: 6px 0; }
+    .calendar-grid .day-cell {
+      aspect-ratio: 1; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 500; background: var(--cream-dark); color: var(--text-medium);
+    }
+    .calendar-grid .day-cell.done { background: var(--green-deep); color: white; font-weight: 600; }
+    .calendar-grid .day-cell.today { border: 2px solid var(--gold); }
+    .calendar-grid .day-cell.missed { background: var(--red-bg); color: var(--red); }
+    .calendar-grid .day-cell.empty { background: transparent; }
+
+    /* Settings in ICH tab */
+    .settings-section { margin-top: 24px; }
+    .settings-section h3 { font-size: 16px; font-weight: 650; margin-bottom: 12px; }
+    .setting-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; background: white;
+      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
+      margin-bottom: 10px;
+    }
+    .setting-item .setting-left { display: flex; align-items: center; gap: 12px; }
+    .setting-item .setting-left .setting-icon { font-size: 20px; }
+    .setting-item .setting-left .setting-text h4 { font-size: 14px; font-weight: 600; }
+    .setting-item .setting-left .setting-text p { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle .slider {
       position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: var(--cream-darker); border-radius: 24px;
       transition: background 0.3s; cursor: pointer;
     }
-    .settings-toggle .slider::before {
+    .toggle .slider::before {
       content: ''; position: absolute; width: 18px; height: 18px;
       left: 3px; bottom: 3px; background: white;
       border-radius: 50%; transition: transform 0.3s;
     }
-    .settings-toggle input:checked + .slider {
-      background: var(--green-medium);
-    }
-    .settings-toggle input:checked + .slider::before {
-      transform: translateX(20px);
-    }
+    .toggle input:checked + .slider { background: var(--green-medium); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
 
-    .back-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-top: 60px;
-      position: relative;
-      z-index: 60;
+    .setting-input {
+      width: 120px; padding: 8px 12px; border: 1.5px solid var(--cream-darker);
+      border-radius: 10px; font-size: 14px; font-family: var(--font-sans);
+      background: var(--cream); color: var(--text-dark); outline: none;
+      text-align: right; transition: border-color 0.2s;
     }
-    .back-header button {
-      background: var(--cream-dark); border: none;
-      font-size: 22px;
-      cursor: pointer;
-      padding: 8px 14px;
-      border-radius: 14px;
-      transition: background 0.2s var(--ease-out);
-      color: var(--text-dark);
-      line-height: 1;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-    .back-header button:hover { background: var(--cream-darker); }
-    .back-header button:active { background: var(--sand); transform: scale(0.95); }
-    .back-header h2 { font-size: 20px; font-weight: 650; letter-spacing: -0.2px; }
+    .setting-input:focus { border-color: var(--green-medium); }
 
-    .streak-mega { text-align: center; padding: 20px 0 16px; }
-    .streak-mega .fire-big { font-size: 52px; display: block; margin-bottom: 4px; line-height: 1.2; }
-    .streak-mega .streak-big-number {
-      font-size: 52px;
-      font-weight: 700;
-      color: var(--green-deep);
-      line-height: 1.2;
-      letter-spacing: -2px;
+    /* Milestones */
+    .milestone-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; background: white;
+      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
+      margin-bottom: 10px;
     }
-    .streak-mega .streak-big-label {
-      font-size: 15px;
-      color: var(--text-medium);
-      font-weight: 450;
-      margin-top: 4px;
+    .milestone-item .m-icon { font-size: 22px; }
+    .milestone-item .m-text { flex: 1; }
+    .milestone-item .m-text h4 { font-size: 14px; font-weight: 600; }
+    .milestone-item .m-text p { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+    .milestone-item .m-badge {
+      padding: 4px 14px; border-radius: 40px;
+      font-size: 12px; font-weight: 500;
+      background: var(--cream-dark); color: var(--text-medium);
     }
-    .streak-mega .streak-message {
-      background: var(--green-pastel);
-      color: var(--green-deep);
-      padding: 8px 20px;
-      border-radius: 40px;
-      display: inline-block;
-      font-size: 13px;
-      font-weight: 500;
-      margin-top: 12px;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
-      margin-top: 14px;
-    }
-    .calendar-grid .day-label {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-light);
-      padding: 6px 0;
-      text-transform: uppercase;
-    }
-    .calendar-grid .day-cell {
-      aspect-ratio: 1;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 500;
-      background: var(--cream-dark);
-      color: var(--text-medium);
-      position: relative;
-      transition: transform 0.2s var(--ease-out);
-    }
-    .calendar-grid .day-cell:not(.empty):hover { transform: scale(1.06); }
-    .calendar-grid .day-cell.done { background: var(--green-deep); color: white; font-weight: 600; }
-    .calendar-grid .day-cell.streak { background: linear-gradient(145deg, var(--green-deep), var(--green-light)); color: white; font-weight: 600; box-shadow: 0 2px 10px rgba(13, 90, 90, 0.15); }
-    .calendar-grid .day-cell.streak::after {
-      content: '🔥';
-      font-size: 8px;
-      position: absolute;
-      top: -2px; right: -2px;
-    }
-    .calendar-grid .day-cell.today {
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.1);
-    }
-    .calendar-grid .day-cell.missed { background: #fde8e8; color: #d44; }
-    .calendar-grid .day-cell.empty { background: transparent; }
-
-    /* Stats */
-    .streak-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .streak-stats .stat-card {
-      background: white;
-      border-radius: var(--radius-sm);
-      padding: 16px 12px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-    }
-    .streak-stats .stat-card .stat-number {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--green-deep);
-      letter-spacing: -0.3px;
-    }
-    .streak-stats .stat-card .stat-label {
-      font-size: 11px;
-      color: var(--text-light);
-      margin-top: 4px;
-      font-weight: 500;
-    }
-
-    .streak-milestones { margin-bottom: 100px; }
 
     /* ==============================
-       LOCK SCREEN
+       BOTTOM NAV - 3 TABS
     ============================== */
-    .lock-screen {
-      min-height: 100%;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-      text-align: center;
+    .bottom-nav {
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 10px 16px 28px;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(208,208,200,0.3);
+      position: sticky; bottom: 0; z-index: 50;
+      margin-top: auto;
     }
-    .lock-screen.active { display: flex; }
+    .nav-tab {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 8px 20px; border-radius: 16px;
+      cursor: pointer; background: transparent; border: none;
+      font-family: var(--font-sans); transition: all 0.2s var(--ease-out);
+    }
+    .nav-tab svg { width: 24px; height: 24px; color: var(--text-light); transition: color 0.2s; }
+    .nav-tab span { font-size: 11px; color: var(--text-light); font-weight: 500; transition: color 0.2s; }
+    .nav-tab:active { transform: scale(0.92); }
+    .nav-tab.active svg { color: var(--green-deep); }
+    .nav-tab.active span { color: var(--green-deep); font-weight: 600; }
 
-    .lock-screen .lock-icon {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fde8e8, #f8d7d7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      margin-bottom: 20px;
+    /* Confetti */
+    .confetti-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; z-index: 200;
+      display: none;
     }
-    .lock-screen h2 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
-    }
-    .lock-screen > p {
-      font-size: 14px;
-      color: var(--text-medium);
-      line-height: 1.7;
-      max-width: 280px;
-    }
-    .lock-screen .locked-apps { display: flex; gap: 16px; margin: 24px 0; }
-    .lock-screen .locked-app {
-      width: 56px; height: 56px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      background: var(--cream-dark);
-      position: relative;
-    }
-    .lock-screen .locked-app::after {
-      content: '🔒';
-      font-size: 12px;
-      position: absolute;
-      top: -4px; right: -4px;
-    }
+    .confetti-overlay.show { display: block; }
   </style>
 </head>
 <body>
@@ -807,90 +452,88 @@
     <div class="screen" id="mainScreen">
 
       <!-- Status Bar -->
-      <div class="status-bar" style="position: absolute; top: 0; left: 0; right: 0;">
-        <span class="time">9:41</span>
+      <div class="status-bar">
+        <span>9:41</span>
         <div class="status-icons">
           <svg viewBox="0 0 24 24" fill="currentColor" opacity="0.7"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
           <svg viewBox="0 0 24 24" fill="currentColor" opacity="0.7"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
         </div>
       </div>
 
-      <!-- ONBOARDING 0 -->
+      <!-- ==================== ONBOARDING ==================== -->
       <div class="onboarding-slide active" id="onboard0">
         <div class="illustration">
           <div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);">
             <div class="mosque-icon"><div class="dome"></div><div class="base"></div><div class="minaret-l"></div><div class="minaret-r"></div></div>
           </div>
         </div>
-        <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <div class="arabic">&#1576;&#1616;&#1587;&#1618;&#1605;&#1616; &#1575;&#1604;&#1604;&#1617;&#1614;&#1607;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1618;&#1605;&#1614;&#1606;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1616;&#1610;&#1605;&#1616;</div>
         <h1>Willkommen bei<br><span class="gold">Barakah</span></h1>
-        <p class="subtitle">Dein digitaler Begleiter für eine gesegnete Bildschirmzeit. Gewinne die Kontrolle zurück – eine gute Tat nach der anderen.</p>
+        <p class="subtitle">Dein digitaler Begleiter. Erst beten, dann Social Media. Eine gute Tat nach der anderen.</p>
         <div class="onboarding-footer">
           <div class="onboarding-dots">
             <div class="dot active" data-slide="0"></div>
-            <div class="dot" data-slide="1"></div>
-            <div class="dot" data-slide="2"></div>
+            <div class="dot" data-slide="1" onclick="goOnboard(1)"></div>
+            <div class="dot" data-slide="2" onclick="goOnboard(2)"></div>
           </div>
-          <button class="btn-primary" onclick="goOnboard(1)">Los geht's →</button>
-          <button class="btn-skip" onclick="goToDashboard()">Überspringen</button>
+          <button class="btn-primary" onclick="goOnboard(1)">Los geht's &rarr;</button>
+          <button class="btn-skip" onclick="startApp()">Uberspringen</button>
         </div>
       </div>
 
-      <!-- ONBOARDING 1 -->
       <div class="onboarding-slide" id="onboard1">
         <div class="illustration">
           <div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #d4e8f7, #e4f0f7);">
-            <span style="font-size: 72px;">🕌</span>
+            <span style="font-size: 72px;">&#x1F54C;</span>
           </div>
         </div>
         <h1>Gebet &amp; Qur'an<br><span class="gold">zuerst</span></h1>
-        <p class="subtitle">Social Media ist erst frei, wenn du deine täglichen Ibadaat erledigt hast. Dein Iman dankt es dir.</p>
+        <p class="subtitle">Social Media ist erst frei, wenn du deine Ibadaat erledigt hast.</p>
         <div class="feature-list">
           <div class="feature-item">
-            <div class="icon-box">🕋</div>
-            <div class="text"><h4>Gebets-Tracker</h4><p>Fajr, Dhuhr, Asr, Maghrib &amp; Isha – alles im Blick</p></div>
+            <div class="icon-box">&#x1F54B;</div>
+            <div class="text"><h4>5 Gebete tracken</h4><p>Fajr bis Isha - alles im Blick</p></div>
           </div>
           <div class="feature-item">
-            <div class="icon-box">📖</div>
-            <div class="text"><h4>Qur'an lesen</h4><p>Mindestens 5 Minuten Rezitation vor der Freischaltung</p></div>
+            <div class="icon-box">&#x1F4D6;</div>
+            <div class="text"><h4>Qur'an lesen</h4><p>Mindestens 5 Min. Rezitation</p></div>
           </div>
           <div class="feature-item">
-            <div class="icon-box">📿</div>
-            <div class="text"><h4>Dhikr</h4><p>33× Subhanallah · 33× Alhamdulillah · 34× Allahu Akbar</p></div>
+            <div class="icon-box">&#x1F4FF;</div>
+            <div class="text"><h4>Dhikr machen</h4><p>33x Subhanallah, 33x Alhamdulillah, 34x Allahu Akbar</p></div>
           </div>
         </div>
         <div class="onboarding-footer">
           <div class="onboarding-dots">
             <div class="dot" data-slide="0" onclick="goOnboard(0)"></div>
             <div class="dot active" data-slide="1"></div>
-            <div class="dot" data-slide="2"></div>
+            <div class="dot" data-slide="2" onclick="goOnboard(2)"></div>
           </div>
-          <button class="btn-primary" onclick="goOnboard(2)">Weiter →</button>
-          <button class="btn-skip" onclick="goToDashboard()">Überspringen</button>
+          <button class="btn-primary" onclick="goOnboard(2)">Weiter &rarr;</button>
+          <button class="btn-skip" onclick="startApp()">Uberspringen</button>
         </div>
       </div>
 
-      <!-- ONBOARDING 2 -->
       <div class="onboarding-slide" id="onboard2">
         <div class="illustration">
           <div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);">
-            <span style="font-size: 72px;">🔥</span>
+            <span style="font-size: 72px;">&#x1F525;</span>
           </div>
         </div>
-        <h1>Dein <span class="gold">Streak</span> zählt</h1>
-        <p class="subtitle">Jeder Tag, an dem du deine Aufgaben erledigst, verlängert deine Serie. Unterbrich den Teufelskreis – werde stärker!</p>
+        <h1>Dein <span class="gold">Streak</span> zahlt</h1>
+        <p class="subtitle">Jeden Tag alle Aufgaben erledigen = Streak verlangern. Apps werden erst freigeschaltet, wenn alles erledigt ist!</p>
         <div class="feature-list">
           <div class="feature-item">
-            <div class="icon-box">🔥</div>
-            <div class="text"><h4>Täglicher Streak</h4><p>Bleib dran – je länger die Serie, desto mehr Barakah</p></div>
+            <div class="icon-box">&#x1F525;</div>
+            <div class="text"><h4>Taglicher Streak</h4><p>Je langer die Serie, desto mehr Barakah</p></div>
           </div>
           <div class="feature-item">
-            <div class="icon-box">🏆</div>
-            <div class="text"><h4>Meilensteine</h4><p>7, 30, 100 Tage – jede Serie wird belohnt</p></div>
+            <div class="icon-box">&#x1F512;</div>
+            <div class="text"><h4>App-Sperre</h4><p>Instagram, TikTok & Co. erst nach Ibadaat</p></div>
           </div>
           <div class="feature-item">
-            <div class="icon-box">📊</div>
-            <div class="text"><h4>Statistiken</h4><p>Sieh deinen Fortschritt und wie viel Zeit du zurückgewonnen hast</p></div>
+            <div class="icon-box">&#x1F3C6;</div>
+            <div class="text"><h4>Meilensteine</h4><p>7, 30, 100 Tage - jede Serie wird belohnt</p></div>
           </div>
         </div>
         <div class="onboarding-footer">
@@ -899,22 +542,22 @@
             <div class="dot" data-slide="1" onclick="goOnboard(1)"></div>
             <div class="dot active" data-slide="2"></div>
           </div>
-          <button class="btn-primary" onclick="goToDashboard()">App starten 🚀</button>
+          <button class="btn-primary" onclick="startApp()">App starten &#x1F680;</button>
         </div>
       </div>
 
-      <!-- DASHBOARD -->
-      <div class="screen-section dashboard" id="dashboardView">
+      <!-- ==================== TAB 1: HEUTE ==================== -->
+      <div class="tab-view" id="tabHeute">
         <div class="dash-header">
           <div class="dash-top-row">
             <div class="dash-greeting">
-              <h2>Assalamu Alaikum,</h2>
-              <p>Heute ist ein gesegneter Tag ☀️</p>
+              <h2>Assalamu Alaikum</h2>
+              <p>Heute ist ein gesegneter Tag</p>
             </div>
-            <div class="dash-avatar">A</div>
+            <div class="dash-avatar" onclick="switchTab('ich')">A</div>
           </div>
-          <div class="streak-badge" onclick="showStreakView()">
-            <span class="fire">🔥</span>
+          <div class="streak-badge" onclick="switchTab('ich')">
+            <span class="fire">&#x1F525;</span>
             <span class="streak-number" id="streakNumber">0</span>
             <span class="streak-label">Tage Streak</span>
           </div>
@@ -929,10 +572,10 @@
 
         <div class="next-prayer-card">
           <div class="prayer-info">
-            <div class="prayer-icon">🕌</div>
+            <div class="prayer-icon">&#x1F54C;</div>
             <div>
-              <div class="prayer-name">Nächstes Gebet: Asr</div>
-              <div class="prayer-time">16:42 Uhr · 23 Min verbleibend</div>
+              <div class="prayer-name">Nachstes Gebet: Asr</div>
+              <div class="prayer-time">16:42 Uhr</div>
             </div>
           </div>
           <div class="prayer-countdown">16:42</div>
@@ -940,297 +583,240 @@
 
         <div class="section-title">
           <h3>Heutige Aufgaben</h3>
-          <span class="see-all" onclick="showStreakView()">Alle anzeigen</span>
         </div>
 
-        <div class="task-list">
+        <div class="task-list" id="taskList">
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
-            <span class="task-emoji">🕋</span>
-            <div class="task-text"><h4>Fajr gebetet</h4><p>Noch offen ⏳</p></div>
+            <span class="task-emoji">&#x1F54B;</span>
+            <div class="task-text"><h4>Fajr gebetet</h4><p>Morgengebet</p></div>
           </div>
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
-            <span class="task-emoji">🕋</span>
-            <div class="task-text"><h4>Dhuhr gebetet</h4><p>Noch offen ⏳</p></div>
+            <span class="task-emoji">&#x1F54B;</span>
+            <div class="task-text"><h4>Dhuhr gebetet</h4><p>Mittagsgebet</p></div>
           </div>
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
-            <span class="task-emoji">🕋</span>
-            <div class="task-text"><h4>Asr gebetet</h4><p>Noch offen ⏳</p></div>
+            <span class="task-emoji">&#x1F54B;</span>
+            <div class="task-text"><h4>Asr gebetet</h4><p>Nachmittagsgebet</p></div>
           </div>
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
-            <span class="task-emoji">📖</span>
-            <div class="task-text"><h4>Qur'an lesen (5 Min)</h4><p>Surah Al-Kahf · Noch offen</p></div>
+            <span class="task-emoji">&#x1F54B;</span>
+            <div class="task-text"><h4>Maghrib gebetet</h4><p>Abendgebet</p></div>
           </div>
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
-            <span class="task-emoji">📿</span>
-            <div class="task-text"><h4>Dhikr (33+33+34)</h4><p>Subhanallah · Alhamdulillah · Allahu Akbar</p></div>
+            <span class="task-emoji">&#x1F54B;</span>
+            <div class="task-text"><h4>Isha gebetet</h4><p>Nachtgebet</p></div>
           </div>
           <div class="task-item" onclick="toggleTask(this)">
             <div class="checkbox"></div>
-            <span class="task-emoji">💧</span>
-            <div class="task-text"><h4>Wudu &amp; Abendgebet</h4><p>Maghrib steht bald an</p></div>
+            <span class="task-emoji">&#x1F4D6;</span>
+            <div class="task-text"><h4>Qur'an gelesen</h4><p>Mindestens 5 Minuten</p></div>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="checkbox"></div>
+            <span class="task-emoji">&#x1F4FF;</span>
+            <div class="task-text"><h4>Dhikr gemacht</h4><p>33+33+34</p></div>
           </div>
         </div>
 
-        <div class="section-title" style="margin-top: 20px;">
-          <h3>🔒 Blockierte Apps</h3>
-          <span class="see-all">Verwalten</span>
-        </div>
-
-        <div class="task-list">
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 24px;">📸</span>
-            <div class="task-text"><h4>Instagram</h4><p>Noch 3 Aufgaben übrig 🔒</p></div>
-            <span style="font-size: 14px;">🔒</span>
-          </div>
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 24px;">🎵</span>
-            <div class="task-text"><h4>TikTok</h4><p>Noch 3 Aufgaben übrig 🔒</p></div>
-            <span style="font-size: 14px;">🔒</span>
-          </div>
-          <div class="task-item" style="cursor: default; background: var(--green-pastel);">
-            <span style="font-size: 24px;">💬</span>
-            <div class="task-text"><h4>WhatsApp</h4><p>Bereits freigeschaltet ✅</p></div>
-            <span style="font-size: 14px;">✅</span>
-          </div>
+        <!-- Completion Message -->
+        <div id="completionMsg" style="display: none; text-align: center; padding: 20px 24px; margin-top: 16px;">
+          <div style="font-size: 48px; margin-bottom: 8px;">&#x1F389;</div>
+          <h3 style="color: var(--green-deep); font-size: 18px;">Masha'Allah!</h3>
+          <p style="color: var(--text-medium); font-size: 14px; margin-top: 4px;">Alle Aufgaben erledigt. Deine Apps sind jetzt frei!</p>
         </div>
 
         <div class="bottom-nav">
-          <button class="nav-item active" onclick="goToDashboard()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>Home</span>
+          <button class="nav-tab active" onclick="switchTab('heute')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Heute</span>
           </button>
-          <button class="nav-item" onclick="showStreakView()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>Streak</span>
-          </button>
-          <button class="nav-item center" onclick="showLockScreen()">
+          <button class="nav-tab" onclick="switchTab('apps')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span style="color: white;">Lock</span>
+            <span>Apps</span>
           </button>
-          <button class="nav-item" onclick="showProfileView()">
+          <button class="nav-tab" onclick="switchTab('ich')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Profil</span>
-          </button>
-          <button class="nav-item" onclick="showSettingsView()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            <span>Einst.</span>
+            <span>Ich</span>
           </button>
         </div>
       </div>
 
-      <!-- STREAK VIEW -->
-      <div class="screen-section streak-view" id="streakView">
-        <div class="back-header">
-          <button onclick="goToDashboard()">←</button>
-          <h2>Mein Streak</h2>
+      <!-- ==================== TAB 2: APPS ==================== -->
+      <div class="tab-view" id="tabApps">
+        <div class="apps-header" id="appsHeader">
+          <div class="lock-big">&#x1F512;</div>
+          <h2>Apps gesperrt</h2>
+          <p>Erledige deine Aufgaben zum Freischalten</p>
+          <div class="apps-progress">
+            Noch <span class="count" id="appsRemaining">7</span> Aufgaben offen
+          </div>
+        </div>
+
+        <div class="section-title"><h3>Deine Apps</h3></div>
+
+        <div class="task-list" id="appsList">
+          <div class="app-card">
+            <div class="app-icon locked">&#x1F4F8;</div>
+            <div class="app-info"><h4>Instagram</h4><p id="instaStatus">Gesperrt - erledige Aufgaben</p></div>
+            <div class="app-status" id="instaIcon">&#x1F512;</div>
+          </div>
+          <div class="app-card">
+            <div class="app-icon locked">&#x1F3B5;</div>
+            <div class="app-info"><h4>TikTok</h4><p id="tiktokStatus">Gesperrt - erledige Aufgaben</p></div>
+            <div class="app-status" id="tiktokIcon">&#x1F512;</div>
+          </div>
+          <div class="app-card">
+            <div class="app-icon locked">&#x25B6;&#xFE0F;</div>
+            <div class="app-info"><h4>YouTube</h4><p id="ytStatus">Gesperrt - erledige Aufgaben</p></div>
+            <div class="app-status" id="ytIcon">&#x1F512;</div>
+          </div>
+          <div class="app-card">
+            <div class="app-icon locked">&#x1F4AC;</div>
+            <div class="app-info"><h4>WhatsApp</h4><p id="waStatus">Gesperrt - erledige Aufgaben</p></div>
+            <div class="app-status" id="waIcon">&#x1F512;</div>
+          </div>
+        </div>
+
+        <div style="padding: 24px; text-align: center;">
+          <button class="btn-primary" onclick="switchTab('heute')" id="appsActionBtn" style="background: linear-gradient(135deg, #c44, #a33); box-shadow: 0 4px 20px rgba(200,68,68,0.25);">
+            Aufgaben erledigen &rarr;
+          </button>
+        </div>
+
+        <div class="bottom-nav">
+          <button class="nav-tab" onclick="switchTab('heute')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Heute</span>
+          </button>
+          <button class="nav-tab active" onclick="switchTab('apps')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Apps</span>
+          </button>
+          <button class="nav-tab" onclick="switchTab('ich')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Ich</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 3: ICH ==================== -->
+      <div class="tab-view" id="tabIch">
+
+        <div class="profile-card">
+          <div class="profile-avatar">A</div>
+          <h3>Abdullah</h3>
+          <div class="location">Berlin, Deutschland</div>
         </div>
 
         <div class="streak-mega">
-          <span class="fire-big">🔥</span>
+          <span class="fire-big">&#x1F525;</span>
           <div class="streak-big-number" id="bigStreakNumber">0</div>
-          <div class="streak-big-label">Tage am Stück</div>
-          <div class="streak-message" id="streakMessage">Starte deine Reise – Tag 0! 🌟</div>
+          <div class="streak-big-label">Tage am Stuck</div>
+          <div class="streak-msg" id="streakMessage">Starte deine Reise!</div>
         </div>
 
-        <div class="streak-stats">
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Stunden gespart</div></div>
-          <div class="stat-card"><div class="stat-number">0%</div><div class="stat-label">Erfolgsquote</div></div>
-          <div class="stat-card"><div class="stat-number">–</div><div class="stat-label">Rang weltweit</div></div>
-        </div>
-
-        <div class="section-title" style="padding: 0; margin-top: 20px;">
-          <h3>Mai 2025</h3>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-
-        <div class="section-title" style="padding: 0; margin-top: 24px;">
-          <h3>Meilensteine 🏆</h3>
-        </div>
-
-        <div class="task-list streak-milestones">
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 22px;">🥉</span>
-            <div class="task-text"><h4>7 Tage Streak</h4><p>Noch 7 Tage – fang heute an!</p></div>
-            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">0%</span>
-          </div>
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 22px;">🥈</span>
-            <div class="task-text"><h4>30 Tage Streak</h4><p>Noch 30 Tage – du schaffst das!</p></div>
-            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">0%</span>
-          </div>
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 22px;">🥇</span>
-            <div class="task-text"><h4>100 Tage Streak</h4><p>Noch 100 Tage – bleib dran 💪</p></div>
-            <span style="background: var(--cream-dark); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--text-medium);">0%</span>
-          </div>
-          <div class="task-item" style="cursor: default; background: var(--gold-pale);">
-            <span style="font-size: 22px;">👑</span>
-            <div class="task-text"><h4>1 Jahr Barakah</h4><p>365 Tage Iman – das ultimative Ziel</p></div>
-            <span style="background: var(--gold-light); padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--gold-dark);">0%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- PROFILE VIEW -->
-      <div class="screen-section profile-view" id="profileView">
-        <div class="back-header">
-          <button onclick="goToDashboard()">←</button>
-          <h2>Mein Profil</h2>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: center; padding: 24px 0 16px;">
-          <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 700; box-shadow: var(--shadow-md);">A</div>
-          <h3 style="margin-top: 12px; color: var(--text-dark); font-size: 20px;">Abdullah</h3>
-          <p style="color: var(--text-light); font-size: 13px; margin-top: 2px;">Seit heute dabei</p>
-          <div style="margin-top: 8px; background: var(--green-pastel); padding: 4px 16px; border-radius: 40px; font-size: 12px; color: var(--green-deep); font-weight: 500;">Berlin, Deutschland</div>
-        </div>
-
-        <div class="streak-stats" style="margin-top: 8px;">
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Tage Streak</div></div>
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Aufgaben erledigt</div></div>
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Gebete gebetet</div></div>
-        </div>
-
-        <div class="streak-stats" style="margin-top: 8px;">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Gebete</div></div>
           <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Qur'an Min.</div></div>
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Dhikr Sitzungen</div></div>
-          <div class="stat-card"><div class="stat-number">0h</div><div class="stat-label">Screen-Zeit gespart</div></div>
+          <div class="stat-card"><div class="stat-number">0h</div><div class="stat-label">Gespart</div></div>
         </div>
 
-        <div class="task-list" style="margin-top: 16px;">
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 20px;">🕌</span>
-            <div class="task-text"><h4>Gebetsmethode</h4><p>Muslim World League</p></div>
-          </div>
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 20px;">📖</span>
-            <div class="task-text"><h4>Qur'an Ziel</h4><p>5 Minuten pro Tag</p></div>
-          </div>
-          <div class="task-item" style="cursor: default;">
-            <span style="font-size: 20px;">📿</span>
-            <div class="task-text"><h4>Dhikr Ziel</h4><p>33 + 33 + 34 pro Tag</p></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SETTINGS VIEW -->
-      <div class="screen-section settings-view" id="settingsView">
-        <div class="back-header">
-          <button onclick="goToDashboard()">←</button>
-          <h2>Einstellungen</h2>
+        <div style="margin-top: 24px;">
+          <h3 style="font-size: 16px; font-weight: 650; margin-bottom: 12px;">Kalender</h3>
+          <div class="calendar-grid" id="calendarGrid"></div>
         </div>
 
-        <div class="task-list" style="margin-top: 8px;">
-          <div class="task-item" style="cursor: default; flex-direction: column; align-items: stretch;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-              <span style="font-size: 20px;">📍</span>
-              <h4 style="font-weight: 600; color: var(--text-dark);">Stadt</h4>
-            </div>
-            <input type="text" placeholder="z.B. Berlin" value="Berlin" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--cream-darker); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none;" onfocus="this.style.borderColor='var(--green-medium)'" onblur="this.style.borderColor='var(--cream-darker)'" />
+        <div style="margin-top: 24px;">
+          <h3 style="font-size: 16px; font-weight: 650; margin-bottom: 12px;">Meilensteine &#x1F3C6;</h3>
+          <div class="milestone-item">
+            <span class="m-icon">&#x1F949;</span>
+            <div class="m-text"><h4>7 Tage Streak</h4><p>Noch 7 Tage</p></div>
+            <span class="m-badge">0%</span>
           </div>
-
-          <div class="task-item" style="cursor: default; flex-direction: column; align-items: stretch;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-              <span style="font-size: 20px;">🌍</span>
-              <h4 style="font-weight: 600; color: var(--text-dark);">Land</h4>
-            </div>
-            <input type="text" placeholder="z.B. Deutschland" value="Deutschland" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--cream-darker); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none;" onfocus="this.style.borderColor='var(--green-medium)'" onblur="this.style.borderColor='var(--cream-darker)'" />
+          <div class="milestone-item">
+            <span class="m-icon">&#x1F948;</span>
+            <div class="m-text"><h4>30 Tage Streak</h4><p>Noch 30 Tage</p></div>
+            <span class="m-badge">0%</span>
           </div>
-
-          <div class="task-item" style="cursor: default; flex-direction: column; align-items: stretch;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-              <span style="font-size: 20px;">📖</span>
-              <h4 style="font-weight: 600; color: var(--text-dark);">Qur'an Ziel (Minuten/Tag)</h4>
-            </div>
-            <input type="number" value="5" min="1" max="120" style="width: 100%; padding: 10px 14px; border: 1.5px solid var(--cream-darker); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none;" onfocus="this.style.borderColor='var(--green-medium)'" onblur="this.style.borderColor='var(--cream-darker)'" />
+          <div class="milestone-item">
+            <span class="m-icon">&#x1F947;</span>
+            <div class="m-text"><h4>100 Tage Streak</h4><p>Noch 100 Tage</p></div>
+            <span class="m-badge">0%</span>
+          </div>
+          <div class="milestone-item" style="background: var(--gold-pale);">
+            <span class="m-icon">&#x1F451;</span>
+            <div class="m-text"><h4>1 Jahr Barakah</h4><p>365 Tage - das ultimative Ziel</p></div>
+            <span class="m-badge" style="background: var(--gold-light); color: var(--gold-dark);">0%</span>
           </div>
         </div>
 
-        <div class="task-list" style="margin-top: 16px;">
-          <div class="task-item" style="cursor: pointer; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">🔔</span>
-              <div class="task-text"><h4>Gebets-Erinnerungen</h4><p>Push-Benachrichtigungen</p></div>
+        <div class="settings-section">
+          <h3>Einstellungen</h3>
+          <div class="setting-item">
+            <div class="setting-left">
+              <span class="setting-icon">&#x1F4CD;</span>
+              <div class="setting-text"><h4>Stadt</h4></div>
             </div>
-            <label class="settings-toggle">
-              <input type="checkbox" checked />
-              <span class="slider"></span>
-            </label>
+            <input type="text" class="setting-input" value="Berlin" />
           </div>
-
-          <div class="task-item" style="cursor: pointer; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">🔥</span>
-              <div class="task-text"><h4>Streak-Erinnerung</h4><p>Abends vor Mitternacht</p></div>
+          <div class="setting-item">
+            <div class="setting-left">
+              <span class="setting-icon">&#x1F30D;</span>
+              <div class="setting-text"><h4>Land</h4></div>
             </div>
-            <label class="settings-toggle">
-              <input type="checkbox" checked />
-              <span class="slider"></span>
-            </label>
+            <input type="text" class="setting-input" value="Deutschland" />
           </div>
-
-          <div class="task-item" style="cursor: pointer; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">✈️</span>
-              <div class="task-text"><h4>Reise-/Krankheitsmodus</h4><p>Reduzierte Aufgaben</p></div>
+          <div class="setting-item">
+            <div class="setting-left">
+              <span class="setting-icon">&#x1F4D6;</span>
+              <div class="setting-text"><h4>Qur'an Ziel</h4><p>Minuten pro Tag</p></div>
             </div>
-            <label class="settings-toggle">
-              <input type="checkbox" />
-              <span class="slider"></span>
-            </label>
+            <input type="number" class="setting-input" value="5" min="1" max="120" style="width: 60px;" />
           </div>
-        </div>
-
-        <button class="btn-primary" style="margin: 20px auto; display: block; width: calc(100% - 32px);" onclick="goToDashboard()">
-          Speichern
-        </button>
-      </div>
-
-      <!-- LOCK SCREEN -->
-      <div class="lock-screen" id="lockScreen">
-        <div class="lock-icon">🔒</div>
-        <h2>App gesperrt</h2>
-        <p>Erledige erst deine Ibadaat,<br>dann schalten wir Social Media frei.</p>
-
-        <div class="locked-apps">
-          <div class="locked-app">📸</div>
-          <div class="locked-app">🎵</div>
-          <div class="locked-app">▶️</div>
-          <div class="locked-app">💬</div>
-        </div>
-
-        <div style="width: 100%; margin-top: 8px;">
-          <div class="task-list" style="padding: 0;">
-            <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
-              <div class="checkbox"></div>
-              <span class="task-emoji">🕋</span>
-              <div class="task-text"><h4>Fajr beten</h4><p>Noch offen – erst beten!</p></div>
+          <div class="setting-item">
+            <div class="setting-left">
+              <span class="setting-icon">&#x1F514;</span>
+              <div class="setting-text"><h4>Benachrichtigungen</h4><p>Gebets-Erinnerungen</p></div>
             </div>
-            <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
-              <div class="checkbox"></div>
-              <span class="task-emoji">🕋</span>
-              <div class="task-text"><h4>Dhuhr beten</h4><p>Noch offen</p></div>
+            <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-left">
+              <span class="setting-icon">&#x1F525;</span>
+              <div class="setting-text"><h4>Streak-Erinnerung</h4><p>Abends vor Mitternacht</p></div>
             </div>
-            <div class="task-item" onclick="toggleTask(this)" style="animation: none;">
-              <div class="checkbox"></div>
-              <span class="task-emoji">🕋</span>
-              <div class="task-text"><h4>Asr beten</h4><p>Noch offen – erst dann geht's weiter!</p></div>
+            <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-left">
+              <span class="setting-icon">&#x2708;&#xFE0F;</span>
+              <div class="setting-text"><h4>Reisemodus</h4><p>Reduzierte Aufgaben</p></div>
             </div>
+            <label class="toggle"><input type="checkbox" /><span class="slider"></span></label>
           </div>
         </div>
 
-        <p style="margin-top: 20px; font-size: 13px; color: var(--text-light);">
-          ⏱️ Noch <strong style="color: var(--green-deep);"><span id="lockRemaining">6</span> Aufgaben</strong> übrig
-        </p>
+        <div style="height: 120px;"></div>
 
-        <button class="btn-primary" style="background: linear-gradient(135deg, #c44, #a33); box-shadow: 0 4px 20px rgba(200,68,68,0.25);" onclick="goToDashboard()">
-          Zum Dashboard zurück
-        </button>
+        <div class="bottom-nav">
+          <button class="nav-tab" onclick="switchTab('heute')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Heute</span>
+          </button>
+          <button class="nav-tab" onclick="switchTab('apps')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Apps</span>
+          </button>
+          <button class="nav-tab active" onclick="switchTab('ich')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Ich</span>
+          </button>
+        </div>
       </div>
 
     </div><!-- /screen -->
@@ -1238,141 +824,164 @@
 </div><!-- /phone-wrapper -->
 
 <script>
-  let currentOnboard = 0;
-
+  /* ==================== NAVIGATION ==================== */
   function goOnboard(index) {
     document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
     document.getElementById('onboard' + index).classList.add('active');
-    document.querySelectorAll('.onboarding-dots .dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-    currentOnboard = index;
   }
 
-  function goToDashboard() {
+  function startApp() {
     document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
-    document.getElementById('dashboardView').classList.add('active');
-    document.getElementById('lockScreen').classList.remove('active');
-    document.getElementById('mainScreen').scrollTop = 0;
-    updateNavActive('home');
+    switchTab('heute');
   }
 
-  function showStreakView() {
+  function switchTab(name) {
     document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
-    document.getElementById('streakView').classList.add('active');
-    document.getElementById('lockScreen').classList.remove('active');
-    document.getElementById('mainScreen').scrollTop = 0;
-    updateNavActive('streak');
-  }
+    document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
 
-  function showProfileView() {
-    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
-    document.getElementById('profileView').classList.add('active');
-    document.getElementById('lockScreen').classList.remove('active');
+    const tabs = { heute: 'tabHeute', apps: 'tabApps', ich: 'tabIch' };
+    document.getElementById(tabs[name]).classList.add('active');
     document.getElementById('mainScreen').scrollTop = 0;
-    updateNavActive('profil');
-  }
 
-  function showSettingsView() {
-    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
-    document.getElementById('settingsView').classList.add('active');
-    document.getElementById('lockScreen').classList.remove('active');
-    document.getElementById('mainScreen').scrollTop = 0;
-    updateNavActive('einst');
-  }
-
-  function updateNavActive(name) {
-    document.querySelectorAll('.nav-item').forEach(btn => {
+    // Update all nav tabs across all tab views
+    document.querySelectorAll('.nav-tab').forEach(btn => {
       btn.classList.remove('active');
-      const label = btn.querySelector('span');
-      if (label && label.textContent.toLowerCase().replace('.', '') === name) {
+      const label = btn.querySelector('span').textContent.toLowerCase();
+      if (label === name || (label === 'heute' && name === 'heute') || (label === 'apps' && name === 'apps') || (label === 'ich' && name === 'ich')) {
         btn.classList.add('active');
       }
     });
+
+    // Refresh apps tab data
+    if (name === 'apps') updateAppsTab();
   }
 
-  function showLockScreen() {
-    document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.screen-section').forEach(el => el.classList.remove('active'));
-    document.getElementById('lockScreen').classList.add('active');
-    document.getElementById('mainScreen').scrollTop = 0;
-  }
-
+  /* ==================== TASKS ==================== */
   function toggleTask(el) {
     const cb = el.querySelector('.checkbox');
     const isChecked = cb.classList.contains('checked');
     if (isChecked) {
       cb.classList.remove('checked');
       cb.textContent = '';
+      el.classList.remove('done');
     } else {
       cb.classList.add('checked');
       cb.textContent = '✓';
+      el.classList.add('done');
     }
     updateProgress();
   }
 
+  function getTaskStats() {
+    const tasks = document.querySelectorAll('#taskList .task-item .checkbox');
+    let done = 0, total = tasks.length;
+    tasks.forEach(t => { if (t.classList.contains('checked')) done++; });
+    return { done, total, remaining: total - done, pct: total > 0 ? Math.round((done / total) * 100) : 0 };
+  }
+
   function updateProgress() {
-    const dashTasks = document.querySelectorAll('#dashboardView .task-list .task-item .checkbox');
-    let done = 0, total = 0;
-    dashTasks.forEach(t => {
-      total++;
-      if (t.classList.contains('checked')) done++;
-    });
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    const { done, total, remaining, pct } = getTaskStats();
+
+    // Update header progress
     document.getElementById('progressPercent').textContent = pct + '%';
     document.getElementById('progressBar').style.width = pct + '%';
 
-    // Update lock screen remaining count
-    const remaining = total - done;
-    const lockRemaining = document.getElementById('lockRemaining');
-    if (lockRemaining) lockRemaining.textContent = remaining;
+    // Show/hide completion message
+    const msg = document.getElementById('completionMsg');
+    if (pct === 100) {
+      msg.style.display = 'block';
+    } else {
+      msg.style.display = 'none';
+    }
 
-    // If all done, change lock button to green
-    const lockBtn = document.querySelector('.lock-screen .btn-primary');
-    if (lockBtn) {
-      if (pct === 100) {
-        lockBtn.style.background = 'linear-gradient(135deg, var(--green-deep), var(--green-medium))';
-        lockBtn.style.boxShadow = '0 4px 20px rgba(13,90,90,0.25)';
-        lockBtn.innerHTML = 'Apps freigeschaltet! 🎉';
+    // Update apps tab
+    updateAppsTab();
+  }
+
+  /* ==================== APPS TAB ==================== */
+  function updateAppsTab() {
+    const { remaining, pct } = getTaskStats();
+    const allDone = pct === 100;
+
+    // Header
+    const header = document.getElementById('appsHeader');
+    const remainingEl = document.getElementById('appsRemaining');
+
+    if (allDone) {
+      header.classList.add('unlocked');
+      header.querySelector('.lock-big').textContent = '🔓';
+      header.querySelector('h2').textContent = 'Apps freigeschaltet!';
+      header.querySelector('p').textContent = 'Masha\'Allah! Alle Aufgaben erledigt.';
+      remainingEl.parentElement.innerHTML = '✅ Alles erledigt!';
+    } else {
+      header.classList.remove('unlocked');
+      header.querySelector('.lock-big').textContent = '🔒';
+      header.querySelector('h2').textContent = 'Apps gesperrt';
+      header.querySelector('p').textContent = 'Erledige deine Aufgaben zum Freischalten';
+      remainingEl.textContent = remaining;
+    }
+
+    // App cards
+    const apps = ['insta', 'tiktok', 'yt', 'wa'];
+    const statusTexts = ['Instagram', 'TikTok', 'YouTube', 'WhatsApp'];
+    apps.forEach((app, i) => {
+      const statusEl = document.getElementById(app + 'Status');
+      const iconEl = document.getElementById(app + 'Icon');
+      const card = statusEl.closest('.app-card');
+      const appIcon = card.querySelector('.app-icon');
+
+      if (allDone) {
+        statusEl.textContent = 'Freigeschaltet ✅';
+        iconEl.textContent = '✅';
+        appIcon.classList.remove('locked');
+        appIcon.classList.add('free');
       } else {
-        lockBtn.style.background = 'linear-gradient(135deg, #c44, #a33)';
-        lockBtn.style.boxShadow = '0 4px 20px rgba(200,68,68,0.25)';
-        lockBtn.innerHTML = 'Zum Dashboard zurück';
+        statusEl.textContent = 'Noch ' + remaining + ' Aufgaben offen';
+        iconEl.textContent = '🔒';
+        appIcon.classList.add('locked');
+        appIcon.classList.remove('free');
       }
+    });
+
+    // Action button
+    const btn = document.getElementById('appsActionBtn');
+    if (allDone) {
+      btn.style.background = 'linear-gradient(135deg, var(--green-deep), var(--green-medium))';
+      btn.style.boxShadow = '0 4px 20px rgba(13,90,90,0.25)';
+      btn.textContent = 'Alhamdulillah! 🎉';
+      btn.onclick = function() { switchTab('ich'); };
+    } else {
+      btn.style.background = 'linear-gradient(135deg, #c44, #a33)';
+      btn.style.boxShadow = '0 4px 20px rgba(200,68,68,0.25)';
+      btn.innerHTML = 'Aufgaben erledigen &rarr;';
+      btn.onclick = function() { switchTab('heute'); };
     }
   }
 
+  /* ==================== CALENDAR ==================== */
   function buildCalendar() {
     const grid = document.getElementById('calendarGrid');
     const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
     let html = '';
     days.forEach(d => { html += '<div class="day-label">' + d + '</div>'; });
+
     const startDay = 3;
     const daysInMonth = 31;
     const completed = [];
     const today = 1;
+
     for (let i = 0; i < startDay; i++) { html += '<div class="day-cell empty"></div>'; }
     for (let d = 1; d <= daysInMonth; d++) {
       let cls = 'day-cell';
-      if (d < today && completed.includes(d)) cls += ' done';
-      if (completed.includes(d) && d >= today - 11) cls += ' streak';
+      if (completed.includes(d)) cls += ' done';
       if (d === today) cls += ' today';
-      if (d < today && !completed.includes(d)) cls += ' missed';
       html += '<div class="' + cls + '">' + d + '</div>';
     }
     grid.innerHTML = html;
   }
 
+  /* ==================== INIT ==================== */
   buildCalendar();
-
-  document.querySelectorAll('.onboarding-dots .dot').forEach(dot => {
-    dot.addEventListener('click', function() { goOnboard(parseInt(this.dataset.slide)); });
-  });
-
   updateProgress();
 </script>
 </body>
