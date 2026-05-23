@@ -6,33 +6,59 @@ import * as Font from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBarakahStore } from './src/store/useBarakahStore';
 import { OnboardingScreen } from './src/screens/OnboardingScreen';
+import { NotificationConsentScreen } from './src/screens/NotificationConsentScreen';
+import { PaywallScreen } from './src/screens/PaywallScreen';
 import { RootNavigator } from './src/navigation/RootNavigator';
-import { requestNotificationPermissions } from './src/utils/notificationManager';
+import {
+  startFreeTrial,
+  getSubscriptionStatus,
+  SubscriptionStatus,
+} from './src/services/subscriptionService';
 import { COLORS } from './src/components/theme';
 
 SplashScreen.preventAutoHideAsync();
 
 const ONBOARDING_KEY = 'hasSeenOnboarding';
+const NOTIFICATION_CONSENT_KEY = 'hasSeenNotificationConsent';
+
+type AppScreen = 'loading' | 'onboarding' | 'notification_consent' | 'paywall' | 'main';
 
 export default function App() {
   const [appReady, setAppReady] = useState(false);
-  const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(null);
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>('loading');
+  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null);
   const { isLoading, initialize } = useBarakahStore();
 
   useEffect(() => {
     async function prepare() {
       try {
+        // Load fonts
         await Font.loadAsync({
           Inter: require('./assets/fonts/Inter.ttf'),
         }).catch(() => {});
 
-        const seen = await AsyncStorage.getItem(ONBOARDING_KEY);
-        setHasSeenOnboarding(seen === 'true');
+        // Check what screen to show
+        const hasSeenOnboarding = await AsyncStorage.getItem(ONBOARDING_KEY);
+        const hasSeenNotification = await AsyncStorage.getItem(NOTIFICATION_CONSENT_KEY);
+        const subStatus = await getSubscriptionStatus();
+        setSubscriptionStatus(subStatus);
 
+        // Initialize Firebase & store
         await initialize();
-        await requestNotificationPermissions();
+
+        // Determine first screen
+        if (hasSeenOnboarding !== 'true') {
+          setCurrentScreen('onboarding');
+        } else if (hasSeenNotification !== 'true') {
+          setCurrentScreen('notification_consent');
+        } else if (!subStatus.isActive) {
+          setCurrentScreen('paywall');
+        } else {
+          setCurrentScreen('main');
+        }
       } catch (e) {
         console.error('App prepare error:', e);
+        setCurrentScreen('main'); // Fallback to main on error
       } finally {
         setAppReady(true);
       }
@@ -46,6 +72,35 @@ export default function App() {
     }
   }, [appReady]);
 
+  // Handle onboarding complete
+  const handleOnboardingComplete = async () => {
+    await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+    setCurrentScreen('notification_consent');
+  };
+
+  // Handle notification consent complete
+  const handleNotificationConsentComplete = async () => {
+    await AsyncStorage.setItem(NOTIFICATION_CONSENT_KEY, 'true');
+    // Start free trial
+    await startFreeTrial();
+    const subStatus = await getSubscriptionStatus();
+    setSubscriptionStatus(subStatus);
+
+    if (subStatus.isActive) {
+      setCurrentScreen('main');
+    } else {
+      setCurrentScreen('paywall');
+    }
+  };
+
+  // Handle subscription complete
+  const handleSubscribed = async () => {
+    const subStatus = await getSubscriptionStatus();
+    setSubscriptionStatus(subStatus);
+    setCurrentScreen('main');
+  };
+
+  // Show splash while loading
   if (!appReady || isLoading) {
     return (
       <View style={styles.splash}>
@@ -58,24 +113,31 @@ export default function App() {
     );
   }
 
-  if (hasSeenOnboarding === false) {
-    return (
-      <View style={styles.full} onLayout={onLayoutRootView}>
-        <OnboardingScreen
-          onComplete={async () => {
-            await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
-            setHasSeenOnboarding(true);
-          }}
-        />
-        <StatusBar style="dark" />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.full} onLayout={onLayoutRootView}>
-      <RootNavigator />
-      <StatusBar style="dark" />
+      {currentScreen === 'onboarding' && (
+        <OnboardingScreen onComplete={handleOnboardingComplete} />
+      )}
+
+      {currentScreen === 'notification_consent' && (
+        <NotificationConsentScreen onComplete={handleNotificationConsentComplete} />
+      )}
+
+      {currentScreen === 'paywall' && (
+        <PaywallScreen
+          trialDaysLeft={subscriptionStatus?.trialDaysLeft ?? 0}
+          onSubscribed={handleSubscribed}
+          onClose={
+            subscriptionStatus?.isTrial
+              ? () => setCurrentScreen('main')
+              : undefined
+          }
+        />
+      )}
+
+      {currentScreen === 'main' && <RootNavigator />}
+
+      <StatusBar style={currentScreen === 'main' ? 'dark' : 'dark'} />
     </View>
   );
 }
