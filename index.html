@@ -356,7 +356,7 @@
             <div class="pw-badge">Beliebt</div>
             <div class="pw-price"><span class="currency">€</span>39,99</div>
             <div class="pw-period">pro Jahr</div>
-            <div class="pw-save">Spare über 50% gegenüber monatlich</div>
+            <div class="pw-save">Spare 33% – ca. 20 € pro Jahr</div>
             <div class="pw-perk">Alle Funktionen freigeschaltet</div>
           </div>
         </div>
@@ -559,9 +559,13 @@
     document.getElementById('religionToday').textContent = '+' + todayReligionMin + ' min heute';
     document.getElementById('socialToday').textContent = '+' + todaySocialMin + ' min heute';
 
-    // Stats-Grid aktualisieren
-    const prayers = (streak * 5) + stats.done;
-    document.getElementById('statPrayers').textContent = prayers;
+    // Stats-Grid aktualisieren (nur erste 5 Tasks sind Gebete)
+    const prayerBoxes = document.querySelectorAll('#taskList .task-item .checkbox');
+    let todayPrayers = 0;
+    for (let i = 0; i < 5 && i < prayerBoxes.length; i++) {
+      if (prayerBoxes[i].classList.contains('checked')) todayPrayers++;
+    }
+    document.getElementById('statPrayers').textContent = (streak * 5) + todayPrayers;
     document.getElementById('statQuran').textContent = (streak * 10) + Math.round(stats.pct / 100 * 10);
     document.getElementById('statSaved').textContent = formatH(totalSocialMin) + 'h';
   }
@@ -601,19 +605,19 @@
     const s = getStats();
     const allDone = s.pct === 100;
     const header = document.getElementById('appsHeader');
-    const rem = document.getElementById('appsRemaining');
+    const progressEl = header.querySelector('.apps-progress');
     if (allDone) {
       header.classList.add('unlocked');
       header.querySelector('.lock-big').textContent = '🔓';
       header.querySelector('h2').textContent = 'Apps freigeschaltet!';
       header.querySelector('p').textContent = "Masha'Allah!";
-      rem.parentElement.innerHTML = '✅ Alles erledigt!';
+      progressEl.innerHTML = '✅ Alles erledigt!';
     } else {
       header.classList.remove('unlocked');
       header.querySelector('.lock-big').textContent = '🔒';
       header.querySelector('h2').textContent = 'Apps gesperrt';
       header.querySelector('p').textContent = 'Aufgaben erledigen zum Freischalten';
-      rem.textContent = s.remaining;
+      progressEl.innerHTML = 'Noch <span class="count">' + s.remaining + '</span> Aufgaben offen';
     }
     ['insta','tiktok','yt','wa'].forEach(a => {
       const st = document.getElementById(a+'Status');
