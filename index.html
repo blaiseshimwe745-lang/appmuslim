@@ -8,258 +8,124 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --green-deep: #0d5a5a;
-      --green-dark: #0a4747;
-      --green-darker: #073a3a;
-      --green-medium: #148080;
-      --green-light: #2ab5b5;
-      --green-pastel: #e0f7f7;
-      --gold: #d4a843;
-      --gold-dark: #b8922e;
-      --gold-light: #f5e6b8;
-      --gold-pale: #fdf6e3;
+      --green-deep: #0d5a5a; --green-dark: #0a4747; --green-darker: #073a3a;
+      --green-medium: #148080; --green-light: #2ab5b5; --green-pastel: #e0f7f7;
+      --gold: #d4a843; --gold-dark: #b8922e; --gold-light: #f5e6b8; --gold-pale: #fdf6e3;
       --gold-gradient: linear-gradient(135deg, #d4a843, #ecc96a, #f0d48a);
-      --cream: #faf8f0;
-      --cream-dark: #f0ece0;
-      --cream-darker: #e8e0cc;
-      --sand: #d8d0bc;
-      --text-dark: #1a2a2a;
-      --text-medium: #4a5a5a;
-      --text-light: #8a9a9a;
-      --white: #ffffff;
-      --red: #d44;
-      --red-bg: #fde8e8;
-      --shadow-sm: 0 2px 8px rgba(13, 90, 90, 0.06);
-      --shadow-md: 0 8px 32px rgba(13, 90, 90, 0.10);
-      --radius-sm: 12px;
-      --radius-md: 20px;
-      --radius-lg: 28px;
-      --font-arabic: 'Amiri', serif;
-      --font-sans: 'Inter', -apple-system, sans-serif;
+      --cream: #faf8f0; --cream-dark: #f0ece0; --cream-darker: #e8e0cc;
+      --sand: #d8d0bc; --text-dark: #1a2a2a; --text-medium: #4a5a5a; --text-light: #8a9a9a;
+      --white: #ffffff; --red: #d44; --red-bg: #fde8e8;
+      --shadow-sm: 0 2px 8px rgba(13,90,90,0.06);
+      --shadow-md: 0 8px 32px rgba(13,90,90,0.10);
+      --radius-sm: 12px; --radius-md: 20px; --radius-lg: 28px;
+      --font-arabic: 'Amiri', serif; --font-sans: 'Inter', -apple-system, sans-serif;
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-
-    html, body {
-      height: 100%;
-      font-family: var(--font-sans);
-      background: var(--cream);
-      color: var(--text-dark);
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Phone Frame */
-    .phone-wrapper {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(145deg, #e8e0cc, #d4cbb5);
-      padding: 20px;
-    }
-    .phone {
-      width: 393px; height: 852px;
-      background: var(--cream);
-      border-radius: 48px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 0 0 2px #b8ad97, 0 0 0 6px #1a1a1a, 0 0 0 8px #3a3a3a, 0 30px 80px rgba(0,0,0,0.4);
-    }
-    .dynamic-island {
-      position: absolute; top: 12px; left: 50%;
-      transform: translateX(-50%);
-      width: 110px; height: 32px;
-      background: #1a1a1a; border-radius: 20px;
-      z-index: 100;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
+    html, body { height: 100%; font-family: var(--font-sans); background: linear-gradient(145deg, #e8e0cc, #d4cbb5); color: var(--text-dark); overflow: hidden; -webkit-font-smoothing: antialiased; }
+    .phone-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .phone { width: 393px; max-height: 95vh; min-height: 600px; background: var(--cream); border-radius: 48px; overflow: hidden; position: relative; box-shadow: 0 0 0 2px #b8ad97, 0 0 0 6px #1a1a1a, 0 0 0 8px #3a3a3a, 0 30px 80px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
+    .dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 110px; height: 32px; background: #1a1a1a; border-radius: 20px; z-index: 100; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .dynamic-island .camera { width: 8px; height: 8px; background: #2a2a3a; border-radius: 50%; border: 1px solid #3a3a4a; }
     .dynamic-island .sensor { width: 40px; height: 4px; background: #2a2a3a; border-radius: 4px; }
-
-    .screen {
-      width: 100%; height: 100%;
-      overflow-y: auto; overflow-x: hidden;
-      position: relative;
-      -webkit-overflow-scrolling: touch;
-    }
-    .screen::-webkit-scrollbar { display: none; }
-
-    /* Status Bar */
-    .status-bar {
-      display: flex; justify-content: space-between;
-      padding: 48px 28px 8px;
-      font-size: 13px; font-weight: 600;
-      color: var(--text-dark);
-      position: absolute; top: 0; left: 0; right: 0;
-      z-index: 50;
-    }
-    .status-bar svg { width: 16px; height: 16px; }
+    .screen { width: 100%; flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; -webkit-overflow-scrolling: touch; }
+    .screen::-webkit-scrollbar { width: 3px; }
+    .screen::-webkit-scrollbar-track { background: transparent; }
+    .screen::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 4px; }
+    .status-bar { display: flex; justify-content: space-between; padding: 48px 28px 8px; font-size: 13px; font-weight: 600; color: var(--text-dark); position: absolute; top: 0; left: 0; right: 0; z-index: 50; }
     .status-icons { display: flex; gap: 4px; align-items: center; }
+    .status-bar svg { width: 16px; height: 16px; }
+    .tab-view { min-height: 100%; width: 100%; display: none; flex-direction: column; }
+    .tab-view.active { display: flex; animation: fadeIn 0.3s var(--ease-out); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Tabs */
-    .tab-view {
-      min-height: 100%; width: 100%;
-      display: none; flex-direction: column;
-    }
-    .tab-view.active {
-      display: flex;
-      animation: fadeIn 0.3s var(--ease-out);
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Onboarding */
-    .onboarding-slide {
-      min-height: 100%; display: none; flex-direction: column;
-      padding: 120px 24px 40px; position: relative;
-    }
+    /* ====== ONBOARDING ====== */
+    .onboarding-slide { min-height: 100%; display: none; flex-direction: column; padding: 90px 20px 24px; position: relative; justify-content: center; }
     .onboarding-slide.active { display: flex; }
-    .onboarding-slide.active .illustration-inner { animation: floatIn 0.7s var(--ease-out) both; }
-    .onboarding-slide.active h1 { animation: fadeUp 0.5s 0.2s var(--ease-out) both; }
-    .onboarding-slide.active .subtitle { animation: fadeUp 0.5s 0.3s var(--ease-out) both; }
-    .onboarding-slide.active .feature-list .feature-item { animation: fadeUp 0.4s var(--ease-out) both; }
-    .onboarding-slide.active .feature-list .feature-item:nth-child(1) { animation-delay: 0.4s; }
-    .onboarding-slide.active .feature-list .feature-item:nth-child(2) { animation-delay: 0.5s; }
-    .onboarding-slide.active .feature-list .feature-item:nth-child(3) { animation-delay: 0.6s; }
-    .onboarding-slide.active .onboarding-footer { animation: fadeUp 0.5s 0.5s var(--ease-out) both; }
 
-    @keyframes floatIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .back-arrow { position: absolute; top: 52px; left: 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 50%; cursor: pointer; border: none; font-size: 20px; color: var(--text-medium); transition: all 0.2s; z-index: 60; }
+    .back-arrow:active { transform: scale(0.9); background: rgba(0,0,0,0.08); }
+    .back-arrow.hidden { display: none; }
 
-    .onboarding-slide .illustration { flex: 1; display: flex; align-items: center; justify-content: center; }
-    .onboarding-slide .illustration-inner {
-      width: 200px; height: 200px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
+    .onboarding-slide .illustration { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 0 8px; }
+    .onboarding-slide .illustration-inner { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .mosque-icon { position: relative; width: 76px; height: 56px; }
+    .mosque-icon .dome { width: 52px; height: 33px; background: var(--green-deep); border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin: 0 auto; position: relative; }
+    .mosque-icon .dome::after { content: '☪'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--gold); }
+    .mosque-icon .base { width: 76px; height: 3px; background: var(--green-deep); border-radius: 2px; margin-top: 5px; }
+    .mosque-icon .minaret-l, .mosque-icon .minaret-r { position: absolute; bottom: 3px; width: 4px; height: 26px; background: var(--green-deep); border-radius: 3px 3px 0 0; }
+    .mosque-icon .minaret-l { left: 6px; }
+    .mosque-icon .minaret-r { right: 6px; }
+
+    .onboarding-slide .slide-title { font-size: 20px; font-weight: 650; color: var(--green-deep); text-align: center; margin-bottom: 6px; }
+    .onboarding-slide .slide-title .gold { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .onboarding-slide .arabic { font-family: var(--font-arabic); font-size: 18px; font-weight: 600; color: var(--gold-dark); text-align: center; margin-bottom: 6px; direction: rtl; opacity: 0.8; }
+
+    .q-text { font-size: 16px; font-weight: 600; color: var(--text-dark); text-align: center; line-height: 1.5; max-width: 320px; margin: 4px auto 16px; padding: 0 4px; }
+
+    .a-grid { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 330px; margin: 0 auto; }
+    .a-btn {
+      padding: 12px 24px;
+      background: var(--white);
+      border: 2px solid var(--cream-darker);
+      border-radius: 14px; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all 0.25s var(--ease-spring);
+      font-family: var(--font-sans); color: var(--text-dark);
+      text-align: center; min-width: 90px; flex: 1;
     }
+    .a-btn:active { transform: scale(0.95); }
+    .a-btn.selected { border-color: var(--green-medium); background: var(--green-pastel); color: var(--green-deep); font-weight: 600; }
 
-    .mosque-icon { position: relative; width: 120px; height: 90px; }
-    .mosque-icon .dome {
-      width: 80px; height: 50px; background: var(--green-deep);
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin: 0 auto; position: relative;
-    }
-    .mosque-icon .dome::after {
-      content: '☪'; position: absolute; top: -18px; left: 50%;
-      transform: translateX(-50%); font-size: 20px; color: var(--gold);
-    }
-    .mosque-icon .base { width: 120px; height: 4px; background: var(--green-deep); border-radius: 2px; margin-top: 8px; }
-    .mosque-icon .minaret-l, .mosque-icon .minaret-r {
-      position: absolute; bottom: 4px; width: 6px; height: 40px;
-      background: var(--green-deep); border-radius: 3px 3px 0 0;
-    }
-    .mosque-icon .minaret-l { left: 10px; }
-    .mosque-icon .minaret-r { right: 10px; }
+    .onboarding-footer { margin-top: auto; padding-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .onboarding-dots { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+    .onboarding-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sand); transition: all 0.4s var(--ease-out); flex-shrink: 0; }
+    .onboarding-dots .dot.active { width: 18px; border-radius: 4px; background: var(--green-deep); }
 
-    .onboarding-slide h1 { font-size: 30px; font-weight: 650; color: var(--green-deep); text-align: center; line-height: 1.35; margin-bottom: 10px; }
-    .onboarding-slide h1 .gold { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .onboarding-slide .arabic { font-family: var(--font-arabic); font-size: 24px; font-weight: 600; color: var(--gold-dark); text-align: center; margin-bottom: 8px; direction: rtl; opacity: 0.8; }
-    .onboarding-slide .subtitle { font-size: 15px; color: var(--text-medium); text-align: center; line-height: 1.7; max-width: 310px; margin: 0 auto 8px; }
+    .btn-primary { width: 100%; max-width: 330px; padding: 14px; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); color: white; border: none; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,90,90,0.25); transition: all 0.25s var(--ease-out); }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-skip { background: none; border: none; color: var(--text-light); font-size: 12px; cursor: pointer; padding: 6px; }
 
-    .onboarding-slide .feature-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-    .onboarding-slide .feature-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--white); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-    .onboarding-slide .feature-item .icon-box { width: 40px; height: 40px; border-radius: 12px; background: var(--green-pastel); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-    .onboarding-slide .feature-item .text h4 { font-size: 14px; font-weight: 600; }
-    .onboarding-slide .feature-item .text p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    /* ====== PAYWALL ====== */
+    .paywall-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 330px; margin: 8px auto 0; }
+    .pw-card { border-radius: 16px; padding: 16px; cursor: pointer; position: relative; border: 2px solid var(--cream-darker); transition: all 0.3s var(--ease-spring); background: white; text-align: center; }
+    .pw-card.selected { border-color: var(--gold); background: var(--gold-pale); }
+    .pw-card .pw-badge { position: absolute; top: -10px; right: 16px; background: var(--gold-gradient); color: white; padding: 3px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .pw-card .pw-price { font-size: 28px; font-weight: 800; color: var(--green-deep); }
+    .pw-card .pw-price .currency { font-size: 16px; }
+    .pw-card .pw-period { font-size: 14px; color: var(--text-medium); font-weight: 500; margin-top: 2px; }
+    .pw-card .pw-save { font-size: 12px; color: var(--gold-dark); font-weight: 600; margin-top: 4px; }
+    .pw-card .pw-perk { font-size: 11px; color: var(--text-light); margin-top: 6px; }
+    .pw-card.selected .pw-price { color: var(--gold-dark); }
+    .pw-sub { font-size: 11px; color: var(--text-light); text-align: center; margin: 6px auto 0; max-width: 300px; }
 
-    .onboarding-footer { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .onboarding-dots { display: flex; gap: 8px; }
-    .onboarding-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sand); transition: all 0.4s var(--ease-out); cursor: pointer; }
-    .onboarding-dots .dot.active { width: 26px; border-radius: 6px; background: var(--green-deep); }
-
-    /* Buttons */
-    .btn-primary {
-      width: 100%; padding: 18px;
-      background: linear-gradient(135deg, var(--green-deep), var(--green-medium));
-      color: white; border: none; border-radius: var(--radius-md);
-      font-size: 16px; font-weight: 600; cursor: pointer;
-      box-shadow: 0 4px 20px rgba(13, 90, 90, 0.25);
-      transition: all 0.25s var(--ease-out);
-    }
-    .btn-primary:hover { transform: translateY(-1px); }
-    .btn-primary:active { transform: scale(0.98); }
-    .btn-skip { background: none; border: none; color: var(--text-light); font-size: 14px; cursor: pointer; padding: 8px; }
-
-    /* ==============================
-       TAB 1: HEUTE
-    ============================== */
-    #tabHeute { padding: 0; }
-
-    .dash-header {
-      padding: 56px 24px 24px;
-      background: linear-gradient(165deg, var(--green-deep), var(--green-darker));
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-      position: relative; overflow: hidden;
-    }
+    /* ====== REST ====== */
+    .dash-header { padding: 56px 24px 24px; background: linear-gradient(165deg, var(--green-deep), var(--green-darker)); position: relative; overflow: hidden; }
     .dash-top-row { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
     .dash-greeting h2 { font-size: 21px; font-weight: 650; color: white; }
     .dash-greeting p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 3px; }
-    .dash-avatar {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--gold-gradient);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; color: white; font-weight: 600;
-      box-shadow: 0 4px 16px rgba(212,168,67,0.35);
-      cursor: pointer; transition: transform 0.25s var(--ease-out);
-    }
-    .dash-avatar:hover { transform: scale(1.08); }
-
-    .streak-badge {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(255,255,255,0.10); backdrop-filter: blur(12px);
-      padding: 10px 18px 10px 16px; border-radius: 40px;
-      margin-top: 16px; position: relative; z-index: 2;
-      border: 1px solid rgba(255,255,255,0.06);
-      cursor: pointer; user-select: none;
-      transition: background 0.25s var(--ease-out);
-    }
-    .streak-badge:hover { background: rgba(255,255,255,0.16); }
+    .dash-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 600; box-shadow: 0 4px 16px rgba(212,168,67,0.35); cursor: pointer; }
+    .streak-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.10); backdrop-filter: blur(12px); padding: 10px 18px 10px 16px; border-radius: 40px; margin-top: 16px; position: relative; z-index: 2; border: 1px solid rgba(255,255,255,0.06); cursor: pointer; }
     .streak-badge .fire { font-size: 22px; }
-    .streak-badge .streak-number { font-size: 26px; font-weight: 700; color: var(--gold-light); line-height: 1.2; }
+    .streak-badge .streak-number { font-size: 26px; font-weight: 700; color: var(--gold-light); }
     .streak-badge .streak-label { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
-
     .today-progress { margin-top: 16px; position: relative; z-index: 2; }
     .today-progress .label { display: flex; justify-content: space-between; color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500; }
     .today-progress .bar-bg { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden; }
     .today-progress .bar-fill { height: 100%; background: var(--gold-gradient); border-radius: 4px; width: 0%; transition: width 0.6s var(--ease-out); }
-
-    /* Prayer Card */
-    .next-prayer-card {
-      margin: 16px 24px 12px; background: white;
-      border-radius: var(--radius-md); padding: 18px 20px;
-      box-shadow: var(--shadow-sm);
-      display: flex; align-items: center; justify-content: space-between;
-      position: relative; overflow: hidden;
-    }
+    .next-prayer-card { margin: 16px 24px 12px; padding: 18px 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
     .next-prayer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold-gradient); }
     .prayer-info { display: flex; align-items: center; gap: 12px; }
     .prayer-icon { width: 44px; height: 44px; border-radius: 14px; background: var(--green-pastel); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
     .prayer-name { font-size: 14px; font-weight: 600; }
     .prayer-time { font-size: 12px; color: var(--text-light); margin-top: 2px; }
     .prayer-countdown { font-size: 14px; font-weight: 600; color: var(--green-medium); background: var(--green-pastel); padding: 6px 14px; border-radius: 40px; }
-
-    /* Section Titles */
     .section-title { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; margin-top: 24px; margin-bottom: 12px; }
-    .section-title h3 { font-size: 16px; font-weight: 650; letter-spacing: -0.2px; }
-
-    /* Task Items */
+    .section-title h3 { font-size: 16px; font-weight: 650; }
     .task-list { padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
-    .task-item {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 16px; background: white;
-      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
-      transition: all 0.2s var(--ease-out);
-      cursor: pointer; user-select: none;
-    }
+    .task-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer; user-select: none; transition: all 0.2s var(--ease-out); }
     .task-item:active { transform: scale(0.98); }
-    .task-item .checkbox {
-      width: 24px; height: 24px; border-radius: 8px;
-      border: 2px solid var(--sand);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: all 0.25s var(--ease-spring);
-      font-size: 13px; color: white; font-weight: 600;
-    }
+    .task-item .checkbox { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--sand); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.25s var(--ease-spring); font-size: 13px; color: white; font-weight: 600; }
     .task-item .checkbox.checked { background: var(--green-deep); border-color: var(--green-deep); transform: scale(1.1); }
     .task-item .task-text { flex: 1; }
     .task-item .task-text h4 { font-size: 14px; font-weight: 600; }
@@ -267,191 +133,85 @@
     .task-item .task-emoji { font-size: 20px; flex-shrink: 0; }
     .task-item.done { opacity: 0.5; }
     .task-item.done .task-text h4 { text-decoration: line-through; }
-
-    /* ==============================
-       TAB 2: APPS
-    ============================== */
-    #tabApps { padding: 0; }
-
-    .apps-header {
-      padding: 60px 24px 28px;
-      background: linear-gradient(165deg, #3a1a1a, #5a2a2a);
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-      text-align: center; position: relative; z-index: 2;
-    }
+    .apps-header { padding: 60px 24px 28px; background: linear-gradient(165deg, #3a1a1a, #5a2a2a); text-align: center; }
     .apps-header .lock-big { font-size: 48px; margin-bottom: 8px; }
     .apps-header h2 { font-size: 22px; font-weight: 700; color: white; }
     .apps-header p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; }
-    .apps-header .apps-progress {
-      margin-top: 16px; background: rgba(255,255,255,0.1);
-      border-radius: 40px; padding: 10px 20px;
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 14px; color: white; font-weight: 500;
-    }
+    .apps-header .apps-progress { margin-top: 16px; background: rgba(255,255,255,0.1); border-radius: 40px; padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: white; font-weight: 500; }
     .apps-header .apps-progress .count { font-weight: 700; color: #ff8a8a; }
     .apps-header.unlocked { background: linear-gradient(165deg, var(--green-deep), var(--green-darker)); }
     .apps-header.unlocked .apps-progress .count { color: #8fefb0; }
-
-    .app-card {
-      display: flex; align-items: center; gap: 14px;
-      padding: 16px; background: white;
-      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
-      transition: all 0.2s var(--ease-out);
-    }
-    .app-card .app-icon {
-      width: 48px; height: 48px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
-    }
+    .app-card { display: flex; align-items: center; gap: 14px; padding: 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+    .app-card .app-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
     .app-card .app-icon.locked { background: var(--red-bg); }
     .app-card .app-icon.free { background: var(--green-pastel); }
     .app-card .app-info { flex: 1; }
     .app-card .app-info h4 { font-size: 15px; font-weight: 600; }
     .app-card .app-info p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
     .app-card .app-status { font-size: 20px; }
-
-    /* ==============================
-       TAB 3: ICH
-    ============================== */
+    .action-wrapper { padding: 16px 24px; text-align: center; }
     #tabIch { padding: 60px 24px 120px; }
-
-    .profile-card {
-      text-align: center; padding: 24px 0 16px;
-    }
-    .profile-avatar {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--green-deep), var(--green-medium));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px; color: white; font-weight: 700;
-      margin: 0 auto; box-shadow: var(--shadow-md);
-    }
+    .profile-card { text-align: center; padding: 24px 0 16px; }
+    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 700; margin: 0 auto; box-shadow: var(--shadow-md); }
     .profile-card h3 { margin-top: 12px; font-size: 20px; font-weight: 700; }
     .profile-card .location { margin-top: 6px; background: var(--green-pastel); padding: 4px 16px; border-radius: 40px; font-size: 12px; color: var(--green-deep); font-weight: 500; display: inline-block; }
-
     .streak-mega { text-align: center; padding: 20px 0 8px; }
-    .streak-mega .fire-big { font-size: 48px; display: block; margin-bottom: 4px; }
-    .streak-mega .streak-big-number { font-size: 48px; font-weight: 700; color: var(--green-deep); line-height: 1.2; }
+    .streak-mega .fire-big { font-size: 48px; display: block; }
+    .streak-mega .streak-big-number { font-size: 48px; font-weight: 700; color: var(--green-deep); }
     .streak-mega .streak-big-label { font-size: 14px; color: var(--text-medium); margin-top: 4px; }
-    .streak-mega .streak-msg {
-      background: var(--green-pastel); color: var(--green-deep);
-      padding: 6px 16px; border-radius: 40px;
-      display: inline-block; font-size: 12px; font-weight: 500; margin-top: 10px;
-    }
-
+    .streak-mega .streak-msg { background: var(--green-pastel); color: var(--green-deep); padding: 6px 16px; border-radius: 40px; display: inline-block; font-size: 12px; font-weight: 500; margin-top: 10px; }
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
     .stat-card { background: white; border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; box-shadow: var(--shadow-sm); }
     .stat-card .stat-number { font-size: 20px; font-weight: 700; color: var(--green-deep); }
     .stat-card .stat-label { font-size: 11px; color: var(--text-light); margin-top: 3px; font-weight: 500; }
-
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 14px; }
     .calendar-grid .day-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--text-light); padding: 6px 0; }
-    .calendar-grid .day-cell {
-      aspect-ratio: 1; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 500; background: var(--cream-dark); color: var(--text-medium);
-    }
+    .calendar-grid .day-cell { aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; background: var(--cream-dark); color: var(--text-medium); }
     .calendar-grid .day-cell.done { background: var(--green-deep); color: white; font-weight: 600; }
     .calendar-grid .day-cell.today { border: 2px solid var(--gold); }
     .calendar-grid .day-cell.missed { background: var(--red-bg); color: var(--red); }
     .calendar-grid .day-cell.empty { background: transparent; }
-
-    /* Settings in ICH tab */
     .settings-section { margin-top: 24px; }
     .settings-section h3 { font-size: 16px; font-weight: 650; margin-bottom: 12px; }
-    .setting-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px; background: white;
-      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
-      margin-bottom: 10px;
-    }
+    .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); margin-bottom: 10px; }
     .setting-item .setting-left { display: flex; align-items: center; gap: 12px; }
     .setting-item .setting-left .setting-icon { font-size: 20px; }
     .setting-item .setting-left .setting-text h4 { font-size: 14px; font-weight: 600; }
     .setting-item .setting-left .setting-text p { font-size: 12px; color: var(--text-light); margin-top: 1px; }
-
     .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-    .toggle .slider {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--cream-darker); border-radius: 24px;
-      transition: background 0.3s; cursor: pointer;
-    }
-    .toggle .slider::before {
-      content: ''; position: absolute; width: 18px; height: 18px;
-      left: 3px; bottom: 3px; background: white;
-      border-radius: 50%; transition: transform 0.3s;
-    }
+    .toggle .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--cream-darker); border-radius: 24px; transition: background 0.3s; cursor: pointer; }
+    .toggle .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: transform 0.3s; }
     .toggle input:checked + .slider { background: var(--green-medium); }
     .toggle input:checked + .slider::before { transform: translateX(20px); }
-
-    .setting-input {
-      width: 120px; padding: 8px 12px; border: 1.5px solid var(--cream-darker);
-      border-radius: 10px; font-size: 14px; font-family: var(--font-sans);
-      background: var(--cream); color: var(--text-dark); outline: none;
-      text-align: right; transition: border-color 0.2s;
-    }
-    .setting-input:focus { border-color: var(--green-medium); }
-
-    /* Milestones */
-    .milestone-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px; background: white;
-      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
-      margin-bottom: 10px;
-    }
+    .setting-input { width: 120px; padding: 8px 12px; border: 1.5px solid var(--cream-darker); border-radius: 10px; font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none; text-align: right; }
+    .milestone-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); margin-bottom: 10px; }
     .milestone-item .m-icon { font-size: 22px; }
     .milestone-item .m-text { flex: 1; }
     .milestone-item .m-text h4 { font-size: 14px; font-weight: 600; }
     .milestone-item .m-text p { font-size: 12px; color: var(--text-light); margin-top: 1px; }
-    .milestone-item .m-badge {
-      padding: 4px 14px; border-radius: 40px;
-      font-size: 12px; font-weight: 500;
-      background: var(--cream-dark); color: var(--text-medium);
-    }
-
-    /* ==============================
-       BOTTOM NAV - 3 TABS
-    ============================== */
-    .bottom-nav {
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 10px 16px 28px;
-      background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(208,208,200,0.3);
-      position: sticky; bottom: 0; z-index: 50;
-      margin-top: auto;
-    }
-    .nav-tab {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      padding: 8px 20px; border-radius: 16px;
-      cursor: pointer; background: transparent; border: none;
-      font-family: var(--font-sans); transition: all 0.2s var(--ease-out);
-    }
+    .milestone-item .m-badge { padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; background: var(--cream-dark); color: var(--text-medium); }
+    .bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 10px 16px 28px; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-top: 1px solid rgba(208,208,200,0.3); position: sticky; bottom: 0; z-index: 50; margin-top: auto; }
+    .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 20px; border-radius: 16px; cursor: pointer; background: transparent; border: none; font-family: var(--font-sans); transition: all 0.2s var(--ease-out); }
     .nav-tab svg { width: 24px; height: 24px; color: var(--text-light); transition: color 0.2s; }
     .nav-tab span { font-size: 11px; color: var(--text-light); font-weight: 500; transition: color 0.2s; }
     .nav-tab:active { transform: scale(0.92); }
     .nav-tab.active svg { color: var(--green-deep); }
     .nav-tab.active span { color: var(--green-deep); font-weight: 600; }
-
-    /* Confetti */
-    .confetti-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none; z-index: 200;
-      display: none;
-    }
-    .confetti-overlay.show { display: block; }
+    .completion-msg { display: none; text-align: center; padding: 20px 24px; margin-top: 16px; }
+    .completion-msg.show { display: block; }
+    .completion-msg .big { font-size: 48px; margin-bottom: 8px; }
+    .completion-msg h3 { color: var(--green-deep); font-size: 18px; }
+    .completion-msg p { color: var(--text-medium); font-size: 14px; margin-top: 4px; }
+    @media (max-height: 700px) { .phone { max-height: 98vh; border-radius: 32px; } .phone-wrapper { padding: 8px; } .onboarding-slide { padding: 60px 16px 12px; } #tabIch { padding: 50px 16px 100px; } }
+    @media (max-width: 420px) { .phone-wrapper { padding: 0; } .phone { width: 100%; max-height: 100vh; border-radius: 0; box-shadow: none; } .phone-wrapper { background: var(--cream); } .dynamic-island { display: none; } }
   </style>
 </head>
 <body>
 <div class="phone-wrapper">
   <div class="phone">
-    <div class="dynamic-island">
-      <div class="camera"></div>
-      <div class="sensor"></div>
-    </div>
-
+    <div class="dynamic-island"><div class="camera"></div><div class="sensor"></div></div>
     <div class="screen" id="mainScreen">
-
-      <!-- Status Bar -->
       <div class="status-bar">
         <span>9:41</span>
         <div class="status-icons">
@@ -460,529 +220,376 @@
         </div>
       </div>
 
-      <!-- ==================== ONBOARDING ==================== -->
+      <button class="back-arrow hidden" id="backArrow" onclick="goBack()">‹</button>
+
+      <!-- SLIDE 0: WILLKOMMEN (original) -->
       <div class="onboarding-slide active" id="onboard0">
-        <div class="illustration">
-          <div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);">
-            <div class="mosque-icon"><div class="dome"></div><div class="base"></div><div class="minaret-l"></div><div class="minaret-r"></div></div>
-          </div>
-        </div>
-        <div class="arabic">&#1576;&#1616;&#1587;&#1618;&#1605;&#1616; &#1575;&#1604;&#1604;&#1617;&#1614;&#1607;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1618;&#1605;&#1614;&#1606;&#1616; &#1575;&#1604;&#1585;&#1617;&#1614;&#1581;&#1616;&#1610;&#1605;&#1616;</div>
-        <h1>Willkommen bei<br><span class="gold">Barakah</span></h1>
-        <p class="subtitle">Dein digitaler Begleiter. Erst beten, dann Social Media. Eine gute Tat nach der anderen.</p>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><div class="mosque-icon"><div class="dome"></div><div class="base"></div><div class="minaret-l"></div><div class="minaret-r"></div></div></div></div>
+        <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <div class="slide-title">Willkommen bei<br><span class="gold">Barakah</span></div>
+        <p style="font-size:13px;color:var(--text-medium);text-align:center;max-width:300px;margin:0 auto 4px;line-height:1.5;">Erst beten, dann Social Media. Dein digitaler Begleiter.</p>
         <div class="onboarding-footer">
-          <div class="onboarding-dots">
-            <div class="dot active" data-slide="0"></div>
-            <div class="dot" data-slide="1" onclick="goOnboard(1)"></div>
-            <div class="dot" data-slide="2" onclick="goOnboard(2)"></div>
-          </div>
-          <button class="btn-primary" onclick="goOnboard(1)">Los geht's &rarr;</button>
-          <button class="btn-skip" onclick="startApp()">Uberspringen</button>
+          <div class="onboarding-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <button class="btn-primary" onclick="goOnboard(1)">Weiter &rarr;</button>
+          <button class="btn-skip" onclick="startApp()">Überspringen</button>
         </div>
       </div>
 
+      <!-- ====== 10 FRAGEN ====== -->
+      <!-- Q1: PAIN -->
       <div class="onboarding-slide" id="onboard1">
-        <div class="illustration">
-          <div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #d4e8f7, #e4f0f7);">
-            <span style="font-size: 72px;">&#x1F54C;</span>
-          </div>
-        </div>
-        <h1>Gebet &amp; Qur'an<br><span class="gold">zuerst</span></h1>
-        <p class="subtitle">Social Media ist erst frei, wenn du deine Ibadaat erledigt hast.</p>
-        <div class="feature-list">
-          <div class="feature-item">
-            <div class="icon-box">&#x1F54B;</div>
-            <div class="text"><h4>5 Gebete tracken</h4><p>Fajr bis Isha - alles im Blick</p></div>
-          </div>
-          <div class="feature-item">
-            <div class="icon-box">&#x1F4D6;</div>
-            <div class="text"><h4>Qur'an lesen</h4><p>Mindestens 5 Min. Rezitation</p></div>
-          </div>
-          <div class="feature-item">
-            <div class="icon-box">&#x1F4FF;</div>
-            <div class="text"><h4>Dhikr machen</h4><p>33x Subhanallah, 33x Alhamdulillah, 34x Allahu Akbar</p></div>
-          </div>
-        </div>
-        <div class="onboarding-footer">
-          <div class="onboarding-dots">
-            <div class="dot" data-slide="0" onclick="goOnboard(0)"></div>
-            <div class="dot active" data-slide="1"></div>
-            <div class="dot" data-slide="2" onclick="goOnboard(2)"></div>
-          </div>
-          <button class="btn-primary" onclick="goOnboard(2)">Weiter &rarr;</button>
-          <button class="btn-skip" onclick="startApp()">Uberspringen</button>
-        </div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:38px;">😣</span></div></div>
+        <div class="slide-title">Ehrliche Frage</div>
+        <div class="q-text">"Ich öffne Instagram, obwohl ich beten sollte."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(1,'ja')">Ja</div><div class="a-btn" onclick="answer(1,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(1,'nein')">Nein</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots1"></div></div>
       </div>
 
+      <!-- Q2: PAIN -->
       <div class="onboarding-slide" id="onboard2">
-        <div class="illustration">
-          <div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);">
-            <span style="font-size: 72px;">&#x1F525;</span>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce8e8);"><span style="font-size:38px;">😥</span></div></div>
+        <div class="slide-title">Ehrliche Frage</div>
+        <div class="q-text">"Ich schiebe Gebete auf – und ärgere mich später."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(2,'ja')">Ja</div><div class="a-btn" onclick="answer(2,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(2,'nein')">Nein</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots2"></div></div>
+      </div>
+
+      <!-- Q3: PAIN -->
+      <div class="onboarding-slide" id="onboard3">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:38px;">😕</span></div></div>
+        <div class="slide-title">Ehrliche Frage</div>
+        <div class="q-text">"Ohne Erinnerung vergesse ich Gebetszeiten."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(3,'ja')">Ja</div><div class="a-btn" onclick="answer(3,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(3,'nein')">Nein</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots3"></div></div>
+      </div>
+
+      <!-- Q4: PAIN -->
+      <div class="onboarding-slide" id="onboard4">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce8e8);"><span style="font-size:38px;">😩</span></div></div>
+        <div class="slide-title">Ehrliche Frage</div>
+        <div class="q-text">"Abends denke ich: Morgen mach ich's besser – und schaffe es nicht."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(4,'ja')">Ja</div><div class="a-btn" onclick="answer(4,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(4,'nein')">Nein</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots4"></div></div>
+      </div>
+
+      <!-- Q5: PAIN -->
+      <div class="onboarding-slide" id="onboard5">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:38px;">😔</span></div></div>
+        <div class="slide-title">Ehrliche Frage</div>
+        <div class="q-text">"Mein Handy lenkt mich vom Qur'an und Dhikr ab."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(5,'ja')">Ja</div><div class="a-btn" onclick="answer(5,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(5,'nein')">Nein</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots5"></div></div>
+      </div>
+
+      <!-- Q6: DESIRE -->
+      <div class="onboarding-slide" id="onboard6">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">🤲</span></div></div>
+        <div class="slide-title">Stell dir vor …</div>
+        <div class="q-text">"Ich wünschte, mein Handy hilft mir, konsequent zu sein."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(6,'ja')">Ja, genau</div><div class="a-btn" onclick="answer(6,'vielleicht')">Vielleicht</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots6"></div></div>
+      </div>
+
+      <!-- Q7: DESIRE -->
+      <div class="onboarding-slide" id="onboard7">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">🌟</span></div></div>
+        <div class="slide-title">Stell dir vor …</div>
+        <div class="q-text">"Weniger Scrollen, mehr beten – allein schaff ich's nicht."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(7,'ja')">Ja, genau</div><div class="a-btn" onclick="answer(7,'vielleicht')">Vielleicht</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots7"></div></div>
+      </div>
+
+      <!-- Q8: DESIRE -->
+      <div class="onboarding-slide" id="onboard8">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">💪</span></div></div>
+        <div class="slide-title">Stell dir vor …</div>
+        <div class="q-text">"Ich bin bereit, in meine Disziplin zu investieren."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(8,'ja')">Ja, bin ich</div><div class="a-btn" onclick="answer(8,'vielleicht')">Vielleicht</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots8"></div></div>
+      </div>
+
+      <!-- Q9: DESIRE -->
+      <div class="onboarding-slide" id="onboard9">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">🔥</span></div></div>
+        <div class="slide-title">Stell dir vor …</div>
+        <div class="q-text">"Ich will meinen Streak nie wieder verlieren."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(9,'ja')">Ja, unbedingt</div><div class="a-btn" onclick="answer(9,'vielleicht')">Vielleicht</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots9"></div></div>
+      </div>
+
+      <!-- Q10: DESIRE -->
+      <div class="onboarding-slide" id="onboard10">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:38px;">🕌</span></div></div>
+        <div class="slide-title">Stell dir vor …</div>
+        <div class="q-text">"Am Ende des Tages sagen: Heute habe ich es geschafft."</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(10,'ja')">Ja, das will ich</div><div class="a-btn" onclick="answer(10,'vielleicht')">Vielleicht</div></div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots10"></div></div>
+      </div>
+
+      <!-- SLIDE 11: PAYWALL -->
+      <div class="onboarding-slide" id="onboard11">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:38px;">🔐</span></div></div>
+        <div class="slide-title">Wähl deinen Plan</div>
+        <p style="font-size:13px;color:var(--text-medium);text-align:center;margin:0 auto 4px;">7 Tage kostenlos. Jederzeit kündbar.</p>
+        <div class="paywall-grid">
+          <div class="pw-card" id="pwMonthly" onclick="selectPlan('monthly')">
+            <div class="pw-price"><span class="currency">€</span>4,99</div>
+            <div class="pw-period">pro Monat</div>
+            <div class="pw-perk">✅ Alle Funktionen</div>
           </div>
-        </div>
-        <h1>Dein <span class="gold">Streak</span> zahlt</h1>
-        <p class="subtitle">Jeden Tag alle Aufgaben erledigen = Streak verlangern. Apps werden erst freigeschaltet, wenn alles erledigt ist!</p>
-        <div class="feature-list">
-          <div class="feature-item">
-            <div class="icon-box">&#x1F525;</div>
-            <div class="text"><h4>Taglicher Streak</h4><p>Je langer die Serie, desto mehr Barakah</p></div>
-          </div>
-          <div class="feature-item">
-            <div class="icon-box">&#x1F512;</div>
-            <div class="text"><h4>App-Sperre</h4><p>Instagram, TikTok & Co. erst nach Ibadaat</p></div>
-          </div>
-          <div class="feature-item">
-            <div class="icon-box">&#x1F3C6;</div>
-            <div class="text"><h4>Meilensteine</h4><p>7, 30, 100 Tage - jede Serie wird belohnt</p></div>
+          <div class="pw-card selected" id="pwYearly" onclick="selectPlan('yearly')">
+            <div class="pw-badge">⭐ Beliebt</div>
+            <div class="pw-price"><span class="currency">€</span>39,99</div>
+            <div class="pw-period">pro Jahr</div>
+            <div class="pw-save">🎯 Du sparst 20 €</div>
+            <div class="pw-perk">✅ Alle Funktionen</div>
           </div>
         </div>
         <div class="onboarding-footer">
-          <div class="onboarding-dots">
-            <div class="dot" data-slide="0" onclick="goOnboard(0)"></div>
-            <div class="dot" data-slide="1" onclick="goOnboard(1)"></div>
-            <div class="dot active" data-slide="2"></div>
-          </div>
-          <button class="btn-primary" onclick="startApp()">App starten &#x1F680;</button>
+          <div class="onboarding-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+          <button class="btn-primary" onclick="startApp()" style="max-width:330px;">Kostenlos starten 🚀</button>
+          <button class="btn-skip" onclick="startApp()">Vorerst überspringen</button>
         </div>
       </div>
 
-      <!-- ==================== TAB 1: HEUTE ==================== -->
+      <!-- ====== TABS ====== -->
       <div class="tab-view" id="tabHeute">
         <div class="dash-header">
-          <div class="dash-top-row">
-            <div class="dash-greeting">
-              <h2>Assalamu Alaikum</h2>
-              <p>Heute ist ein gesegneter Tag</p>
-            </div>
-            <div class="dash-avatar" onclick="switchTab('ich')">A</div>
-          </div>
-          <div class="streak-badge" onclick="switchTab('ich')">
-            <span class="fire">&#x1F525;</span>
-            <span class="streak-number" id="streakNumber">0</span>
-            <span class="streak-label">Tage Streak</span>
-          </div>
-          <div class="today-progress">
-            <div class="label">
-              <span>Heutiger Fortschritt</span>
-              <span id="progressPercent">0%</span>
-            </div>
-            <div class="bar-bg"><div class="bar-fill" id="progressBar" style="width: 0%;"></div></div>
-          </div>
+          <div class="dash-top-row"><div class="dash-greeting"><h2>Assalamu Alaikum</h2><p>Heute ist ein gesegneter Tag</p></div><div class="dash-avatar" onclick="switchTab('ich')">A</div></div>
+          <div class="streak-badge" onclick="switchTab('ich')"><span class="fire">🔥</span><span class="streak-number" id="streakNumber">0</span><span class="streak-label">Tage Streak</span></div>
+          <div class="today-progress"><div class="label"><span>Heutiger Fortschritt</span><span id="progressPercent">0%</span></div><div class="bar-bg"><div class="bar-fill" id="progressBar" style="width:0%"></div></div></div>
         </div>
-
-        <div class="next-prayer-card">
-          <div class="prayer-info">
-            <div class="prayer-icon">&#x1F54C;</div>
-            <div>
-              <div class="prayer-name">Nachstes Gebet: Asr</div>
-              <div class="prayer-time">16:42 Uhr</div>
-            </div>
-          </div>
-          <div class="prayer-countdown">16:42</div>
-        </div>
-
-        <div class="section-title">
-          <h3>Heutige Aufgaben</h3>
-        </div>
-
+        <div class="next-prayer-card"><div class="prayer-info"><div class="prayer-icon">🕌</div><div><div class="prayer-name">Nächstes Gebet: Asr</div><div class="prayer-time">16:42 Uhr</div></div></div><div class="prayer-countdown">16:42</div></div>
+        <div class="section-title"><h3>Heutige Aufgaben</h3></div>
         <div class="task-list" id="taskList">
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F54B;</span>
-            <div class="task-text"><h4>Fajr gebetet</h4><p>Morgengebet</p></div>
-          </div>
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F54B;</span>
-            <div class="task-text"><h4>Dhuhr gebetet</h4><p>Mittagsgebet</p></div>
-          </div>
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F54B;</span>
-            <div class="task-text"><h4>Asr gebetet</h4><p>Nachmittagsgebet</p></div>
-          </div>
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F54B;</span>
-            <div class="task-text"><h4>Maghrib gebetet</h4><p>Abendgebet</p></div>
-          </div>
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F54B;</span>
-            <div class="task-text"><h4>Isha gebetet</h4><p>Nachtgebet</p></div>
-          </div>
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F4D6;</span>
-            <div class="task-text"><h4>Qur'an gelesen</h4><p>Mindestens 5 Minuten</p></div>
-          </div>
-          <div class="task-item" onclick="toggleTask(this)">
-            <div class="checkbox"></div>
-            <span class="task-emoji">&#x1F4FF;</span>
-            <div class="task-text"><h4>Dhikr gemacht</h4><p>33+33+34</p></div>
-          </div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Fajr gebetet</h4><p>Morgengebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Dhuhr gebetet</h4><p>Mittagsgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Asr gebetet</h4><p>Nachmittagsgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Maghrib gebetet</h4><p>Abendgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Isha gebetet</h4><p>Nachtgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">📖</span><div class="task-text"><h4>Qur'an gelesen</h4><p>5+ Minuten</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">📿</span><div class="task-text"><h4>Dhikr gemacht</h4><p>33+33+34</p></div></div>
         </div>
-
-        <!-- Completion Message -->
-        <div id="completionMsg" style="display: none; text-align: center; padding: 20px 24px; margin-top: 16px;">
-          <div style="font-size: 48px; margin-bottom: 8px;">&#x1F389;</div>
-          <h3 style="color: var(--green-deep); font-size: 18px;">Masha'Allah!</h3>
-          <p style="color: var(--text-medium); font-size: 14px; margin-top: 4px;">Alle Aufgaben erledigt. Deine Apps sind jetzt frei!</p>
-        </div>
-
+        <div class="completion-msg" id="completionMsg"><div class="big">🎉</div><h3>Masha'Allah!</h3><p>Alle Aufgaben erledigt. Deine Apps sind frei!</p></div>
         <div class="bottom-nav">
-          <button class="nav-tab active" onclick="switchTab('heute')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>Heute</span>
-          </button>
-          <button class="nav-tab" onclick="switchTab('apps')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Apps</span>
-          </button>
-          <button class="nav-tab" onclick="switchTab('ich')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Ich</span>
-          </button>
+          <button class="nav-tab active" onclick="switchTab('heute')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Heute</span></button>
+          <button class="nav-tab" onclick="switchTab('apps')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Apps</span></button>
+          <button class="nav-tab" onclick="switchTab('ich')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Ich</span></button>
         </div>
       </div>
 
-      <!-- ==================== TAB 2: APPS ==================== -->
       <div class="tab-view" id="tabApps">
-        <div class="apps-header" id="appsHeader">
-          <div class="lock-big">&#x1F512;</div>
-          <h2>Apps gesperrt</h2>
-          <p>Erledige deine Aufgaben zum Freischalten</p>
-          <div class="apps-progress">
-            Noch <span class="count" id="appsRemaining">7</span> Aufgaben offen
-          </div>
-        </div>
-
+        <div class="apps-header" id="appsHeader"><div class="lock-big">🔒</div><h2>Apps gesperrt</h2><p>Erledige deine Aufgaben zum Freischalten</p><div class="apps-progress">Noch <span class="count" id="appsRemaining">7</span> Aufgaben offen</div></div>
         <div class="section-title"><h3>Deine Apps</h3></div>
-
         <div class="task-list" id="appsList">
-          <div class="app-card">
-            <div class="app-icon locked">&#x1F4F8;</div>
-            <div class="app-info"><h4>Instagram</h4><p id="instaStatus">Gesperrt - erledige Aufgaben</p></div>
-            <div class="app-status" id="instaIcon">&#x1F512;</div>
-          </div>
-          <div class="app-card">
-            <div class="app-icon locked">&#x1F3B5;</div>
-            <div class="app-info"><h4>TikTok</h4><p id="tiktokStatus">Gesperrt - erledige Aufgaben</p></div>
-            <div class="app-status" id="tiktokIcon">&#x1F512;</div>
-          </div>
-          <div class="app-card">
-            <div class="app-icon locked">&#x25B6;&#xFE0F;</div>
-            <div class="app-info"><h4>YouTube</h4><p id="ytStatus">Gesperrt - erledige Aufgaben</p></div>
-            <div class="app-status" id="ytIcon">&#x1F512;</div>
-          </div>
-          <div class="app-card">
-            <div class="app-icon locked">&#x1F4AC;</div>
-            <div class="app-info"><h4>WhatsApp</h4><p id="waStatus">Gesperrt - erledige Aufgaben</p></div>
-            <div class="app-status" id="waIcon">&#x1F512;</div>
-          </div>
+          <div class="app-card"><div class="app-icon locked">📸</div><div class="app-info"><h4>Instagram</h4><p id="instaStatus">Gesperrt</p></div><div class="app-status" id="instaIcon">🔒</div></div>
+          <div class="app-card"><div class="app-icon locked">🎵</div><div class="app-info"><h4>TikTok</h4><p id="tiktokStatus">Gesperrt</p></div><div class="app-status" id="tiktokIcon">🔒</div></div>
+          <div class="app-card"><div class="app-icon locked">▶️</div><div class="app-info"><h4>YouTube</h4><p id="ytStatus">Gesperrt</p></div><div class="app-status" id="ytIcon">🔒</div></div>
+          <div class="app-card"><div class="app-icon locked">💬</div><div class="app-info"><h4>WhatsApp</h4><p id="waStatus">Gesperrt</p></div><div class="app-status" id="waIcon">🔒</div></div>
         </div>
-
-        <div style="padding: 24px; text-align: center;">
-          <button class="btn-primary" onclick="switchTab('heute')" id="appsActionBtn" style="background: linear-gradient(135deg, #c44, #a33); box-shadow: 0 4px 20px rgba(200,68,68,0.25);">
-            Aufgaben erledigen &rarr;
-          </button>
-        </div>
-
+        <div class="action-wrapper"><button class="btn-primary" onclick="switchTab('heute')" id="appsActionBtn" style="background:linear-gradient(135deg,#c44,#a33);box-shadow:0 4px 20px rgba(200,68,68,0.25);">Aufgaben erledigen &rarr;</button></div>
         <div class="bottom-nav">
-          <button class="nav-tab" onclick="switchTab('heute')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>Heute</span>
-          </button>
-          <button class="nav-tab active" onclick="switchTab('apps')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Apps</span>
-          </button>
-          <button class="nav-tab" onclick="switchTab('ich')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Ich</span>
-          </button>
+          <button class="nav-tab" onclick="switchTab('heute')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Heute</span></button>
+          <button class="nav-tab active" onclick="switchTab('apps')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Apps</span></button>
+          <button class="nav-tab" onclick="switchTab('ich')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Ich</span></button>
         </div>
       </div>
 
-      <!-- ==================== TAB 3: ICH ==================== -->
       <div class="tab-view" id="tabIch">
-
-        <div class="profile-card">
-          <div class="profile-avatar">A</div>
-          <h3>Abdullah</h3>
-          <div class="location">Berlin, Deutschland</div>
+        <div class="profile-card"><div class="profile-avatar">A</div><h3>Abdullah</h3><div class="location">Berlin, Deutschland</div></div>
+        <div class="streak-mega"><span class="fire-big">🔥</span><div class="streak-big-number" id="bigStreakNumber">0</div><div class="streak-big-label">Tage am Stück</div><div class="streak-msg" id="streakMessage">Starte deine Reise!</div></div>
+        <div class="stats-grid"><div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Gebete</div></div><div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Qur'an Min.</div></div><div class="stat-card"><div class="stat-number">0h</div><div class="stat-label">Gespart</div></div></div>
+        <div style="margin-top:24px;"><h3 style="font-size:16px;font-weight:650;margin-bottom:12px;">Kalender</h3><div class="calendar-grid" id="calendarGrid"></div></div>
+        <div style="margin-top:24px;">
+          <h3 style="font-size:16px;font-weight:650;margin-bottom:12px;">Meilensteine 🏆</h3>
+          <div class="milestone-item"><span class="m-icon">🥉</span><div class="m-text"><h4>7 Tage Streak</h4></div><span class="m-badge" id="m7">0%</span></div>
+          <div class="milestone-item"><span class="m-icon">🥈</span><div class="m-text"><h4>30 Tage Streak</h4></div><span class="m-badge" id="m30">0%</span></div>
+          <div class="milestone-item"><span class="m-icon">🥇</span><div class="m-text"><h4>100 Tage Streak</h4></div><span class="m-badge" id="m100">0%</span></div>
+          <div class="milestone-item" style="background:var(--gold-pale);"><span class="m-icon">👑</span><div class="m-text"><h4>1 Jahr Barakah</h4></div><span class="m-badge" style="background:var(--gold-light);color:var(--gold-dark);" id="m365">0%</span></div>
         </div>
-
-        <div class="streak-mega">
-          <span class="fire-big">&#x1F525;</span>
-          <div class="streak-big-number" id="bigStreakNumber">0</div>
-          <div class="streak-big-label">Tage am Stuck</div>
-          <div class="streak-msg" id="streakMessage">Starte deine Reise!</div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Gebete</div></div>
-          <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Qur'an Min.</div></div>
-          <div class="stat-card"><div class="stat-number">0h</div><div class="stat-label">Gespart</div></div>
-        </div>
-
-        <div style="margin-top: 24px;">
-          <h3 style="font-size: 16px; font-weight: 650; margin-bottom: 12px;">Kalender</h3>
-          <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-
-        <div style="margin-top: 24px;">
-          <h3 style="font-size: 16px; font-weight: 650; margin-bottom: 12px;">Meilensteine &#x1F3C6;</h3>
-          <div class="milestone-item">
-            <span class="m-icon">&#x1F949;</span>
-            <div class="m-text"><h4>7 Tage Streak</h4><p>Noch 7 Tage</p></div>
-            <span class="m-badge">0%</span>
-          </div>
-          <div class="milestone-item">
-            <span class="m-icon">&#x1F948;</span>
-            <div class="m-text"><h4>30 Tage Streak</h4><p>Noch 30 Tage</p></div>
-            <span class="m-badge">0%</span>
-          </div>
-          <div class="milestone-item">
-            <span class="m-icon">&#x1F947;</span>
-            <div class="m-text"><h4>100 Tage Streak</h4><p>Noch 100 Tage</p></div>
-            <span class="m-badge">0%</span>
-          </div>
-          <div class="milestone-item" style="background: var(--gold-pale);">
-            <span class="m-icon">&#x1F451;</span>
-            <div class="m-text"><h4>1 Jahr Barakah</h4><p>365 Tage - das ultimative Ziel</p></div>
-            <span class="m-badge" style="background: var(--gold-light); color: var(--gold-dark);">0%</span>
-          </div>
-        </div>
-
         <div class="settings-section">
           <h3>Einstellungen</h3>
-          <div class="setting-item">
-            <div class="setting-left">
-              <span class="setting-icon">&#x1F4CD;</span>
-              <div class="setting-text"><h4>Stadt</h4></div>
-            </div>
-            <input type="text" class="setting-input" value="Berlin" />
-          </div>
-          <div class="setting-item">
-            <div class="setting-left">
-              <span class="setting-icon">&#x1F30D;</span>
-              <div class="setting-text"><h4>Land</h4></div>
-            </div>
-            <input type="text" class="setting-input" value="Deutschland" />
-          </div>
-          <div class="setting-item">
-            <div class="setting-left">
-              <span class="setting-icon">&#x1F4D6;</span>
-              <div class="setting-text"><h4>Qur'an Ziel</h4><p>Minuten pro Tag</p></div>
-            </div>
-            <input type="number" class="setting-input" value="5" min="1" max="120" style="width: 60px;" />
-          </div>
-          <div class="setting-item">
-            <div class="setting-left">
-              <span class="setting-icon">&#x1F514;</span>
-              <div class="setting-text"><h4>Benachrichtigungen</h4><p>Gebets-Erinnerungen</p></div>
-            </div>
-            <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
-          </div>
-          <div class="setting-item">
-            <div class="setting-left">
-              <span class="setting-icon">&#x1F525;</span>
-              <div class="setting-text"><h4>Streak-Erinnerung</h4><p>Abends vor Mitternacht</p></div>
-            </div>
-            <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
-          </div>
-          <div class="setting-item">
-            <div class="setting-left">
-              <span class="setting-icon">&#x2708;&#xFE0F;</span>
-              <div class="setting-text"><h4>Reisemodus</h4><p>Reduzierte Aufgaben</p></div>
-            </div>
-            <label class="toggle"><input type="checkbox" /><span class="slider"></span></label>
-          </div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">📍</span><div class="setting-text"><h4>Stadt</h4></div></div><input type="text" class="setting-input" value="Berlin" /></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">🌍</span><div class="setting-text"><h4>Land</h4></div></div><input type="text" class="setting-input" value="Deutschland" /></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">📖</span><div class="setting-text"><h4>Qur'an Ziel</h4><p>Minuten/Tag</p></div></div><input type="number" class="setting-input" value="5" min="1" max="120" style="width:60px;" /></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">🔔</span><div class="setting-text"><h4>Erinnerungen</h4></div></div><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">🔥</span><div class="setting-text"><h4>Streak-Erinnerung</h4></div></div><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">✈️</span><div class="setting-text"><h4>Reisemodus</h4></div></div><label class="toggle"><input type="checkbox" /><span class="slider"></span></label></div>
         </div>
-
-        <div style="height: 120px;"></div>
-
+        <div style="height:120px;"></div>
         <div class="bottom-nav">
-          <button class="nav-tab" onclick="switchTab('heute')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>Heute</span>
-          </button>
-          <button class="nav-tab" onclick="switchTab('apps')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Apps</span>
-          </button>
-          <button class="nav-tab active" onclick="switchTab('ich')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Ich</span>
-          </button>
+          <button class="nav-tab" onclick="switchTab('heute')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Heute</span></button>
+          <button class="nav-tab" onclick="switchTab('apps')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Apps</span></button>
+          <button class="nav-tab active" onclick="switchTab('ich')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Ich</span></button>
         </div>
       </div>
-
     </div><!-- /screen -->
   </div><!-- /phone -->
 </div><!-- /phone-wrapper -->
 
 <script>
-  /* ==================== NAVIGATION ==================== */
+  let currentSlide = 0;
+
+  function answer(idx, val) {
+    const btns = document.querySelectorAll('#onboard' + idx + ' .a-btn');
+    btns.forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    setTimeout(() => { goOnboard(idx + 1); }, 400);
+  }
+
+  function selectPlan(plan) {
+    document.querySelectorAll('.pw-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('pw' + plan.charAt(0).toUpperCase() + plan.slice(1)).classList.add('selected');
+  }
+
   function goOnboard(index) {
+    currentSlide = index;
     document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
     document.getElementById('onboard' + index).classList.add('active');
+    document.getElementById('backArrow').classList.toggle('hidden', index === 0);
+    document.getElementById('mainScreen').scrollTop = 0;
+  }
+
+  function goBack() {
+    if (currentSlide > 0) goOnboard(currentSlide - 1);
   }
 
   function startApp() {
     document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
+    document.getElementById('backArrow').classList.add('hidden');
     switchTab('heute');
   }
 
   function switchTab(name) {
     document.querySelectorAll('.onboarding-slide').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
-
-    const tabs = { heute: 'tabHeute', apps: 'tabApps', ich: 'tabIch' };
+    const tabs = { heute:'tabHeute', apps:'tabApps', ich:'tabIch' };
     document.getElementById(tabs[name]).classList.add('active');
     document.getElementById('mainScreen').scrollTop = 0;
-
-    // Update all nav tabs across all tab views
+    document.getElementById('backArrow').classList.add('hidden');
     document.querySelectorAll('.nav-tab').forEach(btn => {
       btn.classList.remove('active');
-      const label = btn.querySelector('span').textContent.toLowerCase();
-      if (label === name || (label === 'heute' && name === 'heute') || (label === 'apps' && name === 'apps') || (label === 'ich' && name === 'ich')) {
-        btn.classList.add('active');
-      }
+      if (btn.querySelector('span').textContent.toLowerCase() === name) btn.classList.add('active');
     });
-
-    // Refresh apps tab data
     if (name === 'apps') updateAppsTab();
   }
 
-  /* ==================== TASKS ==================== */
-  function toggleTask(el) {
-    const cb = el.querySelector('.checkbox');
-    const isChecked = cb.classList.contains('checked');
-    if (isChecked) {
-      cb.classList.remove('checked');
-      cb.textContent = '';
-      el.classList.remove('done');
-    } else {
-      cb.classList.add('checked');
-      cb.textContent = '✓';
-      el.classList.add('done');
+  // Generate dots for each slide
+  for (let i = 1; i <= 10; i++) {
+    let html = '';
+    for (let d = 0; d <= 11; d++) {
+      html += '<div class="dot' + (d === i ? ' active' : '') + '"></div>';
     }
-    updateProgress();
+    document.getElementById('dots' + i).innerHTML = html;
   }
 
-  function getTaskStats() {
+  function toggleTask(el) {
+    const cb = el.querySelector('.checkbox');
+    const checked = cb.classList.contains('checked');
+    if (checked) { cb.classList.remove('checked'); cb.textContent = ''; el.classList.remove('done'); }
+    else { cb.classList.add('checked'); cb.textContent = '✓'; el.classList.add('done'); }
+    updateProgress();
+  }
+  function getStats() {
     const tasks = document.querySelectorAll('#taskList .task-item .checkbox');
     let done = 0, total = tasks.length;
     tasks.forEach(t => { if (t.classList.contains('checked')) done++; });
-    return { done, total, remaining: total - done, pct: total > 0 ? Math.round((done / total) * 100) : 0 };
+    return { done, total, remaining: total-done, pct: total>0 ? Math.round((done/total)*100) : 0 };
   }
-
   function updateProgress() {
-    const { done, total, remaining, pct } = getTaskStats();
-
-    // Update header progress
-    document.getElementById('progressPercent').textContent = pct + '%';
-    document.getElementById('progressBar').style.width = pct + '%';
-
-    // Show/hide completion message
+    const s = getStats();
+    document.getElementById('progressPercent').textContent = s.pct + '%';
+    document.getElementById('progressBar').style.width = s.pct + '%';
     const msg = document.getElementById('completionMsg');
-    if (pct === 100) {
-      msg.style.display = 'block';
-    } else {
-      msg.style.display = 'none';
+    msg.classList.toggle('show', s.pct === 100);
+    if (s.pct === 100) {
+      const today = new Date().toDateString();
+      const lastActive = localStorage.getItem('barakahLastActive') || '';
+      if (lastActive !== today) {
+        let streak = parseInt(localStorage.getItem('barakahStreak') || '0');
+        streak++;
+        localStorage.setItem('barakahStreak', streak.toString());
+        localStorage.setItem('barakahLastActive', today);
+        document.getElementById('streakNumber').textContent = streak;
+        document.getElementById('bigStreakNumber').textContent = streak;
+        const msg = document.getElementById('streakMessage');
+        if (streak === 0) msg.textContent = 'Starte deine Reise!';
+        else if (streak < 7) msg.textContent = streak + ' Tage – weiter so!';
+        else if (streak < 30) msg.textContent = '🔥 ' + streak + ' Tage – stark!';
+        else if (streak < 100) msg.textContent = '🌟 ' + streak + ' Tage!';
+        else msg.textContent = '👑 ' + streak + ' Tage – Barakah!';
+        document.getElementById('m7').textContent = Math.min(100,Math.round((streak/7)*100))+'%';
+        document.getElementById('m30').textContent = Math.min(100,Math.round((streak/30)*100))+'%';
+        document.getElementById('m100').textContent = Math.min(100,Math.round((streak/100)*100))+'%';
+        document.getElementById('m365').textContent = Math.min(100,Math.round((streak/365)*100))+'%';
+      }
     }
-
-    // Update apps tab
     updateAppsTab();
   }
-
-  /* ==================== APPS TAB ==================== */
   function updateAppsTab() {
-    const { remaining, pct } = getTaskStats();
-    const allDone = pct === 100;
-
-    // Header
+    const s = getStats();
+    const allDone = s.pct === 100;
     const header = document.getElementById('appsHeader');
-    const remainingEl = document.getElementById('appsRemaining');
-
+    const rem = document.getElementById('appsRemaining');
     if (allDone) {
       header.classList.add('unlocked');
       header.querySelector('.lock-big').textContent = '🔓';
       header.querySelector('h2').textContent = 'Apps freigeschaltet!';
-      header.querySelector('p').textContent = 'Masha\'Allah! Alle Aufgaben erledigt.';
-      remainingEl.parentElement.innerHTML = '✅ Alles erledigt!';
+      header.querySelector('p').textContent = "Masha'Allah!";
+      rem.parentElement.innerHTML = '✅ Alles erledigt!';
     } else {
       header.classList.remove('unlocked');
       header.querySelector('.lock-big').textContent = '🔒';
       header.querySelector('h2').textContent = 'Apps gesperrt';
-      header.querySelector('p').textContent = 'Erledige deine Aufgaben zum Freischalten';
-      remainingEl.textContent = remaining;
+      header.querySelector('p').textContent = 'Aufgaben erledigen zum Freischalten';
+      rem.textContent = s.remaining;
     }
-
-    // App cards
-    const apps = ['insta', 'tiktok', 'yt', 'wa'];
-    const statusTexts = ['Instagram', 'TikTok', 'YouTube', 'WhatsApp'];
-    apps.forEach((app, i) => {
-      const statusEl = document.getElementById(app + 'Status');
-      const iconEl = document.getElementById(app + 'Icon');
-      const card = statusEl.closest('.app-card');
-      const appIcon = card.querySelector('.app-icon');
-
-      if (allDone) {
-        statusEl.textContent = 'Freigeschaltet ✅';
-        iconEl.textContent = '✅';
-        appIcon.classList.remove('locked');
-        appIcon.classList.add('free');
-      } else {
-        statusEl.textContent = 'Noch ' + remaining + ' Aufgaben offen';
-        iconEl.textContent = '🔒';
-        appIcon.classList.add('locked');
-        appIcon.classList.remove('free');
-      }
+    ['insta','tiktok','yt','wa'].forEach(a => {
+      const st = document.getElementById(a+'Status');
+      const ic = document.getElementById(a+'Icon');
+      const card = st.closest('.app-card');
+      const ai = card.querySelector('.app-icon');
+      if (allDone) { st.textContent = 'Freigeschaltet ✅'; ic.textContent = '✅'; ai.classList.remove('locked'); ai.classList.add('free'); }
+      else { st.textContent = 'Noch '+s.remaining+' offen'; ic.textContent = '🔒'; ai.classList.add('locked'); ai.classList.remove('free'); }
     });
-
-    // Action button
     const btn = document.getElementById('appsActionBtn');
-    if (allDone) {
-      btn.style.background = 'linear-gradient(135deg, var(--green-deep), var(--green-medium))';
-      btn.style.boxShadow = '0 4px 20px rgba(13,90,90,0.25)';
-      btn.textContent = 'Alhamdulillah! 🎉';
-      btn.onclick = function() { switchTab('ich'); };
-    } else {
-      btn.style.background = 'linear-gradient(135deg, #c44, #a33)';
-      btn.style.boxShadow = '0 4px 20px rgba(200,68,68,0.25)';
-      btn.innerHTML = 'Aufgaben erledigen &rarr;';
-      btn.onclick = function() { switchTab('heute'); };
-    }
+    if (allDone) { btn.style.background = 'linear-gradient(135deg, var(--green-deep), var(--green-medium))'; btn.style.boxShadow = '0 4px 20px rgba(13,90,90,0.25)'; btn.textContent = 'Alhamdulillah! 🎉'; btn.onclick = function() { switchTab('ich'); }; }
+    else { btn.style.background = 'linear-gradient(135deg, #c44, #a33)'; btn.style.boxShadow = '0 4px 20px rgba(200,68,68,0.25)'; btn.innerHTML = 'Aufgaben erledigen &rarr;'; btn.onclick = function() { switchTab('heute'); }; }
   }
-
-  /* ==================== CALENDAR ==================== */
   function buildCalendar() {
     const grid = document.getElementById('calendarGrid');
-    const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    const days = ['Mo','Di','Mi','Do','Fr','Sa','So'];
     let html = '';
-    days.forEach(d => { html += '<div class="day-label">' + d + '</div>'; });
-
-    const startDay = 3;
-    const daysInMonth = 31;
-    const completed = [];
-    const today = 1;
-
-    for (let i = 0; i < startDay; i++) { html += '<div class="day-cell empty"></div>'; }
-    for (let d = 1; d <= daysInMonth; d++) {
-      let cls = 'day-cell';
-      if (completed.includes(d)) cls += ' done';
-      if (d === today) cls += ' today';
-      html += '<div class="' + cls + '">' + d + '</div>';
-    }
+    days.forEach(d => html += '<div class="day-label">'+d+'</div>');
+    const now = new Date();
+    const startDay = (new Date(now.getFullYear(),now.getMonth(),1).getDay()+6)%7;
+    const daysInMonth = new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+    const today = now.getDate();
+    for(let i=0;i<startDay;i++) html += '<div class="day-cell empty"></div>';
+    for(let d=1;d<=daysInMonth;d++) html += '<div class="day-cell'+(d===today?' today':'')+'">'+d+'</div>';
     grid.innerHTML = html;
   }
-
-  /* ==================== INIT ==================== */
+  (function() {
+    const streak = parseInt(localStorage.getItem('barakahStreak') || '0');
+    const lastActive = localStorage.getItem('barakahLastActive') || '';
+    const today = new Date().toDateString();
+    let s = streak;
+    if (lastActive !== '' && lastActive !== today) { const y = new Date(); y.setDate(y.getDate()-1); if (lastActive !== y.toDateString()) s = 0; }
+    document.getElementById('streakNumber').textContent = s;
+    document.getElementById('bigStreakNumber').textContent = s;
+    const msg = document.getElementById('streakMessage');
+    if (s === 0) msg.textContent = 'Starte deine Reise!';
+    else if (s < 7) msg.textContent = s + ' Tage – weiter so!';
+    else if (s < 30) msg.textContent = '🔥 ' + s + ' Tage – stark!';
+    else if (s < 100) msg.textContent = '🌟 ' + s + ' Tage!';
+    else msg.textContent = '👑 ' + s + ' Tage – Barakah!';
+    document.getElementById('m7').textContent = Math.min(100,Math.round((s/7)*100))+'%';
+    document.getElementById('m30').textContent = Math.min(100,Math.round((s/30)*100))+'%';
+    document.getElementById('m100').textContent = Math.min(100,Math.round((s/100)*100))+'%';
+    document.getElementById('m365').textContent = Math.min(100,Math.round((s/365)*100))+'%';
+    updateProgress();
+  })();
   buildCalendar();
-  updateProgress();
 </script>
 </body>
 </html>
