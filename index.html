@@ -48,8 +48,8 @@
     .back-arrow:active { transform: scale(0.9); background: rgba(0,0,0,0.08); }
     .back-arrow.hidden { display: none; }
 
-    .onboarding-slide .illustration { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 0 8px; }
-    .onboarding-slide .illustration-inner { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .onboarding-slide .illustration { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 0 18px; }
+    .onboarding-slide .illustration-inner { width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .mosque-icon { position: relative; width: 76px; height: 56px; }
     .mosque-icon .dome { width: 52px; height: 33px; background: var(--green-deep); border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin: 0 auto; position: relative; }
     .mosque-icon .dome::after { content: '☪'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--gold); }
@@ -58,11 +58,13 @@
     .mosque-icon .minaret-l { left: 6px; }
     .mosque-icon .minaret-r { right: 6px; }
 
-    .onboarding-slide .slide-title { font-size: 20px; font-weight: 650; color: var(--green-deep); text-align: center; margin-bottom: 6px; }
+    .onboarding-slide .slide-title { font-size: 21px; font-weight: 700; color: var(--green-deep); text-align: center; margin-bottom: 10px; }
     .onboarding-slide .slide-title .gold { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .onboarding-slide .arabic { font-family: var(--font-arabic); font-size: 18px; font-weight: 600; color: var(--gold-dark); text-align: center; margin-bottom: 6px; direction: rtl; opacity: 0.8; }
 
-    .q-text { font-size: 16px; font-weight: 600; color: var(--text-dark); text-align: center; line-height: 1.5; max-width: 320px; margin: 4px auto 16px; padding: 0 4px; }
+    .q-text { font-size: 17px; font-weight: 600; color: var(--text-dark); text-align: center; line-height: 1.55; max-width: 310px; margin: 0 auto 24px; padding: 0 4px; }
+    .slide-sub { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; margin-bottom: 6px; }
+    .sub-pain { color: #c44; } .sub-truth { color: #b8922e; } .sub-hope { color: var(--green-medium); } .sub-ready { color: var(--gold-dark); }
 
     .a-grid { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 330px; margin: 0 auto; }
     .a-btn {
@@ -222,133 +224,128 @@
 
       <button class="back-arrow hidden" id="backArrow" onclick="goBack()">‹</button>
 
-      <!-- SLIDE 0: WILLKOMMEN (original) -->
+      <!-- SLIDE 0: WILLKOMMEN -->
       <div class="onboarding-slide active" id="onboard0">
         <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><div class="mosque-icon"><div class="dome"></div><div class="base"></div><div class="minaret-l"></div><div class="minaret-r"></div></div></div></div>
         <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-        <div class="slide-title">Willkommen bei<br><span class="gold">Barakah</span></div>
-        <p style="font-size:13px;color:var(--text-medium);text-align:center;max-width:300px;margin:0 auto 4px;line-height:1.5;">Erst beten, dann Social Media. Dein digitaler Begleiter.</p>
+        <div class="slide-title" style="font-size:24px;">Willkommen bei<br><span class="gold">Barakah</span></div>
+        <p style="font-size:14px;color:var(--text-medium);text-align:center;max-width:280px;margin:4px auto 0;line-height:1.6;">Erst beten, dann Social Media.<br>Dein digitaler Begleiter auf dem Weg zu Allah.</p>
         <div class="onboarding-footer">
-          <div class="onboarding-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="onboarding-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
           <button class="btn-primary" onclick="goOnboard(1)">Weiter &rarr;</button>
           <button class="btn-skip" onclick="startApp()">Überspringen</button>
         </div>
       </div>
 
-      <!-- ====== 10 FRAGEN ====== -->
-      <!-- Q1: PAIN -->
+      <!-- ====== PHASE 1: SCHMERZ (1-3) ====== -->
       <div class="onboarding-slide" id="onboard1">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:38px;">😣</span></div></div>
-        <div class="slide-title">Ehrliche Frage</div>
-        <div class="q-text">"Ich öffne Instagram, obwohl ich beten sollte."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(1,'ja')">Ja</div><div class="a-btn" onclick="answer(1,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(1,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce0e0);"><span style="font-size:44px;">😞</span></div></div>
+        <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
+        <div class="q-text">Greifst du zum Handy, bevor du zum Gebetsteppich greifst?</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(1,'ja')">Ja, leider</div><div class="a-btn" onclick="answer(1,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(1,'nein')">Nein</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots1"></div></div>
       </div>
 
-      <!-- Q2: PAIN -->
       <div class="onboarding-slide" id="onboard2">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce8e8);"><span style="font-size:38px;">😥</span></div></div>
-        <div class="slide-title">Ehrliche Frage</div>
-        <div class="q-text">"Ich schiebe Gebete auf – und ärgere mich später."</div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #f8d0d0, #fce0e0);"><span style="font-size:44px;">😣</span></div></div>
+        <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
+        <div class="q-text">Hast du ein Gebet aufgeschoben ... und es dann vergessen?</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(2,'ja')">Ja</div><div class="a-btn" onclick="answer(2,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(2,'nein')">Nein</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots2"></div></div>
       </div>
 
-      <!-- Q3: PAIN -->
       <div class="onboarding-slide" id="onboard3">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:38px;">😕</span></div></div>
-        <div class="slide-title">Ehrliche Frage</div>
-        <div class="q-text">"Ohne Erinnerung vergesse ich Gebetszeiten."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(3,'ja')">Ja</div><div class="a-btn" onclick="answer(3,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(3,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde0e0, #f5c8c8, #fdd8d8);"><span style="font-size:44px;">💔</span></div></div>
+        <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
+        <div class="q-text">Wie oft denkst du abends: "Heute hab ich wieder nichts für mein Akhira getan"?</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(3,'oft')">Oft</div><div class="a-btn" onclick="answer(3,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(3,'selten')">Selten</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots3"></div></div>
       </div>
 
-      <!-- Q4: PAIN -->
+      <!-- ====== PHASE 2: WAHRHEIT (4-5) ====== -->
       <div class="onboarding-slide" id="onboard4">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce8e8);"><span style="font-size:38px;">😩</span></div></div>
-        <div class="slide-title">Ehrliche Frage</div>
-        <div class="q-text">"Abends denke ich: Morgen mach ich's besser – und schaffe es nicht."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(4,'ja')">Ja</div><div class="a-btn" onclick="answer(4,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(4,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:44px;">⏳</span></div></div>
+        <div class="slide-sub sub-truth">Die unbequeme Wahrheit</div>
+        <div class="q-text">Deine Bildschirmzeit ist höher als deine Zeit mit dem Qur'an.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(4,'ja')">Stimmt leider</div><div class="a-btn" onclick="answer(4,'vielleicht')">Vielleicht</div><div class="a-btn" onclick="answer(4,'nein')">Nein</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots4"></div></div>
       </div>
 
-      <!-- Q5: PAIN -->
       <div class="onboarding-slide" id="onboard5">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:38px;">😔</span></div></div>
-        <div class="slide-title">Ehrliche Frage</div>
-        <div class="q-text">"Mein Handy lenkt mich vom Qur'an und Dhikr ab."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(5,'ja')">Ja</div><div class="a-btn" onclick="answer(5,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(5,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fce0c8, #fef0e0);"><span style="font-size:44px;">🪞</span></div></div>
+        <div class="slide-sub sub-truth">Die unbequeme Wahrheit</div>
+        <div class="q-text">Du weißt, was richtig ist. Du schaffst es nur nicht alleine.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(5,'ja')">Ja, genau so</div><div class="a-btn" onclick="answer(5,'vielleicht')">Vielleicht</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots5"></div></div>
       </div>
 
-      <!-- Q6: DESIRE -->
+      <!-- ====== PHASE 3: HOFFNUNG (6-8) ====== -->
       <div class="onboarding-slide" id="onboard6">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">🤲</span></div></div>
-        <div class="slide-title">Stell dir vor …</div>
-        <div class="q-text">"Ich wünschte, mein Handy hilft mir, konsequent zu sein."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(6,'ja')">Ja, genau</div><div class="a-btn" onclick="answer(6,'vielleicht')">Vielleicht</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">🌅</span></div></div>
+        <div class="slide-sub sub-hope">Stell dir vor</div>
+        <div class="q-text">Du wachst auf. Fajr gebetet. Kein Scrollen. Nur Frieden.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(6,'ja')">Das will ich</div><div class="a-btn" onclick="answer(6,'klingt_gut')">Klingt gut</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots6"></div></div>
       </div>
 
-      <!-- Q7: DESIRE -->
       <div class="onboarding-slide" id="onboard7">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">🌟</span></div></div>
-        <div class="slide-title">Stell dir vor …</div>
-        <div class="q-text">"Weniger Scrollen, mehr beten – allein schaff ich's nicht."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(7,'ja')">Ja, genau</div><div class="a-btn" onclick="answer(7,'vielleicht')">Vielleicht</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">🤲</span></div></div>
+        <div class="slide-sub sub-hope">Stell dir vor</div>
+        <div class="q-text">Am Abend sagst du: Alhamdulillah – heute habe ich alles geschafft.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(7,'ja')">Ja, das will ich</div><div class="a-btn" onclick="answer(7,'inshallah')">Insha'Allah</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots7"></div></div>
       </div>
 
-      <!-- Q8: DESIRE -->
       <div class="onboarding-slide" id="onboard8">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">💪</span></div></div>
-        <div class="slide-title">Stell dir vor …</div>
-        <div class="q-text">"Ich bin bereit, in meine Disziplin zu investieren."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(8,'ja')">Ja, bin ich</div><div class="a-btn" onclick="answer(8,'vielleicht')">Vielleicht</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">🔥</span></div></div>
+        <div class="slide-sub sub-hope">Stell dir vor</div>
+        <div class="q-text">7 Tage. 30 Tage. 100 Tage. Dein Streak wächst – du wirst stärker.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(8,'ja')">Unbedingt</div><div class="a-btn" onclick="answer(8,'waere_schoen')">Wäre schön</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots8"></div></div>
       </div>
 
-      <!-- Q9: DESIRE -->
+      <!-- ====== PHASE 4: BEREITSCHAFT (9-10) ====== -->
       <div class="onboarding-slide" id="onboard9">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><span style="font-size:38px;">🔥</span></div></div>
-        <div class="slide-title">Stell dir vor …</div>
-        <div class="q-text">"Ich will meinen Streak nie wieder verlieren."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(9,'ja')">Ja, unbedingt</div><div class="a-btn" onclick="answer(9,'vielleicht')">Vielleicht</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">💪</span></div></div>
+        <div class="slide-sub sub-ready">Bist du bereit?</div>
+        <div class="q-text">Barakah sperrt deine Apps, bis du gebetet hast. Kein Ausweg. Kein Cheat.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(9,'ja')">Genau das brauch ich</div><div class="a-btn" onclick="answer(9,'mal_sehen')">Mal sehen</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots9"></div></div>
       </div>
 
-      <!-- Q10: DESIRE -->
       <div class="onboarding-slide" id="onboard10">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:38px;">🕌</span></div></div>
-        <div class="slide-title">Stell dir vor …</div>
-        <div class="q-text">"Am Ende des Tages sagen: Heute habe ich es geschafft."</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(10,'ja')">Ja, das will ich</div><div class="a-btn" onclick="answer(10,'vielleicht')">Vielleicht</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">✨</span></div></div>
+        <div class="slide-sub sub-ready">Dein neues Kapitel</div>
+        <div class="q-text">Weniger Bildschirm. Mehr Barakah. Deine Veränderung beginnt jetzt.</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(10,'ja')">Ich bin bereit</div><div class="a-btn" onclick="answer(10,'spaeter')">Vielleicht später</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots10"></div></div>
       </div>
 
       <!-- SLIDE 11: PAYWALL -->
       <div class="onboarding-slide" id="onboard11">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:38px;">🔐</span></div></div>
-        <div class="slide-title">Wähl deinen Plan</div>
-        <p style="font-size:13px;color:var(--text-medium);text-align:center;margin:0 auto 4px;">7 Tage kostenlos. Jederzeit kündbar.</p>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">🕌</span></div></div>
+        <div class="slide-sub sub-ready">Dein Plan steht bereit</div>
+        <div class="slide-title">Starte deine <span class="gold">Reise</span></div>
+        <p style="font-size:13px;color:var(--text-medium);text-align:center;margin:0 auto 8px;">7 Tage kostenlos testen. Jederzeit kündbar.</p>
         <div class="paywall-grid">
           <div class="pw-card" id="pwMonthly" onclick="selectPlan('monthly')">
             <div class="pw-price"><span class="currency">€</span>4,99</div>
             <div class="pw-period">pro Monat</div>
-            <div class="pw-perk">✅ Alle Funktionen</div>
+            <div class="pw-perk">Alle Funktionen freigeschaltet</div>
           </div>
           <div class="pw-card selected" id="pwYearly" onclick="selectPlan('yearly')">
-            <div class="pw-badge">⭐ Beliebt</div>
+            <div class="pw-badge">Beliebt</div>
             <div class="pw-price"><span class="currency">€</span>39,99</div>
             <div class="pw-period">pro Jahr</div>
-            <div class="pw-save">🎯 Du sparst 20 €</div>
-            <div class="pw-perk">✅ Alle Funktionen</div>
+            <div class="pw-save">Spare über 50% gegenüber monatlich</div>
+            <div class="pw-perk">Alle Funktionen freigeschaltet</div>
           </div>
         </div>
+        <div class="pw-sub">Automatische Verlängerung. Kündigung jederzeit über die App-Store-Einstellungen.</div>
         <div class="onboarding-footer">
           <div class="onboarding-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
-          <button class="btn-primary" onclick="startApp()" style="max-width:330px;">Kostenlos starten 🚀</button>
-          <button class="btn-skip" onclick="startApp()">Vorerst überspringen</button>
+          <button class="btn-primary" onclick="startApp()" style="max-width:330px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));">Kostenlos starten</button>
+          <button class="btn-skip" onclick="startApp()">Vorerst ohne Premium</button>
         </div>
       </div>
 
@@ -474,10 +471,10 @@
     if (name === 'apps') updateAppsTab();
   }
 
-  // Generate dots for each slide
+  // Generate dots for slides 1-10 (12 total: welcome + 10 questions + paywall)
   for (let i = 1; i <= 10; i++) {
     let html = '';
-    for (let d = 0; d <= 11; d++) {
+    for (let d = 0; d < 12; d++) {
       html += '<div class="dot' + (d === i ? ' active' : '') + '"></div>';
     }
     document.getElementById('dots' + i).innerHTML = html;
