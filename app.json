@@ -38,7 +38,6 @@
       "expo-notifications",
       "expo-background-fetch",
       "expo-localization",
-      "expo-haptics",
       [
         "expo-splash-screen",
         {
