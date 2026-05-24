@@ -5,14 +5,14 @@ workflows:
     instance_type: mac_mini_m2
 
     environment:
-      groups:
-        - firebase_credentials
       node: 18
-      xcode: 15.2
+      xcode: latest
       cocoapods: default
       vars:
         BUNDLE_ID: "com.barakah.digitaldetox"
-        APP_STORE_APP_ID: "YOUR_APP_STORE_ID"
+
+    integrations:
+      app_store_connect: Codemagic
 
     triggering:
       events:
@@ -26,32 +26,34 @@ workflows:
         script: |
           npm install
 
+      - name: Expo prebuild
+        script: |
+          npx expo prebuild --platform ios --clean
+
       - name: Install CocoaPods
         script: |
-          cd ios
-          pod install
+          cd ios && pod install
 
-      - name: Set up provisioning profiles
+      - name: Set up code signing
         script: |
           xcode-project use-profiles
 
       - name: Build iOS app
         script: |
-          npx expo prebuild --platform ios --clean
           cd ios
-          xcodebuild -workspace BarakahApp.xcworkspace \
-            -scheme BarakahApp \
+          xcodebuild -workspace Barakah.xcworkspace \
+            -scheme Barakah \
             -configuration Release \
             -sdk iphoneos \
-            -archivePath $CM_BUILD_DIR/build/BarakahApp.xcarchive \
-            archive
+            -archivePath $CM_BUILD_DIR/build/Barakah.xcarchive \
+            archive | xcpretty
 
       - name: Export IPA
         script: |
           xcode-project build-ipa \
-            --workspace ios/BarakahApp.xcworkspace \
-            --scheme BarakahApp \
-            --archive-path $CM_BUILD_DIR/build/BarakahApp.xcarchive
+            --workspace ios/Barakah.xcworkspace \
+            --scheme Barakah \
+            --archive-path $CM_BUILD_DIR/build/Barakah.xcarchive
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -62,4 +64,3 @@ workflows:
       app_store_connect:
         auth: integration
         submit_to_testflight: true
-        expire_build_submitted_for_review: true
