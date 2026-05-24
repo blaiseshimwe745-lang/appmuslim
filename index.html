@@ -205,6 +205,25 @@
     .completion-msg .big { font-size: 48px; margin-bottom: 8px; }
     .completion-msg h3 { color: var(--green-deep); font-size: 18px; }
     .completion-msg p { color: var(--text-medium); font-size: 14px; margin-top: 4px; }
+
+    /* ====== IMPACT / WIRKUNG ====== */
+    .impact-section { margin-top: 28px; }
+    .impact-section > h3 { font-size: 16px; font-weight: 650; margin-bottom: 14px; }
+    .impact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .impact-card { border-radius: var(--radius-md); padding: 22px 14px 18px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+    .impact-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.06; background: radial-gradient(circle at 30% 20%, white 0%, transparent 60%); pointer-events: none; }
+    .impact-card.religion { background: linear-gradient(155deg, #0a4a4a, #0d5a5a 40%, #148080); }
+    .impact-card.social { background: linear-gradient(155deg, #3a1818, #4a2020 40%, #5a2a2a); }
+    .impact-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+    .impact-number { font-size: 36px; font-weight: 800; line-height: 1; }
+    .impact-card.religion .impact-number { color: var(--gold-light); text-shadow: 0 2px 12px rgba(212,168,67,0.3); }
+    .impact-card.social .impact-number { color: #ff9a9a; text-shadow: 0 2px 12px rgba(255,100,100,0.3); }
+    .impact-unit { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .impact-desc { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 10px; line-height: 1.45; font-weight: 500; }
+    .impact-today { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+    .impact-card.religion .impact-today { background: rgba(212,168,67,0.2); color: var(--gold-light); }
+    .impact-card.social .impact-today { background: rgba(255,138,138,0.2); color: #ff9a9a; }
+
     @media (max-height: 700px) { .phone { max-height: 98vh; border-radius: 32px; } .phone-wrapper { padding: 8px; } .onboarding-slide { padding: 60px 16px 12px; } #tabIch { padding: 50px 16px 100px; } }
     @media (max-width: 420px) { .phone-wrapper { padding: 0; } .phone { width: 100%; max-height: 100vh; border-radius: 0; box-shadow: none; } .phone-wrapper { background: var(--cream); } .dynamic-island { display: none; } }
   </style>
@@ -395,7 +414,28 @@
       <div class="tab-view" id="tabIch">
         <div class="profile-card"><div class="profile-avatar">A</div><h3>Abdullah</h3><div class="location">Berlin, Deutschland</div></div>
         <div class="streak-mega"><span class="fire-big">🔥</span><div class="streak-big-number" id="bigStreakNumber">0</div><div class="streak-big-label">Tage am Stück</div><div class="streak-msg" id="streakMessage">Starte deine Reise!</div></div>
-        <div class="stats-grid"><div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Gebete</div></div><div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Qur'an Min.</div></div><div class="stat-card"><div class="stat-number">0h</div><div class="stat-label">Gespart</div></div></div>
+
+        <div class="impact-section">
+          <h3>Deine Wirkung</h3>
+          <div class="impact-cards">
+            <div class="impact-card religion">
+              <span class="impact-emoji">🕌</span>
+              <div class="impact-number" id="religionHours">0</div>
+              <div class="impact-unit">Stunden</div>
+              <div class="impact-desc">in deine Religion investiert</div>
+              <div class="impact-today" id="religionToday">+0 min heute</div>
+            </div>
+            <div class="impact-card social">
+              <span class="impact-emoji">📵</span>
+              <div class="impact-number" id="socialHours">0</div>
+              <div class="impact-unit">Stunden</div>
+              <div class="impact-desc">von Social Media ferngehalten</div>
+              <div class="impact-today" id="socialToday">+0 min heute</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid"><div class="stat-card"><div class="stat-number" id="statPrayers">0</div><div class="stat-label">Gebete</div></div><div class="stat-card"><div class="stat-number" id="statQuran">0</div><div class="stat-label">Qur'an Min.</div></div><div class="stat-card"><div class="stat-number" id="statSaved">0h</div><div class="stat-label">Gespart</div></div></div>
         <div style="margin-top:24px;"><h3 style="font-size:16px;font-weight:650;margin-bottom:12px;">Kalender</h3><div class="calendar-grid" id="calendarGrid"></div></div>
         <div style="margin-top:24px;">
           <h3 style="font-size:16px;font-weight:650;margin-bottom:12px;">Meilensteine 🏆</h3>
@@ -493,6 +533,39 @@
     tasks.forEach(t => { if (t.classList.contains('checked')) done++; });
     return { done, total, remaining: total-done, pct: total>0 ? Math.round((done/total)*100) : 0 };
   }
+  // ====== IMPACT / WIRKUNG BERECHNUNG ======
+  // Pro abgeschlossenen Tag:
+  //   Religion: 5 Gebete × 8min + Qur'an 10min + Dhikr 5min = ~55 min
+  //   Social Media gespart: Apps gesperrt = ~2h weniger Scrollen = ~120 min
+  function formatH(minutes) {
+    const h = minutes / 60;
+    if (h < 0.1) return '0';
+    if (h >= 100) return Math.round(h).toString();
+    const str = h.toFixed(1);
+    return str.endsWith('.0') ? str.slice(0, -2) : str;
+  }
+  function updateImpact() {
+    const streak = parseInt(localStorage.getItem('barakahStreak') || '0');
+    const stats = getStats();
+    // Heutige Minuten anteilig nach erledigten Tasks
+    const todayReligionMin = Math.round(stats.pct / 100 * 55);
+    const todaySocialMin = Math.round(stats.pct / 100 * 120);
+    // Gesamt = vergangene Streak-Tage + heute
+    const totalReligionMin = (streak * 55) + todayReligionMin;
+    const totalSocialMin = (streak * 120) + todaySocialMin;
+
+    document.getElementById('religionHours').textContent = formatH(totalReligionMin);
+    document.getElementById('socialHours').textContent = formatH(totalSocialMin);
+    document.getElementById('religionToday').textContent = '+' + todayReligionMin + ' min heute';
+    document.getElementById('socialToday').textContent = '+' + todaySocialMin + ' min heute';
+
+    // Stats-Grid aktualisieren
+    const prayers = (streak * 5) + stats.done;
+    document.getElementById('statPrayers').textContent = prayers;
+    document.getElementById('statQuran').textContent = (streak * 10) + Math.round(stats.pct / 100 * 10);
+    document.getElementById('statSaved').textContent = formatH(totalSocialMin) + 'h';
+  }
+
   function updateProgress() {
     const s = getStats();
     document.getElementById('progressPercent').textContent = s.pct + '%';
@@ -521,6 +594,7 @@
         document.getElementById('m365').textContent = Math.min(100,Math.round((streak/365)*100))+'%';
       }
     }
+    updateImpact();
     updateAppsTab();
   }
   function updateAppsTab() {
