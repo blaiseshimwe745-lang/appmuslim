@@ -18,8 +18,8 @@ import { Platform } from 'react-native';
 //    - Create Offering "default" with both packages
 // ============================================================
 
-const REVENUECAT_API_KEY_IOS = 'YOUR_REVENUECAT_IOS_API_KEY';
-const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';
+const REVENUECAT_API_KEY_IOS = 'test_YaZJGoNXqZYexfOMVByAHJUHCrY';
+const REVENUECAT_API_KEY_ANDROID = 'test_YaZJGoNXqZYexfOMVByAHJUHCrY';
 
 const ENTITLEMENT_ID = 'premium';
 
