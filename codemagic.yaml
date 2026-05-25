@@ -38,22 +38,11 @@ workflows:
         script: |
           xcode-project use-profiles
 
-      - name: Build iOS app
-        script: |
-          cd ios
-          xcodebuild -workspace Barakah.xcworkspace \
-            -scheme Barakah \
-            -configuration Release \
-            -sdk iphoneos \
-            -archivePath $CM_BUILD_DIR/build/Barakah.xcarchive \
-            archive | xcpretty
-
-      - name: Export IPA
+      - name: Build and export IPA
         script: |
           xcode-project build-ipa \
             --workspace ios/Barakah.xcworkspace \
-            --scheme Barakah \
-            --archive-path $CM_BUILD_DIR/build/Barakah.xcarchive
+            --scheme Barakah
 
     artifacts:
       - build/ios/ipa/*.ipa
