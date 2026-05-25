@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.barakah.digitaldetox",
+      "bundleIdentifier": "bakarah",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Barakah nutzt Face ID für schnellen Login."
       }
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0d5a5a"
       },
-      "package": "com.barakah.digitaldetox",
+      "package": "bakarah",
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
         "SCHEDULE_EXACT_ALARM",
