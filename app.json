@@ -35,7 +35,6 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-background-fetch",
       "expo-localization",
       [
         "expo-splash-screen",
