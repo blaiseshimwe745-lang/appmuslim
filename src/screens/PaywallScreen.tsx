@@ -84,7 +84,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
 
   // Get display prices from RevenueCat (localized for user's region)
   const monthlyPrice = packages.monthly?.product?.priceString || '4,99 €';
-  const yearlyPrice = packages.yearly?.product?.priceString || '19,90 €';
+  const yearlyPrice = packages.yearly?.product?.priceString || '39,99 €';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -136,7 +136,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
               activeOpacity={0.8}
             >
               <View style={styles.planBadge}>
-                <Text style={styles.planBadgeText}>Spare 67%</Text>
+                <Text style={styles.planBadgeText}>Spare 33%</Text>
               </View>
               <View style={styles.planRadio}>
                 <View style={[styles.radioOuter, selectedPlan === 'yearly' && styles.radioActive]}>
@@ -146,7 +146,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
               <View style={styles.planInfo}>
                 <Text style={styles.planName}>Jährlich</Text>
                 <Text style={styles.planPrice}>{yearlyPrice} / Jahr</Text>
-                <Text style={styles.planSub}>3 Tage kostenlos, dann 1,66 €/Monat</Text>
+                <Text style={styles.planSub}>Entspricht ca. 3,33 €/Monat</Text>
               </View>
             </TouchableOpacity>
 

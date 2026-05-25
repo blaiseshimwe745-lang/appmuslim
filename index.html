@@ -9,21 +9,23 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --green-deep: #0d5a5a; --green-dark: #0a4747; --green-darker: #073a3a;
-      --green-medium: #148080; --green-light: #2ab5b5; --green-pastel: #e0f7f7;
+      --green-deep: #0F4C43; --green-dark: #0a3e36; --green-darker: #072e28;
+      --green-medium: #148070; --green-light: #2ab5a5; --green-pastel: #E8F5F0;
       --gold: #d4a843; --gold-dark: #b8922e; --gold-light: #f5e6b8; --gold-pale: #fdf6e3;
       --gold-gradient: linear-gradient(135deg, #d4a843, #ecc96a, #f0d48a);
-      --cream: #faf8f0; --cream-dark: #f0ece0; --cream-darker: #e8e0cc;
-      --sand: #d8d0bc; --text-dark: #1a2a2a; --text-medium: #4a5a5a; --text-light: #8a9a9a;
+      --cream: #F9F8F3; --cream-dark: #F0EDE5; --cream-darker: #E4DFD4;
+      --sand: #d0c8b4; --text-dark: #111111; --text-medium: #555555; --text-light: #999999;
       --white: #ffffff; --red: #d44; --red-bg: #fde8e8;
-      --shadow-sm: 0 2px 8px rgba(13,90,90,0.06);
-      --shadow-md: 0 8px 32px rgba(13,90,90,0.10);
-      --radius-sm: 12px; --radius-md: 20px; --radius-lg: 28px;
-      --font-arabic: 'Amiri', serif; --font-sans: 'Inter', -apple-system, sans-serif;
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.04);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.06);
+      --shadow-card: 0 2px 16px rgba(0,0,0,0.05);
+      --radius-sm: 20px; --radius-md: 24px; --radius-lg: 32px;
+      --font-arabic: 'Amiri', serif;
+      --font-sans: 'Inter', -apple-system, 'SF Pro Display', sans-serif;
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    html, body { height: 100%; font-family: var(--font-sans); background: linear-gradient(145deg, #e8e0cc, #d4cbb5); color: var(--text-dark); overflow: hidden; -webkit-font-smoothing: antialiased; }
+    html, body { height: 100%; font-family: var(--font-sans); background: linear-gradient(145deg, #e0d8c8, #ccc4b0); color: var(--text-dark); overflow: hidden; -webkit-font-smoothing: antialiased; }
     .phone-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
     .phone { width: 393px; max-height: 95vh; min-height: 600px; background: var(--cream); border-radius: 48px; overflow: hidden; position: relative; box-shadow: 0 0 0 2px #b8ad97, 0 0 0 6px #1a1a1a, 0 0 0 8px #3a3a3a, 0 30px 80px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
     .dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 110px; height: 32px; background: #1a1a1a; border-radius: 20px; z-index: 100; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -37,194 +39,250 @@
     .status-icons { display: flex; gap: 4px; align-items: center; }
     .status-bar svg { width: 16px; height: 16px; }
     .tab-view { min-height: 100%; width: 100%; display: none; flex-direction: column; }
-    .tab-view.active { display: flex; animation: fadeIn 0.3s var(--ease-out); }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-view.active { display: flex; animation: fadeIn 0.35s var(--ease-out); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ====== ONBOARDING ====== */
     .onboarding-slide { min-height: 100%; display: none; flex-direction: column; padding: 90px 20px 24px; position: relative; justify-content: center; }
     .onboarding-slide.active { display: flex; }
 
-    .back-arrow { position: absolute; top: 52px; left: 12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 50%; cursor: pointer; border: none; font-size: 20px; color: var(--text-medium); transition: all 0.2s; z-index: 60; }
-    .back-arrow:active { transform: scale(0.9); background: rgba(0,0,0,0.08); }
+    .back-arrow { position: absolute; top: 52px; left: 12px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.05); border-radius: 50%; cursor: pointer; border: none; font-size: 20px; color: var(--text-medium); transition: all 0.2s var(--ease-spring); z-index: 60; }
+    .back-arrow:active { transform: scale(0.88); background: rgba(0,0,0,0.1); }
     .back-arrow.hidden { display: none; }
 
-    .onboarding-slide .illustration { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 0 18px; }
-    .onboarding-slide .illustration-inner { width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .onboarding-slide .illustration { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; padding: 0 0 20px; }
+    .onboarding-slide .illustration-inner { width: 100px; height: 100px; border-radius: 28px; display: flex; align-items: center; justify-content: center; }
     .mosque-icon { position: relative; width: 76px; height: 56px; }
     .mosque-icon .dome { width: 52px; height: 33px; background: var(--green-deep); border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin: 0 auto; position: relative; }
-    .mosque-icon .dome::after { content: '☪'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--gold); }
+    .mosque-icon .dome::after { content: '♀'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--gold); }
     .mosque-icon .base { width: 76px; height: 3px; background: var(--green-deep); border-radius: 2px; margin-top: 5px; }
     .mosque-icon .minaret-l, .mosque-icon .minaret-r { position: absolute; bottom: 3px; width: 4px; height: 26px; background: var(--green-deep); border-radius: 3px 3px 0 0; }
     .mosque-icon .minaret-l { left: 6px; }
     .mosque-icon .minaret-r { right: 6px; }
 
-    .onboarding-slide .slide-title { font-size: 21px; font-weight: 700; color: var(--green-deep); text-align: center; margin-bottom: 10px; }
+    .onboarding-slide .slide-title { font-size: 24px; font-weight: 800; color: var(--green-deep); text-align: center; margin-bottom: 10px; line-height: 1.15; letter-spacing: -0.3px; }
     .onboarding-slide .slide-title .gold { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .onboarding-slide .arabic { font-family: var(--font-arabic); font-size: 18px; font-weight: 600; color: var(--gold-dark); text-align: center; margin-bottom: 6px; direction: rtl; opacity: 0.8; }
+    .onboarding-slide .arabic { font-family: var(--font-arabic); font-size: 18px; font-weight: 600; color: var(--gold-dark); text-align: center; margin-bottom: 6px; direction: rtl; opacity: 0.75; }
 
-    .q-text { font-size: 17px; font-weight: 600; color: var(--text-dark); text-align: center; line-height: 1.55; max-width: 310px; margin: 0 auto 24px; padding: 0 4px; }
-    .slide-sub { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; text-align: center; margin-bottom: 6px; }
+    .q-text { font-size: 18px; font-weight: 700; color: var(--text-dark); text-align: center; line-height: 1.5; max-width: 310px; margin: 0 auto 28px; padding: 0 4px; letter-spacing: -0.2px; }
+    .slide-sub { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; text-align: center; margin-bottom: 8px; }
     .sub-pain { color: #c44; } .sub-truth { color: #b8922e; } .sub-hope { color: var(--green-medium); } .sub-ready { color: var(--gold-dark); }
 
-    .a-grid { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 330px; margin: 0 auto; }
+    .a-grid { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 330px; margin: 0 auto; }
     .a-btn {
-      padding: 12px 24px;
+      padding: 14px 26px;
       background: var(--white);
       border: 2px solid var(--cream-darker);
-      border-radius: 14px; font-size: 14px; font-weight: 500;
-      cursor: pointer; transition: all 0.25s var(--ease-spring);
+      border-radius: 999px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s var(--ease-spring);
       font-family: var(--font-sans); color: var(--text-dark);
       text-align: center; min-width: 90px; flex: 1;
     }
-    .a-btn:active { transform: scale(0.95); }
-    .a-btn.selected { border-color: var(--green-medium); background: var(--green-pastel); color: var(--green-deep); font-weight: 600; }
+    .a-btn:active { transform: scale(0.93); }
+    .a-btn.selected { border-color: var(--green-deep); background: var(--green-deep); color: white; font-weight: 700; transform: scale(1.03); }
 
-    .onboarding-footer { margin-top: auto; padding-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .onboarding-footer { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .onboarding-dots { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
-    .onboarding-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sand); transition: all 0.4s var(--ease-out); flex-shrink: 0; }
-    .onboarding-dots .dot.active { width: 18px; border-radius: 4px; background: var(--green-deep); }
+    .onboarding-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cream-darker); transition: all 0.4s var(--ease-out); flex-shrink: 0; }
+    .onboarding-dots .dot.active { width: 20px; border-radius: 999px; background: var(--green-deep); }
 
-    .btn-primary { width: 100%; max-width: 330px; padding: 14px; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); color: white; border: none; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,90,90,0.25); transition: all 0.25s var(--ease-out); }
-    .btn-primary:active { transform: scale(0.97); }
-    .btn-skip { background: none; border: none; color: var(--text-light); font-size: 12px; cursor: pointer; padding: 6px; }
+    .btn-primary { width: 100%; max-width: 330px; padding: 16px; background: #000; color: white; border: none; border-radius: 999px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: all 0.2s var(--ease-spring); letter-spacing: -0.2px; }
+    .btn-primary:active { transform: scale(0.96); }
+    .btn-skip { background: none; border: none; color: var(--text-light); font-size: 12px; cursor: pointer; padding: 8px; font-weight: 500; }
 
     /* ====== PAYWALL ====== */
-    .paywall-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 330px; margin: 8px auto 0; }
-    .pw-card { border-radius: 16px; padding: 16px; cursor: pointer; position: relative; border: 2px solid var(--cream-darker); transition: all 0.3s var(--ease-spring); background: white; text-align: center; }
-    .pw-card.selected { border-color: var(--gold); background: var(--gold-pale); }
-    .pw-card .pw-badge { position: absolute; top: -10px; right: 16px; background: var(--gold-gradient); color: white; padding: 3px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
-    .pw-card .pw-price { font-size: 28px; font-weight: 800; color: var(--green-deep); }
-    .pw-card .pw-price .currency { font-size: 16px; }
+    .paywall-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 330px; margin: 10px auto 0; }
+    .pw-card { border-radius: var(--radius-md); padding: 20px; cursor: pointer; position: relative; border: 2px solid var(--cream-darker); transition: all 0.25s var(--ease-spring); background: white; text-align: center; }
+    .pw-card.selected { border-color: var(--gold); background: var(--gold-pale); transform: scale(1.02); }
+    .pw-card .pw-badge { position: absolute; top: -11px; right: 16px; background: #000; color: white; padding: 4px 14px; border-radius: 999px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .pw-card .pw-price { font-size: 32px; font-weight: 900; color: var(--green-deep); letter-spacing: -1px; }
+    .pw-card .pw-price .currency { font-size: 18px; font-weight: 700; }
     .pw-card .pw-period { font-size: 14px; color: var(--text-medium); font-weight: 500; margin-top: 2px; }
-    .pw-card .pw-save { font-size: 12px; color: var(--gold-dark); font-weight: 600; margin-top: 4px; }
-    .pw-card .pw-perk { font-size: 11px; color: var(--text-light); margin-top: 6px; }
+    .pw-card .pw-save { font-size: 12px; color: var(--gold-dark); font-weight: 700; margin-top: 6px; }
+    .pw-card .pw-perk { font-size: 11px; color: var(--text-light); margin-top: 6px; font-weight: 500; }
     .pw-card.selected .pw-price { color: var(--gold-dark); }
-    .pw-sub { font-size: 11px; color: var(--text-light); text-align: center; margin: 6px auto 0; max-width: 300px; }
+    .pw-sub { font-size: 11px; color: var(--text-light); text-align: center; margin: 8px auto 0; max-width: 300px; }
 
-    /* ====== REST ====== */
-    .dash-header { padding: 56px 24px 24px; background: linear-gradient(165deg, var(--green-deep), var(--green-darker)); position: relative; overflow: hidden; }
+    /* ====== DASHBOARD HEADER ====== */
+    .dash-header { padding: 60px 28px 28px; background: var(--green-deep); position: relative; overflow: hidden; }
+    .dash-header::before { content: ''; position: absolute; top: -40%; right: -20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%); pointer-events: none; }
     .dash-top-row { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
-    .dash-greeting h2 { font-size: 21px; font-weight: 650; color: white; }
-    .dash-greeting p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 3px; }
-    .dash-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 600; box-shadow: 0 4px 16px rgba(212,168,67,0.35); cursor: pointer; }
-    .streak-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.10); backdrop-filter: blur(12px); padding: 10px 18px 10px 16px; border-radius: 40px; margin-top: 16px; position: relative; z-index: 2; border: 1px solid rgba(255,255,255,0.06); cursor: pointer; }
-    .streak-badge .fire { font-size: 22px; }
-    .streak-badge .streak-number { font-size: 26px; font-weight: 700; color: var(--gold-light); }
-    .streak-badge .streak-label { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
-    .today-progress { margin-top: 16px; position: relative; z-index: 2; }
-    .today-progress .label { display: flex; justify-content: space-between; color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500; }
-    .today-progress .bar-bg { margin-top: 8px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden; }
-    .today-progress .bar-fill { height: 100%; background: var(--gold-gradient); border-radius: 4px; width: 0%; transition: width 0.6s var(--ease-out); }
-    .next-prayer-card { margin: 16px 24px 12px; padding: 18px 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
-    .next-prayer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold-gradient); }
-    .prayer-info { display: flex; align-items: center; gap: 12px; }
-    .prayer-icon { width: 44px; height: 44px; border-radius: 14px; background: var(--green-pastel); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-    .prayer-name { font-size: 14px; font-weight: 600; }
-    .prayer-time { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-    .prayer-countdown { font-size: 14px; font-weight: 600; color: var(--green-medium); background: var(--green-pastel); padding: 6px 14px; border-radius: 40px; }
-    .section-title { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; margin-top: 24px; margin-bottom: 12px; }
-    .section-title h3 { font-size: 16px; font-weight: 650; }
-    .task-list { padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
-    .task-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer; user-select: none; transition: all 0.2s var(--ease-out); }
-    .task-item:active { transform: scale(0.98); }
-    .task-item .checkbox { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--sand); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.25s var(--ease-spring); font-size: 13px; color: white; font-weight: 600; }
-    .task-item .checkbox.checked { background: var(--green-deep); border-color: var(--green-deep); transform: scale(1.1); }
+    .dash-greeting h2 { font-size: 26px; font-weight: 900; color: white; line-height: 1.1; letter-spacing: -0.5px; }
+    .dash-greeting p { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 6px; font-weight: 500; letter-spacing: 0.2px; }
+    .dash-avatar { width: 46px; height: 46px; border-radius: 16px; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 700; cursor: pointer; transition: transform 0.2s var(--ease-spring); }
+    .dash-avatar:active { transform: scale(0.92); }
+    .streak-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); backdrop-filter: blur(16px); padding: 10px 20px; border-radius: 999px; margin-top: 20px; position: relative; z-index: 2; cursor: pointer; transition: transform 0.2s var(--ease-spring); border: 1px solid rgba(255,255,255,0.05); }
+    .streak-badge:active { transform: scale(0.96); }
+    .streak-badge .fire { font-size: 20px; }
+    .streak-badge .streak-number { font-size: 24px; font-weight: 800; color: var(--gold-light); letter-spacing: -0.5px; }
+    .streak-badge .streak-label { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 600; }
+    .today-progress { margin-top: 20px; position: relative; z-index: 2; }
+    .today-progress .label { display: flex; justify-content: space-between; align-items: baseline; color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 600; }
+    .today-progress .label span:last-child { font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.9); }
+    .today-progress .bar-bg { margin-top: 10px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; }
+    .today-progress .bar-fill { height: 100%; background: var(--gold-gradient); border-radius: 999px; width: 0%; transition: width 0.6s var(--ease-out); }
+
+    /* ====== NEXT PRAYER CARD ====== */
+    .next-prayer-card { margin: 20px 20px 16px; padding: 22px 24px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-card); display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
+    .next-prayer-card::before { content: ''; position: absolute; top: 12px; left: 0; width: 5px; height: calc(100% - 24px); background: var(--green-deep); border-radius: 0 4px 4px 0; }
+    .prayer-info { display: flex; align-items: center; gap: 14px; }
+    .prayer-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--green-pastel); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .prayer-name { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+    .prayer-time { font-size: 12px; color: var(--text-light); margin-top: 3px; font-weight: 500; }
+    .prayer-countdown { font-size: 15px; font-weight: 800; color: var(--green-deep); background: var(--green-pastel); padding: 8px 18px; border-radius: 999px; letter-spacing: -0.3px; }
+
+    /* ====== TASK SECTION ====== */
+    .section-title { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-top: 24px; margin-bottom: 14px; }
+    .section-title h3 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+
+    .task-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px; }
+    .task-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px; background: white;
+      border-radius: var(--radius-md); box-shadow: var(--shadow-card);
+      cursor: pointer; user-select: none;
+      transition: all 0.2s var(--ease-spring);
+    }
+    .task-item:active { transform: scale(0.97); }
+    .task-item .checkbox {
+      width: 26px; height: 26px; border-radius: 10px;
+      border: 2.5px solid var(--cream-darker);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.2s var(--ease-spring);
+      font-size: 14px; color: white; font-weight: 700;
+    }
+    .task-item .checkbox.checked {
+      background: #000; border-color: #000;
+      transform: scale(1.1);
+      animation: checkPop 0.3s var(--ease-spring);
+    }
+    @keyframes checkPop {
+      0% { transform: scale(0.7); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1.1); }
+    }
     .task-item .task-text { flex: 1; }
-    .task-item .task-text h4 { font-size: 14px; font-weight: 600; }
-    .task-item .task-text p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-    .task-item .task-emoji { font-size: 20px; flex-shrink: 0; }
-    .task-item.done { opacity: 0.5; }
+    .task-item .task-text h4 { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+    .task-item .task-text p { font-size: 12px; color: var(--text-light); margin-top: 3px; font-weight: 500; }
+    .task-item .task-emoji { font-size: 22px; flex-shrink: 0; }
+    .task-item.done { opacity: 0.45; }
     .task-item.done .task-text h4 { text-decoration: line-through; }
-    .apps-header { padding: 60px 24px 28px; background: linear-gradient(165deg, #3a1a1a, #5a2a2a); text-align: center; }
-    .apps-header .lock-big { font-size: 48px; margin-bottom: 8px; }
-    .apps-header h2 { font-size: 22px; font-weight: 700; color: white; }
-    .apps-header p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; }
-    .apps-header .apps-progress { margin-top: 16px; background: rgba(255,255,255,0.1); border-radius: 40px; padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: white; font-weight: 500; }
-    .apps-header .apps-progress .count { font-weight: 700; color: #ff8a8a; }
+
+    /* ====== APPS TAB ====== */
+    .apps-header { padding: 64px 28px 32px; background: linear-gradient(165deg, #2a1212, #4a2020); text-align: center; }
+    .apps-header .lock-big { font-size: 52px; margin-bottom: 10px; }
+    .apps-header h2 { font-size: 24px; font-weight: 900; color: white; letter-spacing: -0.5px; }
+    .apps-header p { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 6px; font-weight: 500; }
+    .apps-header .apps-progress { margin-top: 20px; background: rgba(255,255,255,0.08); border-radius: 999px; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: white; font-weight: 600; }
+    .apps-header .apps-progress .count { font-weight: 800; color: #ff8a8a; }
     .apps-header.unlocked { background: linear-gradient(165deg, var(--green-deep), var(--green-darker)); }
     .apps-header.unlocked .apps-progress .count { color: #8fefb0; }
-    .app-card { display: flex; align-items: center; gap: 14px; padding: 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-    .app-card .app-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .app-card { display: flex; align-items: center; gap: 16px; padding: 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-card); }
+    .app-card .app-icon { width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
     .app-card .app-icon.locked { background: var(--red-bg); }
     .app-card .app-icon.free { background: var(--green-pastel); }
     .app-card .app-info { flex: 1; }
-    .app-card .app-info h4 { font-size: 15px; font-weight: 600; }
-    .app-card .app-info p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .app-card .app-info h4 { font-size: 15px; font-weight: 700; }
+    .app-card .app-info p { font-size: 12px; color: var(--text-light); margin-top: 3px; font-weight: 500; }
     .app-card .app-status { font-size: 20px; }
-    .action-wrapper { padding: 16px 24px; text-align: center; }
-    #tabIch { padding: 60px 24px 120px; }
-    .profile-card { text-align: center; padding: 24px 0 16px; }
-    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 700; margin: 0 auto; box-shadow: var(--shadow-md); }
-    .profile-card h3 { margin-top: 12px; font-size: 20px; font-weight: 700; }
-    .profile-card .location { margin-top: 6px; background: var(--green-pastel); padding: 4px 16px; border-radius: 40px; font-size: 12px; color: var(--green-deep); font-weight: 500; display: inline-block; }
-    .streak-mega { text-align: center; padding: 20px 0 8px; }
+    .action-wrapper { padding: 20px 20px; text-align: center; }
+
+    /* ====== ICH TAB ====== */
+    #tabIch { padding: 64px 20px 140px; }
+    .profile-card { text-align: center; padding: 28px 0 20px; }
+    .profile-avatar { width: 84px; height: 84px; border-radius: 24px; background: linear-gradient(135deg, var(--green-deep), var(--green-medium)); display: flex; align-items: center; justify-content: center; font-size: 34px; color: white; font-weight: 800; margin: 0 auto; box-shadow: var(--shadow-md); }
+    .profile-card h3 { margin-top: 14px; font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+    .profile-card .location { margin-top: 8px; background: var(--green-pastel); padding: 6px 18px; border-radius: 999px; font-size: 12px; color: var(--green-deep); font-weight: 600; display: inline-block; }
+    .streak-mega { text-align: center; padding: 24px 0 10px; }
     .streak-mega .fire-big { font-size: 48px; display: block; }
-    .streak-mega .streak-big-number { font-size: 48px; font-weight: 700; color: var(--green-deep); }
-    .streak-mega .streak-big-label { font-size: 14px; color: var(--text-medium); margin-top: 4px; }
-    .streak-mega .streak-msg { background: var(--green-pastel); color: var(--green-deep); padding: 6px 16px; border-radius: 40px; display: inline-block; font-size: 12px; font-weight: 500; margin-top: 10px; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
-    .stat-card { background: white; border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; box-shadow: var(--shadow-sm); }
-    .stat-card .stat-number { font-size: 20px; font-weight: 700; color: var(--green-deep); }
-    .stat-card .stat-label { font-size: 11px; color: var(--text-light); margin-top: 3px; font-weight: 500; }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 14px; }
-    .calendar-grid .day-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--text-light); padding: 6px 0; }
-    .calendar-grid .day-cell { aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; background: var(--cream-dark); color: var(--text-medium); }
-    .calendar-grid .day-cell.done { background: var(--green-deep); color: white; font-weight: 600; }
-    .calendar-grid .day-cell.today { border: 2px solid var(--gold); }
+    .streak-mega .streak-big-number { font-size: 52px; font-weight: 900; color: var(--green-deep); letter-spacing: -2px; }
+    .streak-mega .streak-big-label { font-size: 14px; color: var(--text-light); margin-top: 4px; font-weight: 600; }
+    .streak-mega .streak-msg { background: rgba(15,76,67,0.08); color: var(--green-deep); padding: 8px 20px; border-radius: 999px; display: inline-block; font-size: 13px; font-weight: 700; margin-top: 12px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .stat-card { background: white; border-radius: var(--radius-md); padding: 18px 12px; text-align: center; box-shadow: var(--shadow-card); }
+    .stat-card .stat-number { font-size: 22px; font-weight: 900; color: var(--green-deep); letter-spacing: -0.5px; }
+    .stat-card .stat-label { font-size: 11px; color: var(--text-light); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 14px; }
+    .calendar-grid .day-label { text-align: center; font-size: 11px; font-weight: 700; color: var(--text-light); padding: 6px 0; }
+    .calendar-grid .day-cell { aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; background: var(--cream-dark); color: var(--text-medium); }
+    .calendar-grid .day-cell.done { background: var(--green-deep); color: white; font-weight: 700; }
+    .calendar-grid .day-cell.today { border: 2.5px solid var(--gold); }
     .calendar-grid .day-cell.missed { background: var(--red-bg); color: var(--red); }
     .calendar-grid .day-cell.empty { background: transparent; }
-    .settings-section { margin-top: 24px; }
-    .settings-section h3 { font-size: 16px; font-weight: 650; margin-bottom: 12px; }
-    .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); margin-bottom: 10px; }
-    .setting-item .setting-left { display: flex; align-items: center; gap: 12px; }
+    .settings-section { margin-top: 28px; }
+    .settings-section h3 { font-size: 18px; font-weight: 800; margin-bottom: 14px; letter-spacing: -0.3px; }
+    .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-card); margin-bottom: 12px; }
+    .setting-item .setting-left { display: flex; align-items: center; gap: 14px; }
     .setting-item .setting-left .setting-icon { font-size: 20px; }
-    .setting-item .setting-left .setting-text h4 { font-size: 14px; font-weight: 600; }
-    .setting-item .setting-left .setting-text p { font-size: 12px; color: var(--text-light); margin-top: 1px; }
-    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .setting-item .setting-left .setting-text h4 { font-size: 14px; font-weight: 700; }
+    .setting-item .setting-left .setting-text p { font-size: 12px; color: var(--text-light); margin-top: 2px; font-weight: 500; }
+    .toggle { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-    .toggle .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--cream-darker); border-radius: 24px; transition: background 0.3s; cursor: pointer; }
-    .toggle .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: transform 0.3s; }
-    .toggle input:checked + .slider { background: var(--green-medium); }
+    .toggle .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--cream-darker); border-radius: 999px; transition: background 0.3s var(--ease-spring); cursor: pointer; }
+    .toggle .slider::before { content: ''; position: absolute; width: 22px; height: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: transform 0.3s var(--ease-spring); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .toggle input:checked + .slider { background: var(--green-deep); }
     .toggle input:checked + .slider::before { transform: translateX(20px); }
-    .setting-input { width: 120px; padding: 8px 12px; border: 1.5px solid var(--cream-darker); border-radius: 10px; font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none; text-align: right; }
-    .milestone-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); margin-bottom: 10px; }
-    .milestone-item .m-icon { font-size: 22px; }
+    .setting-input { width: 120px; padding: 10px 14px; border: 2px solid var(--cream-darker); border-radius: 14px; font-size: 14px; font-family: var(--font-sans); background: var(--cream); color: var(--text-dark); outline: none; text-align: right; font-weight: 600; transition: border-color 0.2s; }
+    .setting-input:focus { border-color: var(--green-deep); }
+    .milestone-item { display: flex; align-items: center; gap: 14px; padding: 18px 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-card); margin-bottom: 12px; }
+    .milestone-item .m-icon { font-size: 24px; }
     .milestone-item .m-text { flex: 1; }
-    .milestone-item .m-text h4 { font-size: 14px; font-weight: 600; }
-    .milestone-item .m-text p { font-size: 12px; color: var(--text-light); margin-top: 1px; }
-    .milestone-item .m-badge { padding: 4px 14px; border-radius: 40px; font-size: 12px; font-weight: 500; background: var(--cream-dark); color: var(--text-medium); }
-    .bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 10px 16px 28px; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-top: 1px solid rgba(208,208,200,0.3); position: sticky; bottom: 0; z-index: 50; margin-top: auto; }
-    .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 20px; border-radius: 16px; cursor: pointer; background: transparent; border: none; font-family: var(--font-sans); transition: all 0.2s var(--ease-out); }
-    .nav-tab svg { width: 24px; height: 24px; color: var(--text-light); transition: color 0.2s; }
-    .nav-tab span { font-size: 11px; color: var(--text-light); font-weight: 500; transition: color 0.2s; }
-    .nav-tab:active { transform: scale(0.92); }
-    .nav-tab.active svg { color: var(--green-deep); }
-    .nav-tab.active span { color: var(--green-deep); font-weight: 600; }
-    .completion-msg { display: none; text-align: center; padding: 20px 24px; margin-top: 16px; }
-    .completion-msg.show { display: block; }
-    .completion-msg .big { font-size: 48px; margin-bottom: 8px; }
-    .completion-msg h3 { color: var(--green-deep); font-size: 18px; }
-    .completion-msg p { color: var(--text-medium); font-size: 14px; margin-top: 4px; }
+    .milestone-item .m-text h4 { font-size: 14px; font-weight: 700; }
+    .milestone-item .m-text p { font-size: 12px; color: var(--text-light); margin-top: 2px; font-weight: 500; }
+    .milestone-item .m-badge { padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--cream-dark); color: var(--text-medium); }
+
+    /* ====== FLOATING NAVIGATION DOCK ====== */
+    .bottom-nav {
+      display: flex; justify-content: center; align-items: center; gap: 4px;
+      padding: 8px 8px;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: 999px;
+      position: sticky; bottom: 0; z-index: 50;
+      margin: auto 16px 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .nav-tab {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 18px; border-radius: 999px;
+      cursor: pointer; background: transparent; border: none;
+      font-family: var(--font-sans);
+      transition: all 0.25s var(--ease-spring);
+    }
+    .nav-tab svg { width: 20px; height: 20px; color: var(--text-light); transition: color 0.25s; }
+    .nav-tab span { font-size: 12px; color: var(--text-light); font-weight: 600; transition: all 0.25s; display: none; }
+    .nav-tab:active { transform: scale(0.9); }
+    .nav-tab.active {
+      background: #000; padding: 10px 20px;
+    }
+    .nav-tab.active svg { color: white; }
+    .nav-tab.active span { color: white; font-weight: 700; display: inline; }
+
+    .completion-msg { display: none; text-align: center; padding: 24px; margin-top: 20px; }
+    .completion-msg.show { display: block; animation: fadeIn 0.4s var(--ease-out); }
+    .completion-msg .big { font-size: 52px; margin-bottom: 10px; }
+    .completion-msg h3 { color: var(--green-deep); font-size: 20px; font-weight: 800; }
+    .completion-msg p { color: var(--text-medium); font-size: 14px; margin-top: 6px; font-weight: 500; }
 
     /* ====== IMPACT / WIRKUNG ====== */
     .impact-section { margin-top: 28px; }
-    .impact-section > h3 { font-size: 16px; font-weight: 650; margin-bottom: 14px; }
-    .impact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .impact-card { border-radius: var(--radius-md); padding: 22px 14px 18px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+    .impact-section > h3 { font-size: 18px; font-weight: 800; margin-bottom: 14px; letter-spacing: -0.3px; }
+    .impact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .impact-card { border-radius: var(--radius-md); padding: 24px 16px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 8px 28px rgba(0,0,0,0.14); }
     .impact-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.06; background: radial-gradient(circle at 30% 20%, white 0%, transparent 60%); pointer-events: none; }
-    .impact-card.religion { background: linear-gradient(155deg, #0a4a4a, #0d5a5a 40%, #148080); }
-    .impact-card.social { background: linear-gradient(155deg, #3a1818, #4a2020 40%, #5a2a2a); }
-    .impact-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
-    .impact-number { font-size: 36px; font-weight: 800; line-height: 1; }
+    .impact-card.religion { background: linear-gradient(155deg, #0a4040, var(--green-deep) 40%, var(--green-medium)); }
+    .impact-card.social { background: linear-gradient(155deg, #2a1010, #3a1818 40%, #4a2222); }
+    .impact-emoji { font-size: 32px; margin-bottom: 12px; display: block; }
+    .impact-number { font-size: 38px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
     .impact-card.religion .impact-number { color: var(--gold-light); text-shadow: 0 2px 12px rgba(212,168,67,0.3); }
     .impact-card.social .impact-number { color: #ff9a9a; text-shadow: 0 2px 12px rgba(255,100,100,0.3); }
-    .impact-unit { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .impact-desc { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 10px; line-height: 1.45; font-weight: 500; }
-    .impact-today { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+    .impact-unit { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.55); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .impact-desc { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px; line-height: 1.45; font-weight: 500; }
+    .impact-today { display: inline-block; margin-top: 12px; padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: 700; }
     .impact-card.religion .impact-today { background: rgba(212,168,67,0.2); color: var(--gold-light); }
     .impact-card.social .impact-today { background: rgba(255,138,138,0.2); color: #ff9a9a; }
 
-    @media (max-height: 700px) { .phone { max-height: 98vh; border-radius: 32px; } .phone-wrapper { padding: 8px; } .onboarding-slide { padding: 60px 16px 12px; } #tabIch { padding: 50px 16px 100px; } }
+    @media (max-height: 700px) { .phone { max-height: 98vh; border-radius: 32px; } .phone-wrapper { padding: 8px; } .onboarding-slide { padding: 60px 16px 12px; } #tabIch { padding: 50px 16px 120px; } }
     @media (max-width: 420px) { .phone-wrapper { padding: 0; } .phone { width: 100%; max-height: 100vh; border-radius: 0; box-shadow: none; } .phone-wrapper { background: var(--cream); } .dynamic-island { display: none; } }
   </style>
 </head>
@@ -241,14 +299,14 @@
         </div>
       </div>
 
-      <button class="back-arrow hidden" id="backArrow" onclick="goBack()">‹</button>
+      <button class="back-arrow hidden" id="backArrow" onclick="goBack()">&#8249;</button>
 
       <!-- SLIDE 0: WILLKOMMEN -->
       <div class="onboarding-slide active" id="onboard0">
         <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0e8f0);"><div class="mosque-icon"><div class="dome"></div><div class="base"></div><div class="minaret-l"></div><div class="minaret-r"></div></div></div></div>
-        <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-        <div class="slide-title" style="font-size:24px;">Willkommen bei<br><span class="gold">Barakah</span></div>
-        <p style="font-size:14px;color:var(--text-medium);text-align:center;max-width:280px;margin:4px auto 0;line-height:1.6;">Erst beten, dann Social Media.<br>Dein digitaler Begleiter auf dem Weg zu Allah.</p>
+        <div class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <div class="slide-title" style="font-size:28px;">Willkommen bei<br><span class="gold">Barakah</span></div>
+        <p style="font-size:14px;color:var(--text-medium);text-align:center;max-width:280px;margin:6px auto 0;line-height:1.6;font-weight:500;">Erst beten, dann Social Media.<br>Dein digitaler Begleiter auf dem Weg zu Allah.</p>
         <div class="onboarding-footer">
           <div class="onboarding-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
           <button class="btn-primary" onclick="goOnboard(1)">Weiter &rarr;</button>
@@ -258,7 +316,7 @@
 
       <!-- ====== PHASE 1: SCHMERZ (1-3) ====== -->
       <div class="onboarding-slide" id="onboard1">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce0e0);"><span style="font-size:44px;">😞</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce0e0);"><span style="font-size:44px;">&#128542;</span></div></div>
         <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
         <div class="q-text">Greifst du zum Handy, bevor du zum Gebetsteppich greifst?</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(1,'ja')">Ja, leider</div><div class="a-btn" onclick="answer(1,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(1,'nein')">Nein</div></div>
@@ -266,7 +324,7 @@
       </div>
 
       <div class="onboarding-slide" id="onboard2">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #f8d0d0, #fce0e0);"><span style="font-size:44px;">😣</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #f8d0d0, #fce0e0);"><span style="font-size:44px;">&#128547;</span></div></div>
         <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
         <div class="q-text">Hast du ein Gebet aufgeschoben ... und es dann vergessen?</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(2,'ja')">Ja</div><div class="a-btn" onclick="answer(2,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(2,'nein')">Nein</div></div>
@@ -274,7 +332,7 @@
       </div>
 
       <div class="onboarding-slide" id="onboard3">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde0e0, #f5c8c8, #fdd8d8);"><span style="font-size:44px;">💔</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde0e0, #f5c8c8, #fdd8d8);"><span style="font-size:44px;">&#128148;</span></div></div>
         <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
         <div class="q-text">Wie oft denkst du abends: "Heute hab ich wieder nichts für mein Akhira getan"?</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(3,'oft')">Oft</div><div class="a-btn" onclick="answer(3,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(3,'selten')">Selten</div></div>
@@ -283,7 +341,7 @@
 
       <!-- ====== PHASE 2: WAHRHEIT (4-5) ====== -->
       <div class="onboarding-slide" id="onboard4">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:44px;">⏳</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:44px;">&#8987;</span></div></div>
         <div class="slide-sub sub-truth">Die unbequeme Wahrheit</div>
         <div class="q-text">Deine Bildschirmzeit ist höher als deine Zeit mit dem Qur'an.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(4,'ja')">Stimmt leider</div><div class="a-btn" onclick="answer(4,'vielleicht')">Vielleicht</div><div class="a-btn" onclick="answer(4,'nein')">Nein</div></div>
@@ -291,7 +349,7 @@
       </div>
 
       <div class="onboarding-slide" id="onboard5">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fce0c8, #fef0e0);"><span style="font-size:44px;">🪞</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fce0c8, #fef0e0);"><span style="font-size:44px;">&#129695;</span></div></div>
         <div class="slide-sub sub-truth">Die unbequeme Wahrheit</div>
         <div class="q-text">Du weißt, was richtig ist. Du schaffst es nur nicht alleine.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(5,'ja')">Ja, genau so</div><div class="a-btn" onclick="answer(5,'vielleicht')">Vielleicht</div></div>
@@ -300,7 +358,7 @@
 
       <!-- ====== PHASE 3: HOFFNUNG (6-8) ====== -->
       <div class="onboarding-slide" id="onboard6">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">🌅</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#127749;</span></div></div>
         <div class="slide-sub sub-hope">Stell dir vor</div>
         <div class="q-text">Du wachst auf. Fajr gebetet. Kein Scrollen. Nur Frieden.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(6,'ja')">Das will ich</div><div class="a-btn" onclick="answer(6,'klingt_gut')">Klingt gut</div></div>
@@ -308,7 +366,7 @@
       </div>
 
       <div class="onboarding-slide" id="onboard7">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">🤲</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#129330;</span></div></div>
         <div class="slide-sub sub-hope">Stell dir vor</div>
         <div class="q-text">Am Abend sagst du: Alhamdulillah – heute habe ich alles geschafft.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(7,'ja')">Ja, das will ich</div><div class="a-btn" onclick="answer(7,'inshallah')">Insha'Allah</div></div>
@@ -316,7 +374,7 @@
       </div>
 
       <div class="onboarding-slide" id="onboard8">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">🔥</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#128293;</span></div></div>
         <div class="slide-sub sub-hope">Stell dir vor</div>
         <div class="q-text">7 Tage. 30 Tage. 100 Tage. Dein Streak wächst – du wirst stärker.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(8,'ja')">Unbedingt</div><div class="a-btn" onclick="answer(8,'waere_schoen')">Wäre schön</div></div>
@@ -325,7 +383,7 @@
 
       <!-- ====== PHASE 4: BEREITSCHAFT (9-10) ====== -->
       <div class="onboarding-slide" id="onboard9">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">💪</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#128170;</span></div></div>
         <div class="slide-sub sub-ready">Bist du bereit?</div>
         <div class="q-text">Barakah sperrt deine Apps, bis du gebetet hast. Kein Ausweg. Kein Cheat.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(9,'ja')">Genau das brauch ich</div><div class="a-btn" onclick="answer(9,'mal_sehen')">Mal sehen</div></div>
@@ -333,7 +391,7 @@
       </div>
 
       <div class="onboarding-slide" id="onboard10">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">✨</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#10024;</span></div></div>
         <div class="slide-sub sub-ready">Dein neues Kapitel</div>
         <div class="q-text">Weniger Bildschirm. Mehr Barakah. Deine Veränderung beginnt jetzt.</div>
         <div class="a-grid"><div class="a-btn" onclick="answer(10,'ja')">Ich bin bereit</div><div class="a-btn" onclick="answer(10,'spaeter')">Vielleicht später</div></div>
@@ -342,10 +400,10 @@
 
       <!-- SLIDE 11: PAYWALL -->
       <div class="onboarding-slide" id="onboard11">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">🕌</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#128332;</span></div></div>
         <div class="slide-sub sub-ready">Dein Plan steht bereit</div>
         <div class="slide-title">Starte deine <span class="gold">Reise</span></div>
-        <p style="font-size:13px;color:var(--text-medium);text-align:center;margin:0 auto 8px;">7 Tage kostenlos testen. Jederzeit kündbar.</p>
+        <p style="font-size:13px;color:var(--text-medium);text-align:center;margin:0 auto 10px;font-weight:500;">7 Tage kostenlos testen. Jederzeit kündbar.</p>
         <div class="paywall-grid">
           <div class="pw-card" id="pwMonthly" onclick="selectPlan('monthly')">
             <div class="pw-price"><span class="currency">€</span>4,99</div>
@@ -371,22 +429,25 @@
       <!-- ====== TABS ====== -->
       <div class="tab-view" id="tabHeute">
         <div class="dash-header">
-          <div class="dash-top-row"><div class="dash-greeting"><h2>Assalamu Alaikum</h2><p>Heute ist ein gesegneter Tag</p></div><div class="dash-avatar" onclick="switchTab('ich')">A</div></div>
-          <div class="streak-badge" onclick="switchTab('ich')"><span class="fire">🔥</span><span class="streak-number" id="streakNumber">0</span><span class="streak-label">Tage Streak</span></div>
+          <div class="dash-top-row">
+            <div class="dash-greeting"><h2>Assalamu Alaikum</h2><p>Heute ist ein gesegneter Tag</p></div>
+            <div class="dash-avatar" onclick="switchTab('ich')">A</div>
+          </div>
+          <div class="streak-badge" onclick="switchTab('ich')"><span class="fire">&#128293;</span><span class="streak-number" id="streakNumber">0</span><span class="streak-label">Tage Streak</span></div>
           <div class="today-progress"><div class="label"><span>Heutiger Fortschritt</span><span id="progressPercent">0%</span></div><div class="bar-bg"><div class="bar-fill" id="progressBar" style="width:0%"></div></div></div>
         </div>
-        <div class="next-prayer-card"><div class="prayer-info"><div class="prayer-icon">🕌</div><div><div class="prayer-name">Nächstes Gebet: Asr</div><div class="prayer-time">16:42 Uhr</div></div></div><div class="prayer-countdown">16:42</div></div>
+        <div class="next-prayer-card"><div class="prayer-info"><div class="prayer-icon">&#128332;</div><div><div class="prayer-name">Nächstes Gebet: Asr</div><div class="prayer-time">16:42 Uhr</div></div></div><div class="prayer-countdown">16:42</div></div>
         <div class="section-title"><h3>Heutige Aufgaben</h3></div>
         <div class="task-list" id="taskList">
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Fajr gebetet</h4><p>Morgengebet</p></div></div>
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Dhuhr gebetet</h4><p>Mittagsgebet</p></div></div>
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Asr gebetet</h4><p>Nachmittagsgebet</p></div></div>
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Maghrib gebetet</h4><p>Abendgebet</p></div></div>
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">🕋</span><div class="task-text"><h4>Isha gebetet</h4><p>Nachtgebet</p></div></div>
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">📖</span><div class="task-text"><h4>Qur'an gelesen</h4><p>5+ Minuten</p></div></div>
-          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">📿</span><div class="task-text"><h4>Dhikr gemacht</h4><p>33+33+34</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128331;</span><div class="task-text"><h4>Fajr gebetet</h4><p>Morgengebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128331;</span><div class="task-text"><h4>Dhuhr gebetet</h4><p>Mittagsgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128331;</span><div class="task-text"><h4>Asr gebetet</h4><p>Nachmittagsgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128331;</span><div class="task-text"><h4>Maghrib gebetet</h4><p>Abendgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128331;</span><div class="task-text"><h4>Isha gebetet</h4><p>Nachtgebet</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128214;</span><div class="task-text"><h4>Qur'an gelesen</h4><p>5+ Minuten</p></div></div>
+          <div class="task-item" onclick="toggleTask(this)"><div class="checkbox"></div><span class="task-emoji">&#128255;</span><div class="task-text"><h4>Dhikr gemacht</h4><p>33+33+34</p></div></div>
         </div>
-        <div class="completion-msg" id="completionMsg"><div class="big">🎉</div><h3>Masha'Allah!</h3><p>Alle Aufgaben erledigt. Deine Apps sind frei!</p></div>
+        <div class="completion-msg" id="completionMsg"><div class="big">&#127881;</div><h3>Masha'Allah!</h3><p>Alle Aufgaben erledigt. Deine Apps sind frei!</p></div>
         <div class="bottom-nav">
           <button class="nav-tab active" onclick="switchTab('heute')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Heute</span></button>
           <button class="nav-tab" onclick="switchTab('apps')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Apps</span></button>
@@ -395,13 +456,13 @@
       </div>
 
       <div class="tab-view" id="tabApps">
-        <div class="apps-header" id="appsHeader"><div class="lock-big">🔒</div><h2>Apps gesperrt</h2><p>Erledige deine Aufgaben zum Freischalten</p><div class="apps-progress">Noch <span class="count" id="appsRemaining">7</span> Aufgaben offen</div></div>
+        <div class="apps-header" id="appsHeader"><div class="lock-big">&#128274;</div><h2>Apps gesperrt</h2><p>Erledige deine Aufgaben zum Freischalten</p><div class="apps-progress">Noch <span class="count" id="appsRemaining">7</span> Aufgaben offen</div></div>
         <div class="section-title"><h3>Deine Apps</h3></div>
         <div class="task-list" id="appsList">
-          <div class="app-card"><div class="app-icon locked">📸</div><div class="app-info"><h4>Instagram</h4><p id="instaStatus">Gesperrt</p></div><div class="app-status" id="instaIcon">🔒</div></div>
-          <div class="app-card"><div class="app-icon locked">🎵</div><div class="app-info"><h4>TikTok</h4><p id="tiktokStatus">Gesperrt</p></div><div class="app-status" id="tiktokIcon">🔒</div></div>
-          <div class="app-card"><div class="app-icon locked">▶️</div><div class="app-info"><h4>YouTube</h4><p id="ytStatus">Gesperrt</p></div><div class="app-status" id="ytIcon">🔒</div></div>
-          <div class="app-card"><div class="app-icon locked">💬</div><div class="app-info"><h4>WhatsApp</h4><p id="waStatus">Gesperrt</p></div><div class="app-status" id="waIcon">🔒</div></div>
+          <div class="app-card"><div class="app-icon locked">&#128248;</div><div class="app-info"><h4>Instagram</h4><p id="instaStatus">Gesperrt</p></div><div class="app-status" id="instaIcon">&#128274;</div></div>
+          <div class="app-card"><div class="app-icon locked">&#127925;</div><div class="app-info"><h4>TikTok</h4><p id="tiktokStatus">Gesperrt</p></div><div class="app-status" id="tiktokIcon">&#128274;</div></div>
+          <div class="app-card"><div class="app-icon locked">&#9654;&#65039;</div><div class="app-info"><h4>YouTube</h4><p id="ytStatus">Gesperrt</p></div><div class="app-status" id="ytIcon">&#128274;</div></div>
+          <div class="app-card"><div class="app-icon locked">&#128172;</div><div class="app-info"><h4>WhatsApp</h4><p id="waStatus">Gesperrt</p></div><div class="app-status" id="waIcon">&#128274;</div></div>
         </div>
         <div class="action-wrapper"><button class="btn-primary" onclick="switchTab('heute')" id="appsActionBtn" style="background:linear-gradient(135deg,#c44,#a33);box-shadow:0 4px 20px rgba(200,68,68,0.25);">Aufgaben erledigen &rarr;</button></div>
         <div class="bottom-nav">
@@ -413,20 +474,20 @@
 
       <div class="tab-view" id="tabIch">
         <div class="profile-card"><div class="profile-avatar">A</div><h3>Abdullah</h3><div class="location">Berlin, Deutschland</div></div>
-        <div class="streak-mega"><span class="fire-big">🔥</span><div class="streak-big-number" id="bigStreakNumber">0</div><div class="streak-big-label">Tage am Stück</div><div class="streak-msg" id="streakMessage">Starte deine Reise!</div></div>
+        <div class="streak-mega"><span class="fire-big">&#128293;</span><div class="streak-big-number" id="bigStreakNumber">0</div><div class="streak-big-label">Tage am Stück</div><div class="streak-msg" id="streakMessage">Starte deine Reise!</div></div>
 
         <div class="impact-section">
           <h3>Deine Wirkung</h3>
           <div class="impact-cards">
             <div class="impact-card religion">
-              <span class="impact-emoji">🕌</span>
+              <span class="impact-emoji">&#128332;</span>
               <div class="impact-number" id="religionHours">0</div>
               <div class="impact-unit">Stunden</div>
               <div class="impact-desc">in deine Religion investiert</div>
               <div class="impact-today" id="religionToday">+0 min heute</div>
             </div>
             <div class="impact-card social">
-              <span class="impact-emoji">📵</span>
+              <span class="impact-emoji">&#128245;</span>
               <div class="impact-number" id="socialHours">0</div>
               <div class="impact-unit">Stunden</div>
               <div class="impact-desc">von Social Media ferngehalten</div>
@@ -436,22 +497,22 @@
         </div>
 
         <div class="stats-grid"><div class="stat-card"><div class="stat-number" id="statPrayers">0</div><div class="stat-label">Gebete</div></div><div class="stat-card"><div class="stat-number" id="statQuran">0</div><div class="stat-label">Qur'an Min.</div></div><div class="stat-card"><div class="stat-number" id="statSaved">0h</div><div class="stat-label">Gespart</div></div></div>
-        <div style="margin-top:24px;"><h3 style="font-size:16px;font-weight:650;margin-bottom:12px;">Kalender</h3><div class="calendar-grid" id="calendarGrid"></div></div>
-        <div style="margin-top:24px;">
-          <h3 style="font-size:16px;font-weight:650;margin-bottom:12px;">Meilensteine 🏆</h3>
-          <div class="milestone-item"><span class="m-icon">🥉</span><div class="m-text"><h4>7 Tage Streak</h4></div><span class="m-badge" id="m7">0%</span></div>
-          <div class="milestone-item"><span class="m-icon">🥈</span><div class="m-text"><h4>30 Tage Streak</h4></div><span class="m-badge" id="m30">0%</span></div>
-          <div class="milestone-item"><span class="m-icon">🥇</span><div class="m-text"><h4>100 Tage Streak</h4></div><span class="m-badge" id="m100">0%</span></div>
-          <div class="milestone-item" style="background:var(--gold-pale);"><span class="m-icon">👑</span><div class="m-text"><h4>1 Jahr Barakah</h4></div><span class="m-badge" style="background:var(--gold-light);color:var(--gold-dark);" id="m365">0%</span></div>
+        <div style="margin-top:28px;"><h3 style="font-size:18px;font-weight:800;margin-bottom:14px;letter-spacing:-0.3px;">Kalender</h3><div class="calendar-grid" id="calendarGrid"></div></div>
+        <div style="margin-top:28px;">
+          <h3 style="font-size:18px;font-weight:800;margin-bottom:14px;letter-spacing:-0.3px;">Meilensteine &#127942;</h3>
+          <div class="milestone-item"><span class="m-icon">&#129353;</span><div class="m-text"><h4>7 Tage Streak</h4></div><span class="m-badge" id="m7">0%</span></div>
+          <div class="milestone-item"><span class="m-icon">&#129352;</span><div class="m-text"><h4>30 Tage Streak</h4></div><span class="m-badge" id="m30">0%</span></div>
+          <div class="milestone-item"><span class="m-icon">&#129351;</span><div class="m-text"><h4>100 Tage Streak</h4></div><span class="m-badge" id="m100">0%</span></div>
+          <div class="milestone-item" style="background:var(--gold-pale);"><span class="m-icon">&#128081;</span><div class="m-text"><h4>1 Jahr Barakah</h4></div><span class="m-badge" style="background:var(--gold-light);color:var(--gold-dark);" id="m365">0%</span></div>
         </div>
         <div class="settings-section">
           <h3>Einstellungen</h3>
-          <div class="setting-item"><div class="setting-left"><span class="setting-icon">📍</span><div class="setting-text"><h4>Stadt</h4></div></div><input type="text" class="setting-input" value="Berlin" /></div>
-          <div class="setting-item"><div class="setting-left"><span class="setting-icon">🌍</span><div class="setting-text"><h4>Land</h4></div></div><input type="text" class="setting-input" value="Deutschland" /></div>
-          <div class="setting-item"><div class="setting-left"><span class="setting-icon">📖</span><div class="setting-text"><h4>Qur'an Ziel</h4><p>Minuten/Tag</p></div></div><input type="number" class="setting-input" value="5" min="1" max="120" style="width:60px;" /></div>
-          <div class="setting-item"><div class="setting-left"><span class="setting-icon">🔔</span><div class="setting-text"><h4>Erinnerungen</h4></div></div><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
-          <div class="setting-item"><div class="setting-left"><span class="setting-icon">🔥</span><div class="setting-text"><h4>Streak-Erinnerung</h4></div></div><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
-          <div class="setting-item"><div class="setting-left"><span class="setting-icon">✈️</span><div class="setting-text"><h4>Reisemodus</h4></div></div><label class="toggle"><input type="checkbox" /><span class="slider"></span></label></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">&#128205;</span><div class="setting-text"><h4>Stadt</h4></div></div><input type="text" class="setting-input" value="Berlin" /></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">&#127758;</span><div class="setting-text"><h4>Land</h4></div></div><input type="text" class="setting-input" value="Deutschland" /></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">&#128214;</span><div class="setting-text"><h4>Qur'an Ziel</h4><p>Minuten/Tag</p></div></div><input type="number" class="setting-input" value="5" min="1" max="120" style="width:60px;" /></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">&#128276;</span><div class="setting-text"><h4>Erinnerungen</h4></div></div><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">&#128293;</span><div class="setting-text"><h4>Streak-Erinnerung</h4></div></div><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+          <div class="setting-item"><div class="setting-left"><span class="setting-icon">&#9992;&#65039;</span><div class="setting-text"><h4>Reisemodus</h4></div></div><label class="toggle"><input type="checkbox" /><span class="slider"></span></label></div>
         </div>
         <div style="height:120px;"></div>
         <div class="bottom-nav">
@@ -535,7 +596,7 @@
   }
   // ====== IMPACT / WIRKUNG BERECHNUNG ======
   // Pro abgeschlossenen Tag:
-  //   Religion: 5 Gebete × 8min + Qur'an 10min + Dhikr 5min = ~55 min
+  //   Religion: 5 Gebete x 8min + Qur'an 10min + Dhikr 5min = ~55 min
   //   Social Media gespart: Apps gesperrt = ~2h weniger Scrollen = ~120 min
   function formatH(minutes) {
     const h = minutes / 60;

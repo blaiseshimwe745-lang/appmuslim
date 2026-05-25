@@ -10,9 +10,9 @@ import { Platform } from 'react-native';
 // ============================================================
 // 1. Create account at https://app.revenuecat.com
 // 2. Add your app (iOS) and paste the API key below
-// 3. In App Store Connect: create auto-renewable subscription
-//    - Product ID: barakah_monthly (4.99€/month, 3-day trial)
-//    - Product ID: barakah_yearly (19.90€/year, 3-day trial)
+// 3. App Store Connect Subscription Products (Gruppe: monthly):
+//    - Product ID: bakarahmonatlich  (€4,99/Monat, Apple-ID: 6773070052)
+//    - Product ID: jaehrlichbakarah  (€39,99/Jahr, Apple-ID: 6773070452)
 // 4. In RevenueCat: create Entitlement "premium"
 //    - Attach both products to it
 //    - Create Offering "default" with both packages
@@ -22,6 +22,12 @@ const REVENUECAT_API_KEY_IOS = 'YOUR_REVENUECAT_IOS_API_KEY';
 const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';
 
 const ENTITLEMENT_ID = 'premium';
+
+// App Store Connect Product IDs (Abo-Gruppe: monthly)
+export const PRODUCT_IDS = {
+  MONTHLY: 'bakarahmonatlich',   // €4,99/Monat – Apple-ID: 6773070052
+  YEARLY: 'jaehrlichbakarah',    // €39,99/Jahr – Apple-ID: 6773070452
+} as const;
 
 export interface SubscriptionStatus {
   isActive: boolean;
@@ -107,8 +113,8 @@ export async function getOfferings(): Promise<{
 
 /**
  * Purchase a subscription package
- * Apple handles the 3-day free trial automatically
- * After trial: auto-charges 4.99€/month or 19.90€/year
+ * Apple handles the free trial automatically (if configured)
+ * After trial: auto-charges €4,99/month or €39,99/year
  */
 export async function purchasePackage(
   pkg: PurchasesPackage
