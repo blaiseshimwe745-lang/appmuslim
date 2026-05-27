@@ -13,7 +13,7 @@ import { Platform } from 'react-native';
 // 3. App Store Connect Subscription Products (Gruppe: monthly):
 //    - Product ID: bakarahmonatlich  (€4,99/Monat, Apple-ID: 6773070052)
 //    - Product ID: jaehrlichbakarah  (€39,99/Jahr, Apple-ID: 6773070452)
-// 4. In RevenueCat: create Entitlement "premium"
+// 4. In RevenueCat: Entitlement "Barakah Pro" (identifier: Barakah Pro)
 //    - Attach both products to it
 //    - Create Offering "default" with both packages
 // ============================================================
@@ -21,7 +21,7 @@ import { Platform } from 'react-native';
 const REVENUECAT_API_KEY_IOS = 'test_YaZJGoNXqZYexfOMVByAHJUHCrY';
 const REVENUECAT_API_KEY_ANDROID = 'test_YaZJGoNXqZYexfOMVByAHJUHCrY';
 
-const ENTITLEMENT_ID = 'premium';
+const ENTITLEMENT_ID = 'Barakah Pro';
 
 // App Store Connect Product IDs (Abo-Gruppe: monthly)
 export const PRODUCT_IDS = {
