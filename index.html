@@ -90,6 +90,10 @@
     .btn-primary:active { transform: scale(0.96); }
     .btn-skip { background: none; border: none; color: var(--text-light); font-size: 12px; cursor: pointer; padding: 8px; font-weight: 500; }
 
+    /* ====== AI PLAN BUILDER STEP ====== */
+    .ai-step { transition: opacity 0.4s var(--ease-out), transform 0.3s var(--ease-spring); }
+    .ai-step .ai-check { transition: opacity 0.3s var(--ease-out); }
+
     /* ====== PAYWALL ====== */
     .paywall-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 330px; margin: 10px auto 0; }
     .pw-card { border-radius: var(--radius-md); padding: 20px; cursor: pointer; position: relative; border: 2px solid var(--cream-darker); transition: all 0.25s var(--ease-spring); background: white; text-align: center; }
@@ -308,100 +312,114 @@
         <div class="slide-title" style="font-size:28px;">Willkommen bei<br><span class="gold">Barakah</span></div>
         <p style="font-size:14px;color:var(--text-medium);text-align:center;max-width:280px;margin:6px auto 0;line-height:1.6;font-weight:500;">Erst beten, dann Social Media.<br>Dein digitaler Begleiter auf dem Weg zu Allah.</p>
         <div class="onboarding-footer">
-          <div class="onboarding-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="onboarding-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
           <button class="btn-primary" onclick="goOnboard(1)">Weiter &rarr;</button>
           <button class="btn-skip" onclick="startApp()">Überspringen</button>
         </div>
       </div>
 
-      <!-- ====== PHASE 1: SCHMERZ (1-3) ====== -->
+      <!-- ====== PHASE 1: ÜBER DICH (1-3) – Identität & Daten ====== -->
       <div class="onboarding-slide" id="onboard1">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce0e0);"><span style="font-size:44px;">&#128542;</span></div></div>
-        <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
-        <div class="q-text">Greifst du zum Handy, bevor du zum Gebetsteppich greifst?</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(1,'ja')">Ja, leider</div><div class="a-btn" onclick="answer(1,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(1,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#129489;</span></div></div>
+        <div class="slide-sub sub-hope">Über dich</div>
+        <div class="q-text">Wie würdest du dich beschreiben?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(1,'praktizierend')">&#128331; Praktizierender Muslim</div><div class="a-btn" style="flex:none;" onclick="answer(1,'suchend')">&#127775; Auf dem Weg / Suchend</div><div class="a-btn" style="flex:none;" onclick="answer(1,'wieder')">&#129505; Wiedereinsteiger</div><div class="a-btn" style="flex:none;" onclick="answer(1,'neu')">&#127807; Neu im Islam</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots1"></div></div>
       </div>
 
       <div class="onboarding-slide" id="onboard2">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #f8d0d0, #fce0e0);"><span style="font-size:44px;">&#128547;</span></div></div>
-        <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
-        <div class="q-text">Hast du ein Gebet aufgeschoben ... und es dann vergessen?</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(2,'ja')">Ja</div><div class="a-btn" onclick="answer(2,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(2,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde8e8, #fdd0d0, #fce0e0);"><span style="font-size:44px;">&#128241;</span></div></div>
+        <div class="slide-sub sub-pain">Deine Realität</div>
+        <div class="q-text">Wie viel Zeit verbringst du täglich auf Social Media?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(2,'lt1')">&#9989; Weniger als 1 Stunde</div><div class="a-btn" style="flex:none;" onclick="answer(2,'1_3')">&#128340; 1 – 3 Stunden</div><div class="a-btn" style="flex:none;" onclick="answer(2,'3_6')">&#9888;&#65039; 3 – 6 Stunden</div><div class="a-btn" style="flex:none;" onclick="answer(2,'gt6')">&#128293; Mehr als 6 Stunden</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots2"></div></div>
       </div>
 
       <div class="onboarding-slide" id="onboard3">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde0e0, #f5c8c8, #fdd8d8);"><span style="font-size:44px;">&#128148;</span></div></div>
-        <div class="slide-sub sub-pain">Sei ehrlich mit dir</div>
-        <div class="q-text">Wie oft denkst du abends: "Heute hab ich wieder nichts für mein Akhira getan"?</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(3,'oft')">Oft</div><div class="a-btn" onclick="answer(3,'manchmal')">Manchmal</div><div class="a-btn" onclick="answer(3,'selten')">Selten</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fde0e0, #f5c8c8, #fdd8d8);"><span style="font-size:44px;">&#128591;</span></div></div>
+        <div class="slide-sub sub-pain">Sei ehrlich</div>
+        <div class="q-text">Wie viele der 5 Pflichtgebete schaffst du im Schnitt am Tag?</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(3,'0_1')">0 – 1</div><div class="a-btn" onclick="answer(3,'2_3')">2 – 3</div><div class="a-btn" onclick="answer(3,'4_5')">4 – 5</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots3"></div></div>
       </div>
 
-      <!-- ====== PHASE 2: WAHRHEIT (4-5) ====== -->
+      <!-- ====== PHASE 2: TRIGGER & SCHMERZ (4-5) ====== -->
       <div class="onboarding-slide" id="onboard4">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:44px;">&#8987;</span></div></div>
-        <div class="slide-sub sub-truth">Die unbequeme Wahrheit</div>
-        <div class="q-text">Deine Bildschirmzeit ist höher als deine Zeit mit dem Qur'an.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(4,'ja')">Stimmt leider</div><div class="a-btn" onclick="answer(4,'vielleicht')">Vielleicht</div><div class="a-btn" onclick="answer(4,'nein')">Nein</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fde8d0, #fef0e0);"><span style="font-size:44px;">&#9200;</span></div></div>
+        <div class="slide-sub sub-truth">Dein Muster</div>
+        <div class="q-text">Wann greifst du am häufigsten zum Handy?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(4,'morning')">&#127770; Direkt nach dem Aufwachen</div><div class="a-btn" style="flex:none;" onclick="answer(4,'evening')">&#127769; Vor dem Schlafen</div><div class="a-btn" style="flex:none;" onclick="answer(4,'boredom')">&#128564; Bei Langeweile / in Pausen</div><div class="a-btn" style="flex:none;" onclick="answer(4,'always')">&#129327; Eigentlich ständig</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots4"></div></div>
       </div>
 
       <div class="onboarding-slide" id="onboard5">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fce0c8, #fef0e0);"><span style="font-size:44px;">&#129695;</span></div></div>
-        <div class="slide-sub sub-truth">Die unbequeme Wahrheit</div>
-        <div class="q-text">Du weißt, was richtig ist. Du schaffst es nur nicht alleine.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(5,'ja')">Ja, genau so</div><div class="a-btn" onclick="answer(5,'vielleicht')">Vielleicht</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #fef3e2, #fce0c8, #fef0e0);"><span style="font-size:44px;">&#128533;</span></div></div>
+        <div class="slide-sub sub-truth">Innere Wahrheit</div>
+        <div class="q-text">Wie fühlst du dich nach langem Scrollen?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(5,'empty')">&#128148; Leer & schuldig</div><div class="a-btn" style="flex:none;" onclick="answer(5,'tired')">&#128564; Müde & träge</div><div class="a-btn" style="flex:none;" onclick="answer(5,'far')">&#128566; Spirituell distanziert</div><div class="a-btn" style="flex:none;" onclick="answer(5,'fine')">&#129320; Eigentlich okay</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots5"></div></div>
       </div>
 
-      <!-- ====== PHASE 3: HOFFNUNG (6-8) ====== -->
+      <!-- ====== PHASE 3: ZIEL & VISION (6-8) ====== -->
       <div class="onboarding-slide" id="onboard6">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#127749;</span></div></div>
-        <div class="slide-sub sub-hope">Stell dir vor</div>
-        <div class="q-text">Du wachst auf. Fajr gebetet. Kein Scrollen. Nur Frieden.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(6,'ja')">Das will ich</div><div class="a-btn" onclick="answer(6,'klingt_gut')">Klingt gut</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#127919;</span></div></div>
+        <div class="slide-sub sub-hope">Dein Ziel</div>
+        <div class="q-text">Wer möchtest du in 30 Tagen sein?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(6,'consistent')">&#128331; Jemand, der pünktlich betet</div><div class="a-btn" style="flex:none;" onclick="answer(6,'spiritual')">&#129505; Spirituell näher bei Allah</div><div class="a-btn" style="flex:none;" onclick="answer(6,'free')">&#128274; Frei vom Handy-Zwang</div><div class="a-btn" style="flex:none;" onclick="answer(6,'discipline')">&#128170; Diszipliniert & fokussiert</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots6"></div></div>
       </div>
 
       <div class="onboarding-slide" id="onboard7">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#129330;</span></div></div>
-        <div class="slide-sub sub-hope">Stell dir vor</div>
-        <div class="q-text">Am Abend sagst du: Alhamdulillah – heute habe ich alles geschafft.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(7,'ja')">Ja, das will ich</div><div class="a-btn" onclick="answer(7,'inshallah')">Insha'Allah</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#129549;</span></div></div>
+        <div class="slide-sub sub-hope">Hindernis</div>
+        <div class="q-text">Was hat dich bisher am meisten zurückgehalten?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(7,'forget')">&#129488; Ich vergesse die Gebetszeiten</div><div class="a-btn" style="flex:none;" onclick="answer(7,'distracted')">&#127932; Ablenkung durch Social Media</div><div class="a-btn" style="flex:none;" onclick="answer(7,'motivation')">&#128166; Fehlende Motivation</div><div class="a-btn" style="flex:none;" onclick="answer(7,'fallback')">&#128257; Ich falle in alte Muster zurück</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots7"></div></div>
       </div>
 
       <div class="onboarding-slide" id="onboard8">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#128293;</span></div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;">&#127749;</span></div></div>
         <div class="slide-sub sub-hope">Stell dir vor</div>
-        <div class="q-text">7 Tage. 30 Tage. 100 Tage. Dein Streak wächst – du wirst stärker.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(8,'ja')">Unbedingt</div><div class="a-btn" onclick="answer(8,'waere_schoen')">Wäre schön</div></div>
+        <div class="q-text">Du wachst morgen auf, betest Fajr, kein Scrollen. Wie wäre das?</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(8,'need')">Genau das brauche ich</div><div class="a-btn" onclick="answer(8,'dream')">Ein Traum</div><div class="a-btn" onclick="answer(8,'change')">Würde mein Leben ändern</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots8"></div></div>
       </div>
 
-      <!-- ====== PHASE 4: BEREITSCHAFT (9-10) ====== -->
+      <!-- ====== PHASE 4: COMMITMENT (9-10) ====== -->
       <div class="onboarding-slide" id="onboard9">
-        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#128170;</span></div></div>
-        <div class="slide-sub sub-ready">Bist du bereit?</div>
-        <div class="q-text">Barakah sperrt deine Apps, bis du gebetet hast. Kein Ausweg. Kein Cheat.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(9,'ja')">Genau das brauch ich</div><div class="a-btn" onclick="answer(9,'mal_sehen')">Mal sehen</div></div>
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#128293;</span></div></div>
+        <div class="slide-sub sub-ready">Commitment</div>
+        <div class="q-text">Wie wichtig ist dir diese Veränderung?</div>
+        <div class="a-grid" style="flex-direction:column;"><div class="a-btn" style="flex:none;" onclick="answer(9,'critical')">&#11088; Lebenswichtig</div><div class="a-btn" style="flex:none;" onclick="answer(9,'very')">&#128293; Sehr wichtig</div><div class="a-btn" style="flex:none;" onclick="answer(9,'important')">&#9989; Wichtig</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots9"></div></div>
       </div>
 
       <div class="onboarding-slide" id="onboard10">
         <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#10024;</span></div></div>
-        <div class="slide-sub sub-ready">Dein neues Kapitel</div>
-        <div class="q-text">Weniger Bildschirm. Mehr Barakah. Deine Veränderung beginnt jetzt.</div>
-        <div class="a-grid"><div class="a-btn" onclick="answer(10,'ja')">Ich bin bereit</div><div class="a-btn" onclick="answer(10,'spaeter')">Vielleicht später</div></div>
+        <div class="slide-sub sub-ready">Letzter Schritt</div>
+        <div class="q-text">Bereit, jetzt diesen Schritt mit Barakah zu gehen?</div>
+        <div class="a-grid"><div class="a-btn" onclick="answer(10,'ready')">Ja, ich bin bereit</div><div class="a-btn" onclick="answer(10,'inshallah')">Insha'Allah</div></div>
         <div class="onboarding-footer"><div class="onboarding-dots" id="dots10"></div></div>
       </div>
 
-      <!-- SLIDE 11: PAYWALL -->
+      <!-- ====== ANALYZING / PLAN BUILDER (11) ====== -->
       <div class="onboarding-slide" id="onboard11">
+        <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #e0f7f7, #c8efe0, #d0f0e8);"><span style="font-size:44px;" id="analyzeEmoji">&#129504;</span></div></div>
+        <div class="slide-sub sub-hope">Personalisierung</div>
+        <div class="slide-title" style="font-size:22px;">Wir erstellen<br>deinen <span class="gold">Barakah Plan</span></div>
+        <div style="max-width:300px;margin:14px auto 0;display:flex;flex-direction:column;gap:10px;">
+          <div class="ai-step" id="aiStep1" style="opacity:0.3;display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);"><span style="font-size:18px;">&#128202;</span><span style="font-size:13px;font-weight:600;flex:1;">Antworten analysiert</span><span class="ai-check" style="opacity:0;color:var(--green-medium);font-weight:700;">&#10003;</span></div>
+          <div class="ai-step" id="aiStep2" style="opacity:0.3;display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);"><span style="font-size:18px;">&#127919;</span><span style="font-size:13px;font-weight:600;flex:1;">Ziele festgelegt</span><span class="ai-check" style="opacity:0;color:var(--green-medium);font-weight:700;">&#10003;</span></div>
+          <div class="ai-step" id="aiStep3" style="opacity:0.3;display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);"><span style="font-size:18px;">&#128331;</span><span style="font-size:13px;font-weight:600;flex:1;">Gebetsplan erstellt</span><span class="ai-check" style="opacity:0;color:var(--green-medium);font-weight:700;">&#10003;</span></div>
+          <div class="ai-step" id="aiStep4" style="opacity:0.3;display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);"><span style="font-size:18px;">&#128274;</span><span style="font-size:13px;font-weight:600;flex:1;">App-Sperren konfiguriert</span><span class="ai-check" style="opacity:0;color:var(--green-medium);font-weight:700;">&#10003;</span></div>
+        </div>
+        <div class="onboarding-footer"><div class="onboarding-dots" id="dots11"></div></div>
+      </div>
+
+      <!-- SLIDE 12: PAYWALL -->
+      <div class="onboarding-slide" id="onboard12">
         <div class="illustration"><div class="illustration-inner" style="background: linear-gradient(135deg, #f5e6b8, #faf0d0, #fff8e8);"><span style="font-size:44px;">&#128332;</span></div></div>
-        <div class="slide-sub sub-ready">Dein Plan steht bereit</div>
+        <div class="slide-sub sub-ready">Dein Plan ist bereit</div>
         <div class="slide-title">Starte deine <span class="gold">Reise</span></div>
         <p style="font-size:13px;color:var(--text-medium);text-align:center;margin:0 auto 10px;font-weight:500;">7 Tage kostenlos testen. Jederzeit kündbar.</p>
         <div class="paywall-grid">
@@ -420,7 +438,7 @@
         </div>
         <div class="pw-sub">Automatische Verlängerung. Kündigung jederzeit über die App-Store-Einstellungen.</div>
         <div class="onboarding-footer">
-          <div class="onboarding-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+          <div class="onboarding-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
           <button class="btn-primary" onclick="startApp()" style="max-width:330px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));">Kostenlos starten</button>
           <button class="btn-skip" onclick="startApp()">Vorerst ohne Premium</button>
         </div>
@@ -532,7 +550,28 @@
     const btns = document.querySelectorAll('#onboard' + idx + ' .a-btn');
     btns.forEach(b => b.classList.remove('selected'));
     event.currentTarget.classList.add('selected');
-    setTimeout(() => { goOnboard(idx + 1); }, 400);
+    setTimeout(() => {
+      goOnboard(idx + 1);
+      if (idx + 1 === 11) runPlanBuilder();
+    }, 400);
+  }
+
+  function runPlanBuilder() {
+    const steps = ['aiStep1','aiStep2','aiStep3','aiStep4'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.opacity = '1';
+        el.style.transform = 'scale(1.02)';
+        setTimeout(() => {
+          el.style.transform = 'scale(1)';
+          const check = el.querySelector('.ai-check');
+          if (check) check.style.opacity = '1';
+        }, 250);
+      }, i * 600);
+    });
+    setTimeout(() => { goOnboard(12); }, 4 * 600 + 800);
   }
 
   function selectPlan(plan) {
@@ -572,13 +611,14 @@
     if (name === 'apps') updateAppsTab();
   }
 
-  // Generate dots for slides 1-10 (12 total: welcome + 10 questions + paywall)
-  for (let i = 1; i <= 10; i++) {
+  // Generate dots for slides 1-11 (13 total: welcome + 10 questions + plan builder + paywall)
+  for (let i = 1; i <= 11; i++) {
     let html = '';
-    for (let d = 0; d < 12; d++) {
+    for (let d = 0; d < 13; d++) {
       html += '<div class="dot' + (d === i ? ' active' : '') + '"></div>';
     }
-    document.getElementById('dots' + i).innerHTML = html;
+    const el = document.getElementById('dots' + i);
+    if (el) el.innerHTML = html;
   }
 
   function toggleTask(el) {

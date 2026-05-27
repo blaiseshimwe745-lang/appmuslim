@@ -15,6 +15,7 @@ import {
   SubscriptionStatus,
 } from './src/services/subscriptionService';
 import { COLORS } from './src/components/theme';
+import { maybeRequestReview } from './src/utils/reviewPrompt';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -58,6 +59,7 @@ export default function App() {
           setCurrentScreen('paywall');
         } else {
           setCurrentScreen('main');
+          maybeRequestReview(5000);
         }
       } catch (e) {
         console.error('App prepare error:', e);
@@ -89,6 +91,7 @@ export default function App() {
 
     if (subStatus.isActive) {
       setCurrentScreen('main');
+      maybeRequestReview(3000);
     } else {
       setCurrentScreen('paywall');
     }
@@ -99,6 +102,8 @@ export default function App() {
     const subStatus = await getSubscriptionStatus();
     setSubscriptionStatus(subStatus);
     setCurrentScreen('main');
+    // Apple's native review popup ~4s after entering main
+    maybeRequestReview(4000);
   };
 
   // Show splash while loading
