@@ -9,6 +9,7 @@ import {
   ViewToken,
 } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { COLORS, RADIUS } from '../components/theme';
 
 const { width } = Dimensions.get('window');
@@ -17,50 +18,48 @@ interface Props {
   onComplete: () => void;
 }
 
-const SLIDES = [
-  {
-    id: '0',
-    arabic: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
-    title: 'Willkommen bei',
-    highlight: 'Barakah',
-    subtitle:
-      'Dein digitaler Begleiter für eine gesegnete Bildschirmzeit. Gewinne die Kontrolle zurück – eine gute Tat nach der anderen.',
-    illustration: '🕌',
-    features: [],
-  },
-  {
-    id: '1',
-    arabic: '',
-    title: 'Gebet & Qur\'an',
-    highlight: 'zuerst',
-    subtitle:
-      'Social Media ist erst frei, wenn du deine täglichen Ibadaat erledigt hast. Dein Iman dankt es dir.',
-    illustration: '🕌',
-    features: [
-      { emoji: '🕋', title: 'Gebets-Tracker', desc: 'Fajr, Dhuhr, Asr, Maghrib & Isha – alles im Blick' },
-      { emoji: '📖', title: 'Qur\'an lesen', desc: 'Mindestens 5 Minuten Rezitation vor der Freischaltung' },
-      { emoji: '📿', title: 'Dhikr', desc: '33× Subhanallah · 33× Alhamdulillah · 34× Allahu Akbar' },
-    ],
-  },
-  {
-    id: '2',
-    arabic: '',
-    title: 'Dein',
-    highlight: 'Streak',
-    subtitle:
-      'Jeder Tag, an dem du deine Aufgaben erledigst, verlängert deine Serie. Unterbrich den Teufelskreis!',
-    illustration: '🔥',
-    features: [
-      { emoji: '🔥', title: 'Täglicher Streak', desc: 'Bleib dran – je länger die Serie, desto mehr Barakah' },
-      { emoji: '🏆', title: 'Meilensteine', desc: '7, 30, 100 Tage – jede Serie wird belohnt' },
-      { emoji: '📊', title: 'Statistiken', desc: 'Sieh deinen Fortschritt und wie viel Zeit du zurückgewonnen hast' },
-    ],
-  },
-];
-
 export function OnboardingScreen({ onComplete }: Props) {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+
+  const SLIDES = [
+    {
+      id: '0',
+      arabic: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
+      title: t('onboarding.slide0Title'),
+      highlight: t('onboarding.slide0Highlight'),
+      subtitle: t('onboarding.slide0Subtitle'),
+      illustration: '🕌',
+      features: [] as { emoji: string; title: string; desc: string }[],
+    },
+    {
+      id: '1',
+      arabic: '',
+      title: t('onboarding.slide1Title'),
+      highlight: t('onboarding.slide1Highlight'),
+      subtitle: t('onboarding.slide1Subtitle'),
+      illustration: '🕌',
+      features: [
+        { emoji: '🕋', title: t('onboarding.slide1Feat1Title'), desc: t('onboarding.slide1Feat1Desc') },
+        { emoji: '📖', title: t('onboarding.slide1Feat2Title'), desc: t('onboarding.slide1Feat2Desc') },
+        { emoji: '📿', title: t('onboarding.slide1Feat3Title'), desc: t('onboarding.slide1Feat3Desc') },
+      ],
+    },
+    {
+      id: '2',
+      arabic: '',
+      title: t('onboarding.slide2Title'),
+      highlight: t('onboarding.slide2Highlight'),
+      subtitle: t('onboarding.slide2Subtitle'),
+      illustration: '🔥',
+      features: [
+        { emoji: '🔥', title: t('onboarding.slide2Feat1Title'), desc: t('onboarding.slide2Feat1Desc') },
+        { emoji: '🏆', title: t('onboarding.slide2Feat2Title'), desc: t('onboarding.slide2Feat2Desc') },
+        { emoji: '📊', title: t('onboarding.slide2Feat3Title'), desc: t('onboarding.slide2Feat3Desc') },
+      ],
+    },
+  ];
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -74,7 +73,7 @@ export function OnboardingScreen({ onComplete }: Props) {
     flatListRef.current?.scrollToIndex({ index, animated: true });
   };
 
-  const renderSlide = ({ item, index }: { item: typeof SLIDES[0]; index: number }) => (
+  const renderSlide = ({ item, index }: { item: (typeof SLIDES)[number]; index: number }) => (
     <View style={styles.slide}>
       <View style={styles.illustrationWrap}>
         <View style={styles.illustration}>
@@ -150,13 +149,13 @@ export function OnboardingScreen({ onComplete }: Props) {
           activeOpacity={0.8}
         >
           <Text style={styles.btnText}>
-            {isLast ? 'App starten 🚀' : currentIndex === 0 ? 'Los geht\'s →' : 'Weiter →'}
+            {isLast ? t('onboarding.start') : currentIndex === 0 ? t('onboarding.getStarted') : t('onboarding.next')}
           </Text>
         </TouchableOpacity>
 
         {!isLast && (
           <TouchableOpacity onPress={onComplete} style={styles.btnSkip}>
-            <Text style={styles.btnSkipText}>Überspringen</Text>
+            <Text style={styles.btnSkipText}>{t('onboarding.skip')}</Text>
           </TouchableOpacity>
         )}
       </View>

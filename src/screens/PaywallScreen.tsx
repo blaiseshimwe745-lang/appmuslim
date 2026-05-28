@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PurchasesPackage } from 'react-native-purchases';
+import { useTranslation } from 'react-i18next';
 import {
   getOfferings,
   purchasePackage,
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function PaywallScreen({ onSubscribed, onClose }: Props) {
+  const { t } = useTranslation();
   const [selectedPlan, setSelectedPlan] = useState<'yearly' | 'monthly'>('yearly');
   const [isLoading, setIsLoading] = useState(false);
   const [packages, setPackages] = useState<{
@@ -49,7 +51,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
   const handleSubscribe = async () => {
     const pkg = selectedPlan === 'yearly' ? packages.yearly : packages.monthly;
     if (!pkg) {
-      Alert.alert('Fehler', 'Abo-Paket nicht verfügbar. Bitte versuche es erneut.');
+      Alert.alert(t('paywall.errorTitle'), t('paywall.errorUnavailable'));
       return;
     }
 
@@ -60,7 +62,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
         onSubscribed();
       }
     } catch (error) {
-      Alert.alert('Fehler', 'Kauf konnte nicht abgeschlossen werden.');
+      Alert.alert(t('paywall.errorTitle'), t('paywall.errorPurchase'));
     } finally {
       setIsLoading(false);
     }
@@ -73,10 +75,10 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
       if (restored) {
         onSubscribed();
       } else {
-        Alert.alert('Kein Abo gefunden', 'Es wurde kein aktives Abonnement gefunden.');
+        Alert.alert(t('paywall.noSubTitle'), t('paywall.noSubMessage'));
       }
     } catch (error) {
-      Alert.alert('Fehler', 'Wiederherstellen fehlgeschlagen.');
+      Alert.alert(t('paywall.errorTitle'), t('paywall.errorRestore'));
     } finally {
       setIsLoading(false);
     }
@@ -85,6 +87,9 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
   // Get display prices from RevenueCat (localized for user's region)
   const monthlyPrice = packages.monthly?.product?.priceString || '4,99 €';
   const yearlyPrice = packages.yearly?.product?.priceString || '39,99 €';
+  const trialInfo = selectedPlan === 'yearly'
+    ? t('paywall.trialInfoYearly', { price: yearlyPrice })
+    : t('paywall.trialInfoMonthly', { price: monthlyPrice });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -99,22 +104,22 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerEmoji}>🕌</Text>
-          <Text style={styles.title}>Barakah Premium</Text>
+          <Text style={styles.title}>{t('paywall.title')}</Text>
           <Text style={styles.subtitle}>
-            Starte mit 3 Tagen kostenlos.{'\n'}Danach automatisch Abo – jederzeit kündbar.
+            {t('paywall.subtitle')}
           </Text>
         </View>
 
         {/* Features */}
         <View style={styles.features}>
-          <Text style={styles.featuresTitle}>Alles inklusive:</Text>
+          <Text style={styles.featuresTitle}>{t('paywall.featuresTitle')}</Text>
           {[
-            { icon: '🕋', text: 'Alle 5 Gebete tracken' },
-            { icon: '📖', text: "Qur'an & Dhikr Erinnerungen" },
-            { icon: '🔒', text: 'App-Sperre bis Aufgaben erledigt' },
-            { icon: '🕌', text: 'Genaue Gebetszeiten für deine Stadt' },
-            { icon: '🔥', text: 'Streak-System & Meilensteine' },
-            { icon: '📊', text: 'Statistiken & Kalender' },
+            { icon: '🕋', text: t('paywall.feat1') },
+            { icon: '📖', text: t('paywall.feat2') },
+            { icon: '🔒', text: t('paywall.feat3') },
+            { icon: '🕌', text: t('paywall.feat4') },
+            { icon: '🔥', text: t('paywall.feat5') },
+            { icon: '📊', text: t('paywall.feat6') },
           ].map((f, i) => (
             <View key={i} style={styles.featureRow}>
               <Text style={styles.featureIcon}>{f.icon}</Text>
@@ -136,7 +141,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
               activeOpacity={0.8}
             >
               <View style={styles.planBadge}>
-                <Text style={styles.planBadgeText}>Spare 33%</Text>
+                <Text style={styles.planBadgeText}>{t('paywall.saveBadge')}</Text>
               </View>
               <View style={styles.planRadio}>
                 <View style={[styles.radioOuter, selectedPlan === 'yearly' && styles.radioActive]}>
@@ -144,9 +149,9 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
                 </View>
               </View>
               <View style={styles.planInfo}>
-                <Text style={styles.planName}>Jährlich</Text>
-                <Text style={styles.planPrice}>{yearlyPrice} / Jahr</Text>
-                <Text style={styles.planSub}>Entspricht ca. 3,33 €/Monat</Text>
+                <Text style={styles.planName}>{t('paywall.yearly')}</Text>
+                <Text style={styles.planPrice}>{t('paywall.perYear', { price: yearlyPrice })}</Text>
+                <Text style={styles.planSub}>{t('paywall.yearlySub')}</Text>
               </View>
             </TouchableOpacity>
 
@@ -162,9 +167,9 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
                 </View>
               </View>
               <View style={styles.planInfo}>
-                <Text style={styles.planName}>Monatlich</Text>
-                <Text style={styles.planPrice}>{monthlyPrice} / Monat</Text>
-                <Text style={styles.planSub}>3 Tage kostenlos, dann monatlich</Text>
+                <Text style={styles.planName}>{t('paywall.monthly')}</Text>
+                <Text style={styles.planPrice}>{t('paywall.perMonth', { price: monthlyPrice })}</Text>
+                <Text style={styles.planSub}>{t('paywall.monthlySub')}</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -180,28 +185,22 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text style={styles.ctaText}>3 Tage kostenlos starten</Text>
+            <Text style={styles.ctaText}>{t('paywall.cta')}</Text>
           )}
         </TouchableOpacity>
 
         <Text style={styles.trialInfo}>
-          3 Tage kostenlos testen. Danach {selectedPlan === 'yearly' ? yearlyPrice + '/Jahr' : monthlyPrice + '/Monat'}.{'\n'}
-          Jederzeit in den iOS-Einstellungen kündbar.
+          {trialInfo}
         </Text>
 
         {/* Restore */}
         <TouchableOpacity style={styles.restoreBtn} onPress={handleRestore} disabled={isLoading}>
-          <Text style={styles.restoreText}>Käufe wiederherstellen</Text>
+          <Text style={styles.restoreText}>{t('paywall.restore')}</Text>
         </TouchableOpacity>
 
         {/* Legal */}
         <Text style={styles.legal}>
-          Die Zahlung wird über dein Apple-ID-Konto abgewickelt.
-          Das Abo verlängert sich automatisch, sofern nicht mindestens
-          24 Stunden vor Ablauf gekündigt wird. Nach der kostenlosen
-          Testphase wird der gewählte Betrag automatisch abgebucht.
-          Du kannst dein Abo jederzeit in den iPhone-Einstellungen
-          unter „Abonnements" verwalten und kündigen.
+          {t('paywall.legal')}
         </Text>
       </ScrollView>
     </SafeAreaView>

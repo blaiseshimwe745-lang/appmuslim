@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { COLORS, SHADOWS, RADIUS } from './theme';
 import { NextPrayer } from '../types';
 import { minutesToDisplay } from '../utils/dateHelpers';
@@ -9,7 +10,10 @@ interface Props {
 }
 
 export function PrayerCard({ nextPrayer }: Props) {
+  const { t } = useTranslation();
   if (!nextPrayer) return null;
+
+  const prayerName = nextPrayer.tomorrow ? t('prayers.fajrTomorrow') : nextPrayer.name;
 
   return (
     <View style={styles.card}>
@@ -19,9 +23,9 @@ export function PrayerCard({ nextPrayer }: Props) {
           <Text style={styles.iconText}>🕌</Text>
         </View>
         <View>
-          <Text style={styles.name}>Nächstes Gebet: {nextPrayer.name}</Text>
+          <Text style={styles.name}>{t('prayerCard.nextPrayer', { name: prayerName })}</Text>
           <Text style={styles.time}>
-            {nextPrayer.time} Uhr · {minutesToDisplay(nextPrayer.minutesUntil)} verbleibend
+            {t('prayerCard.timeRemaining', { time: nextPrayer.time, remaining: minutesToDisplay(nextPrayer.minutesUntil) })}
           </Text>
         </View>
       </View>

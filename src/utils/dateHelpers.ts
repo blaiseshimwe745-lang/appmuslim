@@ -1,4 +1,5 @@
 import { format, subDays, addDays, getDaysInMonth, getDay, startOfMonth } from 'date-fns';
+import i18n from '../i18n';
 
 export function formatDate(date: Date): string {
   return format(date, 'yyyy-MM-dd');
@@ -40,8 +41,8 @@ export function formatTime(timeStr: string): string {
 }
 
 export function minutesToDisplay(minutes: number): string {
-  if (minutes < 1) return 'Jetzt';
-  if (minutes < 60) return `${minutes} Min`;
+  if (minutes < 1) return i18n.t('common.now');
+  if (minutes < 60) return `${minutes} ${i18n.t('common.minShort')}`;
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return m > 0 ? `${h}h ${m}m` : `${h}h`;

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet, AppState, AppStateStatus } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import { useTranslation } from 'react-i18next';
 import { useBarakahStore } from '../store/useBarakahStore';
 import { StreakBadge } from '../components/StreakBadge';
 import { ProgressBar } from '../components/ProgressBar';
@@ -9,6 +10,7 @@ import { TaskItem } from '../components/TaskItem';
 import { COLORS, RADIUS } from '../components/theme';
 
 export function DashboardScreen() {
+  const { t } = useTranslation();
   const {
     user,
     dailyLog,
@@ -71,8 +73,8 @@ export function DashboardScreen() {
         <View style={styles.header}>
           <View style={styles.topRow}>
             <View>
-              <Text style={styles.greeting}>Assalamu Alaikum</Text>
-              <Text style={styles.subGreeting}>Heute ist ein gesegneter Tag ☀️</Text>
+              <Text style={styles.greeting}>{t('dashboard.greeting')}</Text>
+              <Text style={styles.subGreeting}>{t('dashboard.subGreeting')}</Text>
             </View>
             <View style={styles.streakPill}>
               <Text style={styles.streakEmoji}>🔥</Text>
@@ -82,7 +84,7 @@ export function DashboardScreen() {
 
           <ProgressBar percent={progressPercent} />
           <Text style={styles.progressLabel}>
-            {completedTasks}/{totalTasks} Aufgaben erledigt
+            {t('dashboard.tasksProgress', { completed: completedTasks, total: totalTasks })}
           </Text>
         </View>
 
@@ -91,52 +93,52 @@ export function DashboardScreen() {
 
         {/* Tasks */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Heutige Aufgaben</Text>
+          <Text style={styles.sectionTitle}>{t('dashboard.todayTasks')}</Text>
         </View>
 
         <View style={styles.taskList}>
           <TaskItem
             emoji="🕋"
-            title="Fajr"
-            subtitle={dailyLog.prayers.fajr ? 'Erledigt' : 'Noch offen'}
+            title={t('prayers.fajr')}
+            subtitle={dailyLog.prayers.fajr ? t('common.done') : t('common.open')}
             checked={dailyLog.prayers.fajr}
             onToggle={() => togglePrayer('fajr')}
           />
           <TaskItem
             emoji="🕋"
-            title="Dhuhr"
-            subtitle={dailyLog.prayers.dhuhr ? 'Erledigt' : 'Noch offen'}
+            title={t('prayers.dhuhr')}
+            subtitle={dailyLog.prayers.dhuhr ? t('common.done') : t('common.open')}
             checked={dailyLog.prayers.dhuhr}
             onToggle={() => togglePrayer('dhuhr')}
           />
           <TaskItem
             emoji="🕋"
-            title="Asr"
-            subtitle={dailyLog.prayers.asr ? 'Erledigt' : 'Noch offen'}
+            title={t('prayers.asr')}
+            subtitle={dailyLog.prayers.asr ? t('common.done') : t('common.open')}
             checked={dailyLog.prayers.asr}
             onToggle={() => togglePrayer('asr')}
           />
           <TaskItem
             emoji="🕋"
-            title="Maghrib"
-            subtitle={dailyLog.prayers.maghrib ? 'Erledigt' : 'Noch offen'}
+            title={t('prayers.maghrib')}
+            subtitle={dailyLog.prayers.maghrib ? t('common.done') : t('common.open')}
             checked={dailyLog.prayers.maghrib}
             onToggle={() => togglePrayer('maghrib')}
           />
           <TaskItem
             emoji="🕋"
-            title="Isha"
-            subtitle={dailyLog.prayers.isha ? 'Erledigt' : 'Noch offen'}
+            title={t('prayers.isha')}
+            subtitle={dailyLog.prayers.isha ? t('common.done') : t('common.open')}
             checked={dailyLog.prayers.isha}
             onToggle={() => togglePrayer('isha')}
           />
           <TaskItem
             emoji="📖"
-            title={`Qur'an lesen (${user.dailyGoalQuranMinutes} Min)`}
+            title={t('dashboard.quranTask', { min: user.dailyGoalQuranMinutes })}
             subtitle={
               dailyLog.quranCompleted
-                ? 'Erledigt'
-                : `${dailyLog.quranMinutes}/${user.dailyGoalQuranMinutes} Min`
+                ? t('common.done')
+                : t('dashboard.quranProgress', { done: dailyLog.quranMinutes, goal: user.dailyGoalQuranMinutes })
             }
             checked={dailyLog.quranCompleted}
             onToggle={() =>
@@ -147,10 +149,10 @@ export function DashboardScreen() {
           />
           <TaskItem
             emoji="📿"
-            title="Dhikr (33+33+34)"
+            title={t('dashboard.dhikrTask')}
             subtitle={
               dailyLog.dhikrCompleted
-                ? 'Erledigt'
+                ? t('common.done')
                 : `${dailyLog.dhikr.subhanallah}+${dailyLog.dhikr.alhamdulillah}+${dailyLog.dhikr.allahuakbar}`
             }
             checked={dailyLog.dhikrCompleted}
@@ -163,8 +165,8 @@ export function DashboardScreen() {
           <Text style={styles.statusEmoji}>{isLocked ? '🔒' : '🔓'}</Text>
           <Text style={[styles.statusText, !isLocked && styles.statusTextUnlocked]}>
             {isLocked
-              ? `Noch ${totalTasks - completedTasks} Aufgaben bis Apps freigeschaltet`
-              : "Masha'Allah! Apps freigeschaltet 🎉"}
+              ? t('dashboard.lockedBanner', { count: totalTasks - completedTasks })
+              : t('dashboard.unlockedBanner')}
           </Text>
         </View>
 

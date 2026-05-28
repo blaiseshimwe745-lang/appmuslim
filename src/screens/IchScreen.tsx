@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useBarakahStore } from '../store/useBarakahStore';
 import { CalendarGrid } from '../components/CalendarGrid';
 import { MilestoneItem } from '../components/MilestoneItem';
@@ -16,6 +17,7 @@ import { updateUser } from '../services/firestoreService';
 import { COLORS, RADIUS, SHADOWS } from '../components/theme';
 
 export function IchScreen() {
+  const { t } = useTranslation();
   const {
     user,
     streak,
@@ -32,11 +34,6 @@ export function IchScreen() {
   const [showSettings, setShowSettings] = useState(false);
 
   if (!user) return null;
-
-  const monthNames = [
-    'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-    'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
-  ];
 
   const goToPrevMonth = () => {
     const m = calendarMonth === 1 ? 12 : calendarMonth - 1;
@@ -55,7 +52,7 @@ export function IchScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Ich</Text>
+          <Text style={styles.headerTitle}>{t('profile.title')}</Text>
           <TouchableOpacity
             style={styles.settingsBtn}
             onPress={() => setShowSettings(!showSettings)}
@@ -71,7 +68,7 @@ export function IchScreen() {
           </View>
           <Text style={styles.name}>{user.displayName}</Text>
           <View style={styles.locationBadge}>
-            <Text style={styles.locationText}>📍 {user.city}, {user.country}</Text>
+            <Text style={styles.locationText}>{t('profile.location', { city: user.city, country: user.country })}</Text>
           </View>
         </View>
 
@@ -79,11 +76,11 @@ export function IchScreen() {
         <View style={styles.streakCard}>
           <Text style={styles.fireBig}>🔥</Text>
           <Text style={styles.bigNumber}>{streak}</Text>
-          <Text style={styles.bigLabel}>Tage am Stück</Text>
+          <Text style={styles.bigLabel}>{t('profile.daysInRow')}</Text>
           {streak > 0 && (
             <View style={styles.messageBadge}>
               <Text style={styles.messageText}>
-                🎉 Masha'Allah! {streak} Tage Barakah!
+                {t('profile.streakMessage', { streak })}
               </Text>
             </View>
           )}
@@ -93,19 +90,19 @@ export function IchScreen() {
         <View style={styles.statsGrid}>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{streak}</Text>
-            <Text style={styles.statLabel}>Streak</Text>
+            <Text style={styles.statLabel}>{t('profile.statStreak')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{longestStreak}</Text>
-            <Text style={styles.statLabel}>Rekord</Text>
+            <Text style={styles.statLabel}>{t('profile.statRecord')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{hoursSaved}</Text>
-            <Text style={styles.statLabel}>Std. gespart</Text>
+            <Text style={styles.statLabel}>{t('profile.statHoursSaved')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{successRate}%</Text>
-            <Text style={styles.statLabel}>Quote</Text>
+            <Text style={styles.statLabel}>{t('profile.statRate')}</Text>
           </View>
         </View>
 
@@ -115,7 +112,7 @@ export function IchScreen() {
             <Text style={styles.navArrow}>‹</Text>
           </TouchableOpacity>
           <Text style={styles.calendarTitle}>
-            {monthNames[calendarMonth - 1]} {calendarYear}
+            {t(`months.${calendarMonth}`)} {calendarYear}
           </Text>
           <TouchableOpacity onPress={goToNextMonth} style={styles.navBtn}>
             <Text style={styles.navArrow}>›</Text>
@@ -133,7 +130,7 @@ export function IchScreen() {
 
         {/* Milestones */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Meilensteine 🏆</Text>
+          <Text style={styles.sectionTitle}>{t('profile.milestones')}</Text>
         </View>
 
         <View style={styles.milestoneList}>
@@ -155,6 +152,7 @@ export function IchScreen() {
 
 // Inline settings section
 function SettingsSection({ user }: { user: any }) {
+  const { t } = useTranslation();
   const [city, setCity] = useState(user.city);
   const [country, setCountry] = useState(user.country);
   const [prayerReminders, setPrayerReminders] = useState(user.notificationPreferences.prayerReminders);
@@ -174,30 +172,30 @@ function SettingsSection({ user }: { user: any }) {
         streakReminder,
       },
     });
-    Alert.alert('Gespeichert', 'Einstellungen aktualisiert.');
+    Alert.alert(t('common.saved'), t('settings.savedMessage'));
   };
 
   return (
     <View style={settingsStyles.wrapper}>
       <View style={settingsStyles.divider} />
-      <Text style={settingsStyles.title}>⚙️ Einstellungen</Text>
+      <Text style={settingsStyles.title}>{t('settings.title')}</Text>
 
-      <Text style={settingsStyles.label}>Standort</Text>
+      <Text style={settingsStyles.label}>{t('settings.location')}</Text>
       <View style={settingsStyles.card}>
         <View style={settingsStyles.inputRow}>
-          <Text style={settingsStyles.inputLabel}>Stadt</Text>
+          <Text style={settingsStyles.inputLabel}>{t('settings.city')}</Text>
           <TextInput style={settingsStyles.input} value={city} onChangeText={setCity} />
         </View>
         <View style={settingsStyles.inputRow}>
-          <Text style={settingsStyles.inputLabel}>Land</Text>
+          <Text style={settingsStyles.inputLabel}>{t('settings.country')}</Text>
           <TextInput style={settingsStyles.input} value={country} onChangeText={setCountry} />
         </View>
       </View>
 
-      <Text style={settingsStyles.label}>Tagesziele</Text>
+      <Text style={settingsStyles.label}>{t('settings.dailyGoals')}</Text>
       <View style={settingsStyles.card}>
         <View style={settingsStyles.inputRow}>
-          <Text style={settingsStyles.inputLabel}>Qur'an (Min)</Text>
+          <Text style={settingsStyles.inputLabel}>{t('settings.quranMin')}</Text>
           <TextInput
             style={settingsStyles.input}
             value={quranGoal}
@@ -207,10 +205,10 @@ function SettingsSection({ user }: { user: any }) {
         </View>
       </View>
 
-      <Text style={settingsStyles.label}>Benachrichtigungen</Text>
+      <Text style={settingsStyles.label}>{t('settings.notifications')}</Text>
       <View style={settingsStyles.card}>
         <View style={settingsStyles.switchRow}>
-          <Text style={settingsStyles.switchLabel}>Gebetserinnerungen</Text>
+          <Text style={settingsStyles.switchLabel}>{t('settings.prayerReminders')}</Text>
           <Switch
             value={prayerReminders}
             onValueChange={setPrayerReminders}
@@ -218,7 +216,7 @@ function SettingsSection({ user }: { user: any }) {
           />
         </View>
         <View style={settingsStyles.switchRow}>
-          <Text style={settingsStyles.switchLabel}>Streak-Erinnerung (20:00)</Text>
+          <Text style={settingsStyles.switchLabel}>{t('settings.streakReminder')}</Text>
           <Switch
             value={streakReminder}
             onValueChange={setStreakReminder}
@@ -227,12 +225,12 @@ function SettingsSection({ user }: { user: any }) {
         </View>
       </View>
 
-      <Text style={settingsStyles.label}>Spezial</Text>
+      <Text style={settingsStyles.label}>{t('settings.special')}</Text>
       <View style={settingsStyles.card}>
         <View style={settingsStyles.switchRow}>
           <View>
-            <Text style={settingsStyles.switchLabel}>Reise-Modus</Text>
-            <Text style={settingsStyles.switchDesc}>Nur 3 Gebete (Qasr)</Text>
+            <Text style={settingsStyles.switchLabel}>{t('settings.travelMode')}</Text>
+            <Text style={settingsStyles.switchDesc}>{t('settings.travelModeDesc')}</Text>
           </View>
           <Switch
             value={travelMode}
@@ -243,7 +241,7 @@ function SettingsSection({ user }: { user: any }) {
       </View>
 
       <TouchableOpacity style={settingsStyles.saveBtn} onPress={handleSave} activeOpacity={0.8}>
-        <Text style={settingsStyles.saveBtnText}>Speichern</Text>
+        <Text style={settingsStyles.saveBtnText}>{t('common.save')}</Text>
       </TouchableOpacity>
     </View>
   );

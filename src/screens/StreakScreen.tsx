@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useBarakahStore } from '../store/useBarakahStore';
 import { CalendarGrid } from '../components/CalendarGrid';
 import { StatCard } from '../components/StatCard';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function StreakScreen({ onBack }: Props) {
+  const { t } = useTranslation();
   const {
     streak,
     longestStreak,
@@ -23,11 +25,6 @@ export function StreakScreen({ onBack }: Props) {
     user,
     fetchMonthLogs,
   } = useBarakahStore();
-
-  const monthNames = [
-    'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-    'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
-  ];
 
   const goToPrevMonth = () => {
     const m = calendarMonth === 1 ? 12 : calendarMonth - 1;
@@ -49,26 +46,26 @@ export function StreakScreen({ onBack }: Props) {
           <TouchableOpacity onPress={onBack} style={styles.backBtn}>
             <Text style={styles.backIcon}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Mein Streak</Text>
+          <Text style={styles.headerTitle}>{t('streakScreen.title')}</Text>
         </View>
 
         {/* Mega Streak */}
         <View style={styles.mega}>
           <Text style={styles.fireBig}>🔥</Text>
           <Text style={styles.bigNumber}>{streak}</Text>
-          <Text style={styles.bigLabel}>Tage am Stück</Text>
+          <Text style={styles.bigLabel}>{t('streakScreen.daysInRow')}</Text>
           <View style={styles.messageBadge}>
             <Text style={styles.messageText}>
-              🎉 Masha'Allah! {streak} Tage Barakah!
+              {t('streakScreen.streakMessage', { streak })}
             </Text>
           </View>
         </View>
 
         {/* Stats */}
         <View style={styles.stats}>
-          <StatCard value={hoursSaved} label="Stunden gespart" />
-          <StatCard value={`${successRate}%`} label="Erfolgsquote" />
-          <StatCard value={`#${user?.rank || '–'}`} label="Rang weltweit" />
+          <StatCard value={hoursSaved} label={t('streakScreen.hoursSaved')} />
+          <StatCard value={`${successRate}%`} label={t('streakScreen.successRate')} />
+          <StatCard value={`#${user?.rank || '–'}`} label={t('streakScreen.worldRank')} />
         </View>
 
         {/* Calendar */}
@@ -77,7 +74,7 @@ export function StreakScreen({ onBack }: Props) {
             <Text style={styles.navArrow}>‹</Text>
           </TouchableOpacity>
           <Text style={styles.sectionTitle}>
-            {monthNames[calendarMonth - 1]} {calendarYear}
+            {t(`months.${calendarMonth}`)} {calendarYear}
           </Text>
           <TouchableOpacity onPress={goToNextMonth}>
             <Text style={styles.navArrow}>›</Text>
@@ -95,7 +92,7 @@ export function StreakScreen({ onBack }: Props) {
 
         {/* Milestones */}
         <View style={[styles.sectionHeader, { marginTop: 24 }]}>
-          <Text style={styles.sectionTitle}>Meilensteine 🏆</Text>
+          <Text style={styles.sectionTitle}>{t('streakScreen.milestones')}</Text>
           <View />
         </View>
 

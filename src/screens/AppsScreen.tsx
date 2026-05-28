@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useBarakahStore } from '../store/useBarakahStore';
 import { BlockedAppCard } from '../components/BlockedAppCard';
 import { COLORS, RADIUS, SHADOWS } from '../components/theme';
 
 export function AppsScreen() {
+  const { t } = useTranslation();
   const { dailyLog, blockedApps, isLocked } = useBarakahStore();
 
   if (!dailyLog) return null;
@@ -26,7 +28,7 @@ export function AppsScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Apps</Text>
+          <Text style={styles.headerTitle}>{t('apps.title')}</Text>
         </View>
 
         {/* Lock Status Card */}
@@ -35,12 +37,12 @@ export function AppsScreen() {
             <Text style={styles.lockEmoji}>{isLocked ? '🔒' : '🔓'}</Text>
           </View>
           <Text style={[styles.statusTitle, !isLocked && styles.statusTitleUnlocked]}>
-            {isLocked ? 'Apps gesperrt' : 'Apps freigeschaltet!'}
+            {isLocked ? t('apps.locked') : t('apps.unlocked')}
           </Text>
           <Text style={styles.statusSubtitle}>
             {isLocked
-              ? `Erledige noch ${remainingTasks} Aufgaben, um deine Apps freizuschalten.`
-              : "Masha'Allah! Du hast alle Aufgaben erledigt. Genieße deine Zeit."}
+              ? t('apps.lockedSubtitle', { count: remainingTasks })
+              : t('apps.unlockedSubtitle')}
           </Text>
 
           {isLocked && (
@@ -62,7 +64,7 @@ export function AppsScreen() {
 
         {/* App Cards */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Blockierte Apps</Text>
+          <Text style={styles.sectionTitle}>{t('apps.blockedApps')}</Text>
         </View>
 
         <View style={styles.appList}>
@@ -80,7 +82,7 @@ export function AppsScreen() {
         <View style={styles.infoCard}>
           <Text style={styles.infoEmoji}>💡</Text>
           <Text style={styles.infoText}>
-            Sobald du alle täglichen Aufgaben erledigt hast, werden die Apps automatisch freigeschaltet.
+            {t('apps.info')}
           </Text>
         </View>
 

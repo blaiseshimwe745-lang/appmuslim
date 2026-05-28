@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useBarakahStore } from '../store/useBarakahStore';
 import { TaskItem } from '../components/TaskItem';
 import { COLORS, RADIUS } from '../components/theme';
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function LockScreen({ onGoToDashboard }: Props) {
+  const { t } = useTranslation();
   const { dailyLog, togglePrayer, isLocked } = useBarakahStore();
 
   if (!dailyLog) return null;
@@ -32,12 +34,10 @@ export function LockScreen({ onGoToDashboard }: Props) {
       </View>
 
       <Text style={styles.title}>
-        {isLocked ? 'App gesperrt' : 'Apps freigeschaltet!'}
+        {isLocked ? t('lock.locked') : t('lock.unlocked')}
       </Text>
       <Text style={styles.subtitle}>
-        {isLocked
-          ? 'Erledige erst deine Ibadaat,\ndann schalten wir Social Media frei.'
-          : 'Masha\'Allah! Alle Aufgaben erledigt.\nGenieße deine freigeschaltete Zeit.'}
+        {isLocked ? t('lock.lockedSubtitle') : t('lock.unlockedSubtitle')}
       </Text>
 
       <View style={styles.lockedApps}>
@@ -53,11 +53,11 @@ export function LockScreen({ onGoToDashboard }: Props) {
         <View style={styles.taskList}>
           <TaskItem
             emoji="🕋"
-            title="Fajr & Dhuhr"
+            title={t('lock.fajrDhuhr')}
             subtitle={
               dailyLog.prayers.fajr && dailyLog.prayers.dhuhr
-                ? 'Erledigt – BarakAllahu feek'
-                : 'Noch offen – erst dann geht\'s weiter!'
+                ? t('lock.fajrDhuhrDone')
+                : t('lock.taskOpen')
             }
             checked={dailyLog.prayers.fajr && dailyLog.prayers.dhuhr}
             onToggle={() => {
@@ -67,11 +67,11 @@ export function LockScreen({ onGoToDashboard }: Props) {
           />
           <TaskItem
             emoji="🕋"
-            title="Asr beten"
+            title={t('lock.asrTask')}
             subtitle={
               dailyLog.prayers.asr
-                ? 'Erledigt ✅'
-                : 'Noch offen – erst dann geht\'s weiter!'
+                ? t('lock.asrDone')
+                : t('lock.taskOpen')
             }
             checked={dailyLog.prayers.asr}
             onToggle={() => togglePrayer('asr')}
@@ -81,7 +81,7 @@ export function LockScreen({ onGoToDashboard }: Props) {
 
       {isLocked && (
         <Text style={styles.remaining}>
-          ⏱️ Noch <Text style={styles.remainingBold}>{remaining} Aufgaben</Text> übrig
+          ⏱️ <Text style={styles.remainingBold}>{t('lock.remaining', { count: remaining })}</Text>
         </Text>
       )}
 
@@ -91,7 +91,7 @@ export function LockScreen({ onGoToDashboard }: Props) {
         activeOpacity={0.8}
       >
         <Text style={styles.btnText}>
-          {isLocked ? 'Zum Dashboard zurück' : 'Weiter zur App'}
+          {isLocked ? t('lock.backToDashboard') : t('lock.continueToApp')}
         </Text>
       </TouchableOpacity>
     </View>

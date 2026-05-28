@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { COLORS } from './theme';
 
 export type Tab = 'heute' | 'apps' | 'ich';
@@ -11,13 +12,14 @@ interface Props {
   isLocked: boolean;
 }
 
-const TABS: { key: Tab; iconActive: keyof typeof Ionicons.glyphMap; iconInactive: keyof typeof Ionicons.glyphMap; label: string }[] = [
-  { key: 'heute', iconActive: 'checkmark-circle', iconInactive: 'checkmark-circle-outline', label: 'Heute' },
-  { key: 'apps', iconActive: 'lock-closed', iconInactive: 'lock-closed-outline', label: 'Apps' },
-  { key: 'ich', iconActive: 'person', iconInactive: 'person-outline', label: 'Ich' },
+const TABS: { key: Tab; iconActive: keyof typeof Ionicons.glyphMap; iconInactive: keyof typeof Ionicons.glyphMap; labelKey: string }[] = [
+  { key: 'heute', iconActive: 'checkmark-circle', iconInactive: 'checkmark-circle-outline', labelKey: 'nav.today' },
+  { key: 'apps', iconActive: 'lock-closed', iconInactive: 'lock-closed-outline', labelKey: 'nav.apps' },
+  { key: 'ich', iconActive: 'person', iconInactive: 'person-outline', labelKey: 'nav.me' },
 ];
 
 export function BottomNav({ active, onNavigate, isLocked }: Props) {
+  const { t } = useTranslation();
   return (
     <View style={styles.nav}>
       {TABS.map((tab) => {
@@ -41,7 +43,7 @@ export function BottomNav({ active, onNavigate, isLocked }: Props) {
               color={isActive ? COLORS.greenDeep : COLORS.textLight}
             />
             <Text style={[styles.label, isActive && styles.labelActive]}>
-              {tab.label}
+              {t(tab.labelKey)}
             </Text>
             {tab.key === 'apps' && isLocked && (
               <View style={styles.lockDot} />

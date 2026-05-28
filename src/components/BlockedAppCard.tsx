@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { COLORS, SHADOWS, RADIUS } from './theme';
 import { BlockedApp } from '../types';
 
@@ -10,13 +11,14 @@ interface Props {
 }
 
 export function BlockedAppCard({ app, isUnlocked, remainingTasks }: Props) {
+  const { t } = useTranslation();
   return (
     <View style={[styles.card, isUnlocked && styles.unlocked]}>
       <Text style={styles.emoji}>{app.emoji}</Text>
       <View style={styles.text}>
         <Text style={styles.name}>{app.appName}</Text>
         <Text style={styles.status}>
-          {isUnlocked ? 'Bereits freigeschaltet ✅' : `Noch ${remainingTasks} Aufgaben übrig 🔒`}
+          {isUnlocked ? t('blockedApp.unlocked') : t('blockedApp.locked', { count: remainingTasks })}
         </Text>
       </View>
       <Text style={styles.lockIcon}>{isUnlocked ? '✅' : '🔒'}</Text>

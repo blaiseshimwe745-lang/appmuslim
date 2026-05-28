@@ -17,7 +17,7 @@ export function getNextPrayer(timings: PrayerTimings, currentTime: Date = new Da
   const nextFajr = parseTimeString(timings.Fajr);
   nextFajr.setDate(nextFajr.getDate() + 1);
   const minutes = Math.round((nextFajr.getTime() - currentTime.getTime()) / 60000);
-  return { name: 'Fajr (morgen)', time: timings.Fajr, minutesUntil: minutes };
+  return { name: 'Fajr', time: timings.Fajr, minutesUntil: minutes, tomorrow: true };
 }
 
 export function isPrayerTimePassed(timings: PrayerTimings, prayer: string): boolean {

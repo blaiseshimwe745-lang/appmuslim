@@ -128,6 +128,7 @@ export interface NextPrayer {
   name: string;
   time: string;
   minutesUntil: number;
+  tomorrow?: boolean;
 }
 
 export type PrayerName = 'fajr' | 'dhuhr' | 'asr' | 'maghrib' | 'isha';

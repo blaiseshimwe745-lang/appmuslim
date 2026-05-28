@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { requestNotificationPermissions } from '../utils/notificationManager';
 import { COLORS } from '../components/theme';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function NotificationConsentScreen({ onComplete }: Props) {
+  const { t } = useTranslation();
   const handleAllow = async () => {
     await requestNotificationPermissions();
     onComplete();
@@ -25,42 +27,42 @@ export function NotificationConsentScreen({ onComplete }: Props) {
           <Text style={styles.bellIcon}>🔔</Text>
         </View>
 
-        <Text style={styles.title}>Bleib auf dem Weg</Text>
+        <Text style={styles.title}>{t('notificationConsent.title')}</Text>
         <Text style={styles.subtitle}>
-          Erhalte Erinnerungen für deine Gebete, Streak-Checks und wenn du deine Aufgaben noch nicht erledigt hast.
+          {t('notificationConsent.subtitle')}
         </Text>
 
         <View style={styles.features}>
           <View style={styles.featureItem}>
             <Text style={styles.featureIcon}>🕌</Text>
             <View style={styles.featureText}>
-              <Text style={styles.featureTitle}>Gebetszeiten</Text>
-              <Text style={styles.featureDesc}>Erinnerung vor jedem Gebet</Text>
+              <Text style={styles.featureTitle}>{t('notificationConsent.feat1Title')}</Text>
+              <Text style={styles.featureDesc}>{t('notificationConsent.feat1Desc')}</Text>
             </View>
           </View>
           <View style={styles.featureItem}>
             <Text style={styles.featureIcon}>🔥</Text>
             <View style={styles.featureText}>
-              <Text style={styles.featureTitle}>Streak-Schutz</Text>
-              <Text style={styles.featureDesc}>Abends erinnert, bevor der Streak bricht</Text>
+              <Text style={styles.featureTitle}>{t('notificationConsent.feat2Title')}</Text>
+              <Text style={styles.featureDesc}>{t('notificationConsent.feat2Desc')}</Text>
             </View>
           </View>
           <View style={styles.featureItem}>
             <Text style={styles.featureIcon}>📖</Text>
             <View style={styles.featureText}>
-              <Text style={styles.featureTitle}>Qur'an & Dhikr</Text>
-              <Text style={styles.featureDesc}>Sanfte Erinnerung an deine Ibadaat</Text>
+              <Text style={styles.featureTitle}>{t('notificationConsent.feat3Title')}</Text>
+              <Text style={styles.featureDesc}>{t('notificationConsent.feat3Desc')}</Text>
             </View>
           </View>
         </View>
 
         <View style={styles.buttons}>
           <TouchableOpacity style={styles.allowBtn} onPress={handleAllow} activeOpacity={0.8}>
-            <Text style={styles.allowText}>Benachrichtigungen erlauben</Text>
+            <Text style={styles.allowText}>{t('notificationConsent.allow')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.skipBtn} onPress={handleSkip} activeOpacity={0.7}>
-            <Text style={styles.skipText}>Vielleicht später</Text>
+            <Text style={styles.skipText}>{t('notificationConsent.later')}</Text>
           </TouchableOpacity>
         </View>
       </View>

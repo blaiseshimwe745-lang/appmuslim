@@ -16,6 +16,8 @@ import {
 } from './src/services/subscriptionService';
 import { COLORS } from './src/components/theme';
 import { maybeRequestReview } from './src/utils/reviewPrompt';
+import './src/i18n';
+import { loadSavedLanguage } from './src/i18n';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,6 +35,9 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
+        // Load saved language preference
+        await loadSavedLanguage();
+
         // Load fonts
         await Font.loadAsync({
           Inter: require('./assets/fonts/Inter.ttf'),
