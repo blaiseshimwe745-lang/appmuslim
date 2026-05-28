@@ -112,7 +112,7 @@ export function PaywallScreen({ onSubscribed, onClose }: Props) {
             { icon: '🕋', text: 'Alle 5 Gebete tracken' },
             { icon: '📖', text: "Qur'an & Dhikr Erinnerungen" },
             { icon: '🔒', text: 'App-Sperre bis Aufgaben erledigt' },
-            { icon: '🔔', text: 'Push-Benachrichtigungen' },
+            { icon: '🕌', text: 'Genaue Gebetszeiten für deine Stadt' },
             { icon: '🔥', text: 'Streak-System & Meilensteine' },
             { icon: '📊', text: 'Statistiken & Kalender' },
           ].map((f, i) => (

@@ -19,7 +19,7 @@ export function DashboardScreen() {
     setShowConfetti,
     togglePrayer,
     updateQuranMinutes,
-    incrementDhikr,
+    completeDhikr,
     toggleWudu,
     refreshNextPrayer,
     resetDay,
@@ -154,16 +154,7 @@ export function DashboardScreen() {
                 : `${dailyLog.dhikr.subhanallah}+${dailyLog.dhikr.alhamdulillah}+${dailyLog.dhikr.allahuakbar}`
             }
             checked={dailyLog.dhikrCompleted}
-            onToggle={() => {
-              if (!dailyLog.dhikrCompleted) {
-                for (let i = 0; i < user.dailyGoalDhikrSubhanallah - dailyLog.dhikr.subhanallah; i++)
-                  incrementDhikr('subhanallah');
-                for (let i = 0; i < user.dailyGoalDhikrAlhamdulillah - dailyLog.dhikr.alhamdulillah; i++)
-                  incrementDhikr('alhamdulillah');
-                for (let i = 0; i < user.dailyGoalDhikrAllahuakbar - dailyLog.dhikr.allahuakbar; i++)
-                  incrementDhikr('allahuakbar');
-              }
-            }}
+            onToggle={() => completeDhikr()}
           />
         </View>
 

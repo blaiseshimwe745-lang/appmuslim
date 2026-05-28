@@ -64,6 +64,7 @@ interface BarakahState {
   togglePrayer: (prayer: PrayerName) => Promise<void>;
   updateQuranMinutes: (minutes: number) => Promise<void>;
   incrementDhikr: (type: 'subhanallah' | 'alhamdulillah' | 'allahuakbar') => Promise<void>;
+  completeDhikr: () => Promise<void>;
   toggleWudu: () => Promise<void>;
   unlockApps: () => Promise<void>;
   fetchPrayerTimes: () => Promise<void>;
@@ -171,7 +172,7 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
 
     await updateDailyLog(user.userId, todayDate, updated);
 
-    if (allTasksDone) get().unlockApps();
+    if (allTasksDone && !dailyLog.allTasksDone) get().unlockApps();
   },
 
   updateQuranMinutes: async (minutes: number) => {
@@ -189,7 +190,7 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
     });
 
     await updateDailyLog(user.userId, todayDate, updated);
-    if (allTasksDone) get().unlockApps();
+    if (allTasksDone && !dailyLog.allTasksDone) get().unlockApps();
   },
 
   incrementDhikr: async (type) => {
@@ -214,7 +215,31 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
     });
 
     await updateDailyLog(user.userId, todayDate, updated);
-    if (allTasksDone) get().unlockApps();
+    if (allTasksDone && !dailyLog.allTasksDone) get().unlockApps();
+  },
+
+  completeDhikr: async () => {
+    const { user, dailyLog, todayDate } = get();
+    if (!user || !dailyLog || dailyLog.dhikrCompleted) return;
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    const newDhikr = {
+      subhanallah: user.dailyGoalDhikrSubhanallah,
+      alhamdulillah: user.dailyGoalDhikrAlhamdulillah,
+      allahuakbar: user.dailyGoalDhikrAllahuakbar,
+    };
+    const prayersDone = dailyLog.prayers.fajr && dailyLog.prayers.dhuhr && dailyLog.prayers.asr && dailyLog.prayers.maghrib && dailyLog.prayers.isha;
+    const allTasksDone = prayersDone && dailyLog.quranCompleted;
+
+    const updated: Partial<DailyLog> = { dhikr: newDhikr, dhikrCompleted: true, allTasksDone };
+    set({
+      dailyLog: { ...dailyLog, ...updated },
+      isLocked: !allTasksDone,
+    });
+
+    await updateDailyLog(user.userId, todayDate, updated);
+    if (allTasksDone && !dailyLog.allTasksDone) get().unlockApps();
   },
 
   toggleWudu: async () => {
@@ -234,6 +259,12 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
     const { user, dailyLog, todayDate, streak } = get();
     if (!user || !dailyLog) return;
 
+    // Guard: Streak darf pro Tag nur EINMAL hochgezählt werden
+    if (dailyLog.streakContinued) {
+      set({ isLocked: false });
+      return;
+    }
+
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     const newStreak = streak + 1;
@@ -247,6 +278,7 @@ export const useBarakahStore = create<BarakahState>((set, get) => ({
       longestStreak: newLongest,
       hoursSaved: newHours,
       showConfetti: true,
+      dailyLog: { ...dailyLog, allTasksDone: true, streakContinued: true },
     });
 
     await updateDailyLog(user.userId, todayDate, {
